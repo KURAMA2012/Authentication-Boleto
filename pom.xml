@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.A3.projeto.Faculdade</groupId>
-	<artifactId>PixGuard</artifactId>
+	<artifactId>AuthenticationBoleto</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>PixGuard</name>
-	<description>PixGuard</description>
+	<name>AuthenticationBoleto</name>
+	<description>AuthenticationBoleto</description>
 	<url/>
 	<licenses>
 		<license/>
