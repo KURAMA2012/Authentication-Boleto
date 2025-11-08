@@ -111,17 +111,16 @@ public class BoletoController {
             @RequestBody BoletoValidacaoRequest request,
             HttpServletRequest servletRequest) {
 
-        // 1. Busca o boleto pelo código de autenticação
         Boleto boleto = boletoService.buscarPorCodigoAutenticacao(request.getCodigoAutenticacao());
-        // 2. Captura o IP do cliente
+        
         String ip = extractClientIp(servletRequest);
 
-        // 3. Atualiza status do boleto
+        
         boleto.setAutenticado(true);
         boleto.setStatus(StatusBoleto.AUTENTICADO);
         boletoService.atualizarBoleto(boleto);
 
-        // 4. Registra log da validação
+        
         boletoLogService.registrarLog(
                 boleto.getCodigoAutenticacao(),
                 ip,
@@ -142,7 +141,6 @@ public class BoletoController {
 
     
     
-    // 🟢 Enviar token
     @PostMapping("/enviar-token")
     public ResponseEntity<ApiResponse<String>> enviarToken(@RequestBody BoletoValidacaoRequest request) {
         String token = boletoService.gerarOuRecuperarToken(request.getCodigoAutenticacao());
@@ -155,7 +153,6 @@ public class BoletoController {
 
     
     
-    // 🟣 Confirmar token
     @PostMapping("/confirmar")
     public ResponseEntity<ApiResponse<String>> confirmarToken(@RequestBody BoletoConfirmacaoRequest request) {
         boolean confirmado = boletoService.confirmarToken(request.getCodigoAutenticacao(), request.getTokenVerificacao());
