@@ -18,5 +18,5 @@ Fluxo:
 
 A empresa é cadastrada no sistema.
 
-Cada boleto criado estará vinculado a uma empresa (Boleto.empresa).
+Cada boleto criado estará vinculado a uma empresa
 ```
