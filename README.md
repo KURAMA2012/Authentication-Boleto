@@ -18,3 +18,22 @@ A empresa é cadastrada no sistema.
 
 Cada boleto criado estará vinculado a uma empresa
 ```
+2. Criação de boleto
+
+```
+Endpoint: POST /api/boleto/criar
+
+Fluxo:
+
+O usuário envia um BoletoRequest com código de barras, valor, vencimento, CNPJ do beneficiário, etc.
+
+O service (BoletoService) cria um novo Boleto:
+
+Gera codigoAutenticacao.
+
+Define StatusBoleto inicial (ex.: GERADO).
+
+Salva no banco (BoletoRepository.save()).
+
+Retorna um BoletoResponse com os dados do boleto.
+```
