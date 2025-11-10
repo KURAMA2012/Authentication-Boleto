@@ -1,0 +1,28 @@
+:host {
+    ion-content {
+        --background: url("/assets/img/bg_fundo.png") no-repeat center center / cover !important;
+    }
+
+    ion-tab-button {
+        background-color: var(--ion-color-secondary); // black
+    }
+    ion-toolbar  {
+        --background: linear-gradient(70deg, #6699ff, #1877f2, #1877f2, #eed2ebd4) !important;
+      }
+}
+
+.item-content {
+    background-color:#ffffff;
+  }
+
+ion-list {
+    background: transparent;
+}
+
+ion-item {
+    background: transparent;
+}
+
+ion-menu-toggle {
+    background: transparent;
+}

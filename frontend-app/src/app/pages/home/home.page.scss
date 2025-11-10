@@ -1,0 +1,47 @@
+.modern-bg {
+  --background: linear-gradient(180deg, #1e3a8a 0%, #1e40af 35%, #1e293b 100%);
+  color: #fff;
+  animation: gradientMove 10s ease infinite alternate;
+  background-size: 200% 200%;
+}
+
+@keyframes gradientMove {
+  0% { background-position: left top; }
+  100% { background-position: right bottom; }
+}
+
+.welcome-container {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.welcome-container h2 {
+  font-weight: 600;
+  font-size: 1.6rem;
+}
+
+.welcome-container p {
+  opacity: 0.8;
+  font-size: 0.95rem;
+}
+
+.action-card {
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  margin-bottom: 1rem;
+}
+
+.action-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin-top: 1rem;
+  color: #60a5fa;
+}

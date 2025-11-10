@@ -1,0 +1,91 @@
+<ion-content padding class="animated fadeIn login auth-page">
+  <div class="wave"></div>
+  <div class="auth-content">
+
+    <!-- Logo -->
+    <div class="ion-text-center div-cabec">
+      <div class="logo"></div>
+      <h3 ion-text class="text-primary">
+        <strong>Configuração</strong>
+      </h3>
+      <strong class="text-primary">{{version}}</strong>
+    </div>
+
+
+    <!-- Default Segment -->
+    <!-- <ion-segment (ionChange)="setDadosForm($event)" value="server1">
+      <ion-segment-button value="server1" >
+        <ion-label>Server 1</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="server2">
+        <ion-label>Server 2</ion-label>
+      </ion-segment-button>
+    </ion-segment> -->
+
+    <!-- Login form -->
+   <form [formGroup]="onLoginForm" class="list-form" >
+      <ion-segment-button>
+        <ion-label class="ion-text-center div-cabec">Server 1</ion-label>
+      </ion-segment-button>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="7" class="inpt-home">
+            <ion-input placeholder="URL" color="secondary" formControlName="input_url1" [(ngModel)]="input_url1" type="text" style="width: 100%; color:#263b6e; padding-left: 5px !important;"></ion-input>
+          </ion-col>
+
+          <ion-col size="3" class="inpt-home">
+              <ion-input placeholder="PORTA" class="inpt-porta" color="secondary" formControlName="input_porta1" type="number" style="width: 100%; color:#263b6e;"
+                [(ngModel)]="input_porta1"></ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+
+
+    <!-- <form [formGroup]="onFormServer2" class="list-form" *ngIf="mostrarCamposServer2 == true"> -->
+    <form [formGroup]="onFormServer2" class="list-form">
+      <ion-segment-button>
+        <ion-label class="ion-text-center div-cabec">Server 2</ion-label>
+      </ion-segment-button>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="7" class="inpt-home">
+            <ion-input placeholder="URL" color="secondary" formControlName="input_url2"
+                [(ngModel)]="input_url2"  type="text" style="width: 100%; color:#263b6e; padding-left: 5px !important;"></ion-input>
+          </ion-col>
+
+          <ion-col size="3" class="inpt-home">
+              <ion-input placeholder="PORTA" class="inpt-porta" color="secondary" formControlName="input_porta2" type="number" style="width: 100%; color: #263b6e;" 
+                [(ngModel)]="input_porta2"></ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+
+      <div>
+      <ion-grid>
+        <ion-row justify-content-around>
+          <ion-col class="col-save">
+            <ion-button id="btn" expand="block" fill="clear" tappable (click)="registrarConfiguracoes_e_retornarParaLogin()"
+              class="botao-padrao btn-conf">
+              <div class="div-funcoes">
+                <!-- <ion-icon slot="icon-only" name="save"></ion-icon> -->
+                <ion-label class="label-btns">Salvar</ion-label>
+              </div>
+            </ion-button>
+          </ion-col>
+
+          <ion-col class="col-save close">
+            <ion-button expand="block" fill="clear" (click)="retornarParaLogin()" class="botao-padrao btn-conf">
+              <div class="div-funcoes">
+                <!-- <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon> -->
+                <ion-label class="label-btns">Cancelar</ion-label>
+              </div>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+  </div>
+</ion-content>

@@ -1,0 +1,41 @@
+.menu-content {
+  --background: linear-gradient(180deg, #1e3a8a, #1e40af, #1e293b);
+  color: #fff;
+  background-size: 200% 200%;
+  animation: gradientMove 10s ease infinite alternate;
+}
+
+@keyframes gradientMove {
+  0% { background-position: left top; }
+  100% { background-position: right bottom; }
+}
+
+ion-item {
+  --background: transparent;
+  --color: #fff;
+  font-weight: 500;
+  border-radius: 12px;
+  margin: 4px 8px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+ion-item:hover {
+  --background: rgba(255, 255, 255, 0.15);
+  transform: translateX(6px);
+}
+
+ion-icon {
+  color: #60a5fa;
+  font-size: 1.4rem;
+}
+
+.menu-footer {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  text-align: center;
+}
+
+.menu-footer ion-item {
+  --background: transparent;
+  color: #cbd5e1;
+}

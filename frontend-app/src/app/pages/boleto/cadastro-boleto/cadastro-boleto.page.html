@@ -1,0 +1,162 @@
+<ion-header translucent="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Boletos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Gerenciar Boletos</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <!-- Alternador entre "Gerar Manualmente" e "Importar CSV" -->
+      <ion-segment [(ngModel)]="modo">
+        <ion-segment-button value="manual">
+          <ion-label>Gerar Manual</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="csv">
+          <ion-label>Importar CSV</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- ======= GERAR MANUALMENTE ======= -->
+      <div *ngIf="modo === 'manual'" class="mt-3">
+        <ion-item>
+          <ion-label position="floating">Código de Barras</ion-label>
+          <ion-input [(ngModel)]="boleto.codigoBarras"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Valor</ion-label>
+          <ion-input type="number" [(ngModel)]="boleto.valor"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Data de Vencimento</ion-label>
+          <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="boleto.vencimento"></ion-datetime>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">CPF/CNPJ Pagador</ion-label>
+          <ion-input [(ngModel)]="boleto.cpfCnpjPagador"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Nome do Pagador</ion-label>
+          <ion-input [(ngModel)]="boleto.nomePagador"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">CNPJ Beneficiário</ion-label>
+          <ion-input [(ngModel)]="boleto.cnpjBeneficiario"></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" color="success" (click)="gerarBoleto()">
+          <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+          Gerar Boleto
+        </ion-button>
+      </div>
+
+      <!-- ======= IMPORTAR CSV ======= -->
+      <div *ngIf="modo === 'csv'" class="mt-3">
+     
+     
+       
+  <ion-button expand="block" color="primary" (click)="selecionarCsv()">
+    <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+    Enviar CSV de Boletos
+  </ion-button>
+
+  <ion-spinner *ngIf="carregando" name="crescent"></ion-spinner>
+
+
+        <ion-progress-bar
+          *ngIf="carregando"
+          type="indeterminate"
+          color="medium"
+          style="margin-top: 10px;"
+        ></ion-progress-bar>
+      </div>
+
+      <!-- MENSAGEM FINAL -->
+      <ion-text
+        *ngIf="mensagem"
+        [color]="erro ? 'danger' : 'success'"
+        style="display: block; margin-top: 15px; text-align: center;"
+      >
+        {{ mensagem }}
+      </ion-text>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+
+
+
+<!--
+<ion-content [fullscreen]="true" class="gradient-bg">
+  <div class="container">
+    <ion-card class="glass-card animate__animated animate__fadeInUp">
+      <ion-card-header>
+        <ion-card-title>Inserir dados do Boleto</ion-card-title>
+        <ion-card-subtitle>Preencha os dados abaixo</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form (ngSubmit)="gerarBoleto()">
+
+          <ion-item class="input-item">
+            <ion-label position="floating">Código de Barras</ion-label>
+            <ion-input [(ngModel)]="boleto.codigoBarras" name="codigoBarras" required></ion-input>
+          </ion-item>
+
+          <ion-item class="input-item">
+            <ion-label position="floating">Valor</ion-label>
+            <ion-input type="number" [(ngModel)]="boleto.valor" name="valor" required></ion-input>
+          </ion-item>
+
+          <ion-item class="input-item">
+            <ion-label position="floating">Data de Vencimento</ion-label>
+            <ion-datetime presentation="date" [(ngModel)]="boleto.dataVencimento" name="dataVencimento" required></ion-datetime>
+          </ion-item>
+
+          <ion-item class="input-item">
+            <ion-label position="floating">Descrição</ion-label>
+            <ion-input [(ngModel)]="boleto.descricao" name="descricao" required></ion-input>
+          </ion-item>
+
+          <ion-item class="input-item">
+            <ion-label position="floating">CNPJ da Empresa</ion-label>
+            <ion-input [(ngModel)]="boleto.cnpjEmpresa" name="cnpjEmpresa" required></ion-input>
+          </ion-item>
+
+          <ion-item class="input-item">
+            <ion-label position="floating">Nome do Pagador</ion-label>
+            <ion-input [(ngModel)]="boleto.nomePagador" name="nomePagador" required></ion-input>
+          </ion-item>
+
+          <ion-button expand="block" type="submit" class="btn-enviar" color="tertiary">
+            <ion-icon name="cash-outline" slot="start"></ion-icon>
+            Gerar Boleto
+          </ion-button>
+        </form>
+
+        <div *ngIf="resposta" class="resposta-area ion-text-center ion-margin-top">
+          <ion-icon name="checkmark-circle-outline" color="success" size="large"></ion-icon>
+          <h2>Boleto Criado!</h2>
+          <p><strong>Código de Autenticação:</strong></p>
+          <p class="codigo">{{ resposta.codigoAutenticacao }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+-->

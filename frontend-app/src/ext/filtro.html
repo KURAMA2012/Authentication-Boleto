@@ -1,0 +1,790 @@
+<html> <head> <meta http-equiv="Content-Language" content="pt-br" /> <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" /> <title></title> </head> <body> <style type="text/css">
+ select { font-family: Tahoma; font-size: 13px; color: Black; border: 1px solid gray; border-collapse: collapse }
+ select.selected { font-family: Tahoma; font-size: 13px; color: Black; border: 1px solid gray; border-collapse: collapse }
+ option { font-family: Tahoma; font-size: 13px; color: Black; border: 1px solid gray; border-collapse: collapse }
+ option.selected { font-family: Tahoma; font-size: 13px; color: Black; border: 1px solid gray; border-collapse: collapse }
+</style> 
+<center>                                   
+<style type="text/css">                                             
+ td { font-family: Tahoma; font-size: 8pt; color: Black; }                                                            
+ th { font-family: Tahoma; font-size: 9pt; color: darkblue; }                                                    
+ tr { height: 21px; }                               
+ input { font-family: verdana; font-size: 11px; border: 1px solid #000000; }
+ .botao { font-family: verdana; font-size: 11px; border: 1px solid #999999; background-color: #F7F7F7; }      
+                                            
+ A:link {text-decoration: underline; color: Blue;}                                                                                           
+ A:visited {text-decoration: none; color:#ffcc33;}                                        
+ A:active {text-decoration: none; color:#ff0000;}                                  
+ A:hover {text-decoration: none; color:#999999;}                      
+</style>                                                         
+
+<center>                            
+<table width=650 cellpadding="0" cellspacing="0" border="0" align="centr">  
+                                                                           
+  <tr> 
+    <td colspan="2"> <hr width=650> </td>
+  </tr>
+  
+  <tr>
+    <td rowspan="2"> <img src=""> </td> 
+    <td align="right" valign="top"> <b> <FONT SIZE='3'> FILTRO ANÁLISE DE PEDIDOS EM CARTEIRA </FONT> </b>  &nbsp; &nbsp; </font> </td>
+  </tr>                          
+  <tr>                             
+    <td align="right" valign="bottom"> SUP - 23/06/2020 17:26 </td>  
+  </tr>
+  <tr>
+    <td colspan="2"> <hr width=650> </td>
+  </tr>
+  
+</table>
+                
+<br /><br />
+
+<table width="650" cellpadding="2" cellspacing="0" border="0">                                   
+  <COL WIDTH="220">                                                                                                
+  <COL WIDTH="330">                                                                    
+  <tr>
+    <td align="center" COLSPAN="2"><form name="FORMFILTRO" action=file:///c:/raj/celo_carteira.script method="post" > </td>
+  </tr>                                                                                
+  
+  <tr>                                                                                                                                                                                                                  
+    <td align="righT"  height="30"> <b> DATA DE ENTREGA: </b> &nbsp;&nbsp;</TD>    
+    <td  height="30">              
+      <input type="text" size="16" name="DTINI" class="ConstClasseDatePicker" value=01/06/2020 /> &nbsp;&nbsp; - &nbsp;&nbsp;
+      
+      <input type="text" size="16" name="DTFIM" class="ConstClasseDatePicker" value=30/06/2020 /> 
+    </td>   
+  </tr>                                                                                                                                                                                                                
+  <!--                                                                                                                                                                                                            
+  <tr>                                                                                                                                                                                                                  
+    <td align="righT"  height="30"> <b> CLIENTE: </b> &nbsp;&nbsp;</TD>                                 
+    <td  height="30">                                                                                                 
+      <input type="text"  name="CLIENTE"  value="" size="28" /> 
+    </td>   
+  </tr>                                                                                                                                                                                                                
+  -->     
+  <tr>                                                                                                                                                                                                                  
+    <td align="right"  height="30"> <b> CLIENTE: </b> &nbsp;&nbsp;</TD>                                 
+    <td  height="30">              
+      <select name="CLIENTE">
+        <option value="0"> * Todos os clientes </option>                                                                                
+                                           
+             <option value="433"> 3M </option>
+                                           
+             <option value="1460"> A2I </option>
+                                           
+             <option value="1266"> AB BRASIL </option>
+                                           
+             <option value="498"> ABREU LIMA </option>
+                                           
+             <option value="1627"> ACRILEX TINTAS ESPECIAIS S/A </option>
+                                           
+             <option value="907"> ADHESPACK </option>
+                                           
+             <option value="709"> ADVANTAGE </option>
+                                           
+             <option value="782"> ALCA FOODS </option>
+                                           
+             <option value="272"> ALEXANDRE MENEZES </option>
+                                           
+             <option value="1124"> ALHAMBRA </option>
+                                           
+             <option value="595"> ALIMENTOS WILSON </option>
+                                           
+             <option value="780"> ALPHA COLOR </option>
+                                           
+             <option value="553"> ALUSA </option>
+                                           
+             <option value="1241"> AMCOR </option>
+                                           
+             <option value="875"> APIS </option>
+                                           
+             <option value="219"> AQUACLARA </option>
+                                           
+             <option value="1493"> AQUIRAZ </option>
+                                           
+             <option value="16"> ARCOR </option>
+                                           
+             <option value="1432"> ARTSET </option>
+                                           
+             <option value="819"> ASAHI </option>
+                                           
+             <option value="563"> ASSA ABLOY </option>
+                                           
+             <option value="1339"> AVIVA </option>
+                                           
+             <option value="386"> AZUMA KIRIM </option>
+                                           
+             <option value="545"> B.DIAS </option>
+                                           
+             <option value="18"> BAGLEY </option>
+                                           
+             <option value="483"> BARION </option>
+                                           
+             <option value="590"> BATAVO </option>
+                                           
+             <option value="456"> BAUMGARTEN GRAFICA LTDA </option>
+                                           
+             <option value="1334"> BAYER S.A </option>
+                                           
+             <option value="790"> BELO VALE </option>
+                                           
+             <option value="1663"> BEVILAQUA </option>
+                                           
+             <option value="621"> BIG POC </option>
+                                           
+             <option value="699"> BIO </option>
+                                           
+             <option value="47"> BOMBRIL </option>
+                                           
+             <option value="882"> BOMTLE </option>
+                                           
+             <option value="906"> BONO GUSTO </option>
+                                           
+             <option value="551"> BONPROLE </option>
+                                           
+             <option value="48"> BONYPLUS </option>
+                                           
+             <option value="1537"> BOOMERA GESTÃO AMBIENTAL LTD </option>
+                                           
+             <option value="1330"> BRADAL NUTRI </option>
+                                           
+             <option value="1185"> BRADESCO </option>
+                                           
+             <option value="49"> BRF </option>
+                                           
+             <option value="1623"> BURN </option>
+                                           
+             <option value="50"> CACIQUE </option>
+                                           
+             <option value="809"> CACIQUE - PR </option>
+                                           
+             <option value="762"> CADENCE </option>
+                                           
+             <option value="1446"> CAFE CANECAO </option>
+                                           
+             <option value="1567"> CAFE FAVORITO </option>
+                                           
+             <option value="276"> CAFE OURO VERDE </option>
+                                           
+             <option value="425"> CARGILL </option>
+                                           
+             <option value="808"> CARIRI </option>
+                                           
+             <option value="6"> CARLOS JORGE - EMBALLAGE </option>
+                                           
+             <option value="571"> CASA GRANADO </option>
+                                           
+             <option value="51"> CASA SUICA </option>
+                                           
+             <option value="365"> CBL </option>
+                                           
+             <option value="188"> CELOCORTE </option>
+                                           
+             <option value="204"> CENTRAL CHOCOLATES </option>
+                                           
+             <option value="1640"> CENTRO SERRANA </option>
+                                           
+             <option value="842"> CEREALISTA </option>
+                                           
+             <option value="305"> CEREALLE </option>
+                                           
+             <option value="205"> CERVEJARIA PETROPOLIS </option>
+                                           
+             <option value="278"> CHOCOLATES FINOS </option>
+                                           
+             <option value="818"> CIPAN </option>
+                                           
+             <option value="206"> CITRY SOL </option>
+                                           
+             <option value="629"> CLAN NATAL </option>
+                                           
+             <option value="7"> COAMO </option>
+                                           
+             <option value="223"> COCAMAR </option>
+                                           
+             <option value="224"> COLGATE </option>
+                                           
+             <option value="225"> COMIGO </option>
+                                           
+             <option value="838"> CONDOR - FILIAL SUL </option>
+                                           
+             <option value="798"> CORINGA </option>
+                                           
+             <option value="484"> CORTEZ </option>
+                                           
+             <option value="1046"> CRIA SIM - DAVENE </option>
+                                           
+             <option value="663"> CRISTINA - MGS </option>
+                                           
+             <option value="230"> CRM </option>
+                                           
+             <option value="231"> DALLAS </option>
+                                           
+             <option value="628"> DDC </option>
+                                           
+             <option value="637"> DELIMYLL (JACQUET) </option>
+                                           
+             <option value="807"> DELIZIA </option>
+                                           
+             <option value="232"> DELRIO </option>
+                                           
+             <option value="769"> DEZ ALIMENTOS </option>
+                                           
+             <option value="622"> DIAMALER </option>
+                                           
+             <option value="1142"> DISFRIOS </option>
+                                           
+             <option value="835"> DLP </option>
+                                           
+             <option value="849"> DMAX </option>
+                                           
+             <option value="803"> DOCE SABOR </option>
+                                           
+             <option value="455"> DOCES RICCO </option>
+                                           
+             <option value="506"> DOCILE </option>
+                                           
+             <option value="683"> DOMINGOS COSTA </option>
+                                           
+             <option value="1504"> DONG HYUN CHANG </option>
+                                           
+             <option value="235"> DORI </option>
+                                           
+             <option value="236"> DOUX </option>
+                                           
+             <option value="863"> DPN </option>
+                                           
+             <option value="237"> DUCOCO </option>
+                                           
+             <option value="783"> DUPON BISCUITS </option>
+                                           
+             <option value="1465"> DUX </option>
+                                           
+             <option value="592"> E.M. SANTOS </option>
+                                           
+             <option value="290"> EBBA </option>
+                                           
+             <option value="244"> EBP </option>
+                                           
+             <option value="399"> ECOCARTA </option>
+                                           
+             <option value="1065"> EDUARDO SOUZA DA SILVA </option>
+                                           
+             <option value="517"> EMBALADEX </option>
+                                           
+             <option value="10"> EMBALPAC </option>
+                                           
+             <option value="716"> EMPORIO </option>
+                                           
+             <option value="552"> ERVALIMA </option>
+                                           
+             <option value="390"> ESTRE </option>
+                                           
+             <option value="631"> ESTRELA </option>
+                                           
+             <option value="1215"> EUROSICMA </option>
+                                           
+             <option value="693"> FESTIVA </option>
+                                           
+             <option value="462"> FLORA </option>
+                                           
+             <option value="667"> FLORESTAL </option>
+                                           
+             <option value="865"> FLY EMBALAGENS </option>
+                                           
+             <option value="306"> FORNECE </option>
+                                           
+             <option value="245"> FORNO DE MINAS </option>
+                                           
+             <option value="902"> FORNO VELHO </option>
+                                           
+             <option value="675"> FREEDOM </option>
+                                           
+             <option value="632"> FRUTAP </option>
+                                           
+             <option value="394"> FUCHS </option>
+                                           
+             <option value="1467"> FUKUHARA </option>
+                                           
+             <option value="839"> GABRIELA P. DOS SANTOS - ME </option>
+                                           
+             <option value="891"> GAMA INTERNATIONAL </option>
+                                           
+             <option value="562"> GDS </option>
+                                           
+             <option value="1194"> GELCO GELATINAS DO BRASIL LTDA </option>
+                                           
+             <option value="1030"> GIRA PLAST </option>
+                                           
+             <option value="459"> GOIANINHO </option>
+                                           
+             <option value="655"> GOLD NUTRITION </option>
+                                           
+             <option value="1323"> GOOD INDULGENCE </option>
+                                           
+             <option value="781"> GRAND PACK </option>
+                                           
+             <option value="246"> GRANDE RIO </option>
+                                           
+             <option value="431"> GRANOL </option>
+                                           
+             <option value="1085"> GRATI </option>
+                                           
+             <option value="247"> GSA </option>
+                                           
+             <option value="248"> HARALD </option>
+                                           
+             <option value="1202"> HARIBO </option>
+                                           
+             <option value="650"> HART'S </option>
+                                           
+             <option value="1439"> HC2 </option>
+                                           
+             <option value="614"> HEINEKEN BR </option>
+                                           
+             <option value="510"> HIGIDENT </option>
+                                           
+             <option value="873"> HOLOSTIK </option>
+                                           
+             <option value="748"> HOMEMADE </option>
+                                           
+             <option value="1235"> I C MELO - FLAMBOYANT </option>
+                                           
+             <option value="307"> IANE </option>
+                                           
+             <option value="249"> IBAC - CACAU SHOW </option>
+                                           
+             <option value="1255"> IBAE </option>
+                                           
+             <option value="250"> IBRAC </option>
+                                           
+             <option value="1308"> IMAAJ - INDUSTRIA DE MAQUINAS </option>
+                                           
+             <option value="689"> IN NATURA </option>
+                                           
+             <option value="651"> INAPEL </option>
+                                           
+             <option value="730"> INDAIA </option>
+                                           
+             <option value="251"> INTEGRALMEDICA </option>
+                                           
+             <option value="13"> IONE CECCON - ITC </option>
+                                           
+             <option value="682"> ISERO </option>
+                                           
+             <option value="252"> ISIS </option>
+                                           
+             <option value="1438"> ITAIQUARA </option>
+                                           
+             <option value="253"> ITAMARATY </option>
+                                           
+             <option value="1038"> ITAU </option>
+                                           
+             <option value="395"> IZES </option>
+                                           
+             <option value="856"> JBF BAHRAIN S.P.C </option>
+                                           
+             <option value="398"> JJ PLAST </option>
+                                           
+             <option value="821"> JMCM </option>
+                                           
+             <option value="496"> JOAO PONTES - MORRO BRANCO </option>
+                                           
+             <option value="532"> KELCO </option>
+                                           
+             <option value="262"> KERRY </option>
+                                           
+             <option value="267"> KIFRUTA </option>
+                                           
+             <option value="534"> KIT NUTRICIONAL </option>
+                                           
+             <option value="836"> KM CACAU </option>
+                                           
+             <option value="1408"> KOBBER </option>
+                                           
+             <option value="589"> KRON </option>
+                                           
+             <option value="486"> LABORPACK </option>
+                                           
+             <option value="1576"> LAC FORTE </option>
+                                           
+             <option value="735"> LACTALIS </option>
+                                           
+             <option value="1523"> LACTEOS </option>
+                                           
+             <option value="940"> LAMIPACK </option>
+                                           
+             <option value="1659"> LANCHERO </option>
+                                           
+             <option value="1520"> LASSA </option>
+                                           
+             <option value="1318"> LAT. SANTO EXPEDITO </option>
+                                           
+             <option value="1322"> LATICINIO MINAS GERAIS </option>
+                                           
+             <option value="848"> LATICINIOS PEREIRA </option>
+                                           
+             <option value="338"> LEBOM </option>
+                                           
+             <option value="927"> LEDUR </option>
+                                           
+             <option value="339"> LEITESOL </option>
+                                           
+             <option value="895"> LEMAGIS </option>
+                                           
+             <option value="1230"> LILLIYPLAS </option>
+                                           
+             <option value="1484"> LIOTECNICA </option>
+                                           
+             <option value="811"> LITTLE DUTCH </option>
+                                           
+             <option value="522"> LM - POLITRIZ </option>
+                                           
+             <option value="641"> LOREAL-PROCOSA </option>
+                                           
+             <option value="852"> LUCE </option>
+                                           
+             <option value="639"> M.DIAS </option>
+                                           
+             <option value="22"> MACIEL </option>
+                                           
+             <option value="1638"> MAIS DISTRIBUIDORA DE VEICULOS </option>
+                                           
+             <option value="652"> MAIS VIDA </option>
+                                           
+             <option value="736"> MAPPEL </option>
+                                           
+             <option value="372"> MARIA SHIRLEY </option>
+                                           
+             <option value="658"> MARIANNA </option>
+                                           
+             <option value="829"> MASIPACK </option>
+                                           
+             <option value="643"> MAXI PACK </option>
+                                           
+             <option value="593"> MB CIRURGICA </option>
+                                           
+             <option value="342"> MECANO PACK </option>
+                                           
+             <option value="544"> MEGABRAIN </option>
+                                           
+             <option value="687"> MEGAPLUS </option>
+                                           
+             <option value="404"> MENDONÇA </option>
+                                           
+             <option value="524"> MGS </option>
+                                           
+             <option value="492"> MM - DUM DUM </option>
+                                           
+             <option value="788"> MM MINAS GERAIS </option>
+                                           
+             <option value="1357"> MODENAPAK </option>
+                                           
+             <option value="1482"> MOSMANN </option>
+                                           
+             <option value="343"> MS PESCADOS </option>
+                                           
+             <option value="379"> N.CONCEIÇÃO </option>
+                                           
+             <option value="377"> NATURALE </option>
+                                           
+             <option value="581"> NATURELAB </option>
+                                           
+             <option value="594"> NERO </option>
+                                           
+             <option value="833"> NESTLE </option>
+                                           
+             <option value="396"> NEUGEBAUER - VONPAR </option>
+                                           
+             <option value="1473"> NISSIN </option>
+                                           
+             <option value="792"> NOBEL </option>
+                                           
+             <option value="874"> NOBREGA - MB </option>
+                                           
+             <option value="344"> NOGUEIRA E REZENDE </option>
+                                           
+             <option value="1238"> NORAC DO BRASIL </option>
+                                           
+             <option value="1203"> NOVAPRINT </option>
+                                           
+             <option value="356"> NUCITA </option>
+                                           
+             <option value="346"> NUTRIMENTAL </option>
+                                           
+             <option value="963"> OFICINA DO CACAU </option>
+                                           
+             <option value="392"> OPERSAN </option>
+                                           
+             <option value="599"> ORIGINAL </option>
+                                           
+             <option value="1257"> OTTO - VEDACIT </option>
+                                           
+             <option value="347"> PANCRISTAL </option>
+                                           
+             <option value="676"> PARMISSIMO </option>
+                                           
+             <option value="850"> PASSA QUATRO </option>
+                                           
+             <option value="303"> PASTANINA </option>
+                                           
+             <option value="786"> PASTORIZA </option>
+                                           
+             <option value="1253"> PAZ COSMETICA </option>
+                                           
+             <option value="292"> PECCIN </option>
+                                           
+             <option value="495"> PEG PIG </option>
+                                           
+             <option value="228"> PIA </option>
+                                           
+             <option value="896"> PICOLO </option>
+                                           
+             <option value="1498"> PIRAQUE </option>
+                                           
+             <option value="1126"> PLASFIL </option>
+                                           
+             <option value="466"> PLASMA </option>
+                                           
+             <option value="304"> POLENGHI </option>
+                                           
+             <option value="1368"> POLYFOLHA </option>
+                                           
+             <option value="350"> POMPEIA </option>
+                                           
+             <option value="494"> PONTO CERTO </option>
+                                           
+             <option value="351"> PRATI DONADUZZI </option>
+                                           
+             <option value="293"> PREDILECTA </option>
+                                           
+             <option value="708"> PROBAC </option>
+                                           
+             <option value="558"> PRONUTRE </option>
+                                           
+             <option value="385"> PUROCOCO </option>
+                                           
+             <option value="294"> QUIMICA AMPARO </option>
+                                           
+             <option value="299"> RABBIT </option>
+                                           
+             <option value="1150"> REAL INDUSTRIA E COMERCIO </option>
+                                           
+             <option value="1360"> REINTEGRA FILM'S </option>
+                                           
+             <option value="797"> REUNIDAS RAYMUNDO </option>
+                                           
+             <option value="308"> RIO DOCE </option>
+                                           
+             <option value="274"> RITTER </option>
+                                           
+             <option value="754"> RITZMANN </option>
+                                           
+             <option value="1419"> ROMARIZ </option>
+                                           
+             <option value="1143"> ROTO FLEXO </option>
+                                           
+             <option value="933"> SABE ALIMENTOS </option>
+                                           
+             <option value="725"> SABERPACK </option>
+                                           
+             <option value="387"> SABORART </option>
+                                           
+             <option value="477"> SALMERON </option>
+                                           
+             <option value="740"> SANAVITA </option>
+                                           
+             <option value="1176"> SANCHEZ FINI </option>
+                                           
+             <option value="480"> SANDEPAR </option>
+                                           
+             <option value="1565"> SANEANTES </option>
+                                           
+             <option value="648"> SANTA AMALIA </option>
+                                           
+             <option value="1277"> SANTA CHIARA </option>
+                                           
+             <option value="332"> SANTA HELENA </option>
+                                           
+             <option value="1420"> SANTA MARIANA COMERCIO </option>
+                                           
+             <option value="869"> SANTA ROSA </option>
+                                           
+             <option value="698"> SANTIAGO E CORDEIRO </option>
+                                           
+             <option value="684"> SANTONETO </option>
+                                           
+             <option value="353"> SAO BRAZ </option>
+                                           
+             <option value="357"> SCHREIBER </option>
+                                           
+             <option value="296"> SEARA </option>
+                                           
+             <option value="1312"> SEBASTIAN </option>
+                                           
+             <option value="355"> SEGAFREDO </option>
+                                           
+             <option value="604"> SELITA </option>
+                                           
+             <option value="301"> SELMI </option>
+                                           
+             <option value="513"> SET PACK </option>
+                                           
+             <option value="1481"> SETTER </option>
+                                           
+             <option value="1247"> SINGER </option>
+                                           
+             <option value="405"> SISTEMA </option>
+                                           
+             <option value="1440"> SKIN LAB </option>
+                                           
+             <option value="475"> SMART LIFE </option>
+                                           
+             <option value="1489"> SO FRUTA </option>
+                                           
+             <option value="1303"> SOEG ALPHAVILLE VEICULOS S/A </option>
+                                           
+             <option value="443"> SOIN </option>
+                                           
+             <option value="1261"> SOLUPACK </option>
+                                           
+             <option value="1349"> SONOCO DO BRASIL </option>
+                                           
+             <option value="368"> SONOCO EMBALAGENS </option>
+                                           
+             <option value="1377"> SONOS </option>
+                                           
+             <option value="962"> SPA </option>
+                                           
+             <option value="588"> STAMPLAS </option>
+                                           
+             <option value="598"> STELLA D'ORO </option>
+                                           
+             <option value="427"> SUKEST </option>
+                                           
+             <option value="447"> SUN CHEMICAL </option>
+                                           
+             <option value="1466"> SYNERLINK LATIN AMERICA </option>
+                                           
+             <option value="463"> TAMBAU </option>
+                                           
+             <option value="452"> TECNOGRAV </option>
+                                           
+             <option value="694"> TIO DON DON </option>
+                                           
+             <option value="1617"> TORREFACOES </option>
+                                           
+             <option value="476"> TRES CORACOES </option>
+                                           
+             <option value="1428"> TURATTI - DIVINE </option>
+                                           
+             <option value="1175"> UNILEVER </option>
+                                           
+             <option value="596"> USIBRAS </option>
+                                           
+             <option value="408"> VAGNA </option>
+                                           
+             <option value="531"> VALENÇA </option>
+                                           
+             <option value="1292"> VENEZZA </option>
+                                           
+             <option value="888"> VIGOR </option>
+                                           
+             <option value="1364"> VILA NOVA - FABITOS </option>
+                                           
+             <option value="1542"> VIVAFRUT </option>
+                                           
+             <option value="1045"> VIVAPOP </option>
+                                           
+             <option value="904"> VRBS </option>
+                                           
+             <option value="864"> VVM </option>
+                                           
+             <option value="840"> WECKERLE - MATRIZ </option>
+                                           
+             <option value="1319"> WERNERSBACH LTDA </option>
+                                           
+             <option value="436"> WOW </option>
+                                           
+             <option value="1668"> XANDO </option>
+                                           
+             <option value="277"> YOGUEDES </option>
+                                           
+             <option value="1342"> ZARAPLAST </option>
+                                           
+             <option value="46"> ZD ALIMENTOS </option>
+        
+      </select>                  
+    </td>                               
+  </tr>                                                                                                                                                                                                                
+                                                                                                                                                                                                           
+  <tr>                                                                                                                                                                                                                  
+    <td align="righT"  height="30"> <b> PRODUTO: </b> &nbsp;&nbsp;</TD>    
+    <td  height="30">              
+      <input type="text"  name="PRODUTO"  value="" size="28" />      
+    </td>   
+  </tr> 
+                                                                                                                                       
+  <tr>                                                                                                                                                                                                                  
+    <td align="righT"  height="30"> <b> CÓDIGO: </b> &nbsp;&nbsp;</TD>    
+    <td  height="30">              
+      <input type="text"  name="CODIGO"  value="" size="28" /> 
+    </td>   
+  </tr>   
+  
+  <tr style="height: 30px">                                                                                                                                                                                                                  
+    <td align="right"> <b> VENDEDOR: </b> &nbsp;&nbsp;</TD>    
+    <td> <select name="pFILVEN3"> <option value='' checked>* Não filtrar</option> <option value='358'>ADELZIO - BAG PACK</option> <option value='25'>ALBERTO LOPES</option> <option value='497'>ALESSANDRA</option> <option value='272'>ALEXANDRE MENEZES</option> <option value='12'>ANDRADE</option> <option value='56'>ANDRE MAZIERI</option> <option value='607'>ANDRE MORIZ</option> <option value='841'>ANDRE ROTOMASTER</option> <option value='892'>CARLOS AUGUSTO - VITAVEND</option> <option value='6'>CARLOS JORGE - EMBALLAGE</option> <option value='1590'>CORREA MARTINS REPRESENTAÇÕES</option> <option value='17'>DIRETO</option> <option value='233'>EDMILSON PERON - PERONPLAST</option> <option value='21'>EDUARDO PIAI - TELECO REPRES</option> <option value='234'>ERIC BARBOSA</option> <option value='1047'>FELIPE DUARTE</option> <option value='24'>FERNANDO MIGLIORINI</option> <option value='1262'>FRANCISCO</option> <option value='345'>GERI LAUREANO - PLASUP</option> <option value='454'>HIGH - GINO E MARIO</option> <option value='779'>HUMBERTO</option> <option value='13'>IONE CECCON - ITC</option> <option value='14'>JANOTAM</option> <option value='19'>JOAO PEDRO - MLC LIMA</option> <option value='496'>JOAO PONTES - MORRO BRANCO</option> <option value='189'>JONAS QUEIROZ - J FLEX REPRES</option> <option value='354'>JOSE ADMILSON</option> <option value='565'>JOSE ROBERTO</option> <option value='20'>LUIS ARRIGHI</option> <option value='1090'>LUIS FELIPE</option> <option value='22'>MACIEL</option> <option value='160'>MARCELO MEDEIROS - PHB LIMA</option> <option value='1128'>MARIO SERGIO LEO</option> <option value='15'>MAURICIO</option> <option value='1172'>PAULO STRUMIELLO</option> <option value='1642'>ROBERTO ALVIM - POLIBAG</option> <option value='23'>ROBERTO BRANDãO</option> <option value='1236'>SAVIO - YVESA REPR.</option> <option value='1212'>TUBEL</option> </select> </td>   
+  </tr>  
+        
+  <tr style="height: 30px">                                                                                                                                                                                                                  
+    <td align="right"> <b> GESTOR: </b> &nbsp;&nbsp;</TD>    
+    <td> <select name="pFILVEN2"> <option value='' checked>* Não filtrar</option> <option value='358'>ADELZIO - BAG PACK</option> <option value='25'>ALBERTO LOPES</option> <option value='497'>ALESSANDRA</option> <option value='272'>ALEXANDRE MENEZES</option> <option value='12'>ANDRADE</option> <option value='56'>ANDRE MAZIERI</option> <option value='607'>ANDRE MORIZ</option> <option value='841'>ANDRE ROTOMASTER</option> <option value='892'>CARLOS AUGUSTO - VITAVEND</option> <option value='6'>CARLOS JORGE - EMBALLAGE</option> <option value='1590'>CORREA MARTINS REPRESENTAÇÕES</option> <option value='17'>DIRETO</option> <option value='233'>EDMILSON PERON - PERONPLAST</option> <option value='21'>EDUARDO PIAI - TELECO REPRES</option> <option value='234'>ERIC BARBOSA</option> <option value='1047'>FELIPE DUARTE</option> <option value='24'>FERNANDO MIGLIORINI</option> <option value='1262'>FRANCISCO</option> <option value='345'>GERI LAUREANO - PLASUP</option> <option value='454'>HIGH - GINO E MARIO</option> <option value='779'>HUMBERTO</option> <option value='13'>IONE CECCON - ITC</option> <option value='14'>JANOTAM</option> <option value='19'>JOAO PEDRO - MLC LIMA</option> <option value='496'>JOAO PONTES - MORRO BRANCO</option> <option value='189'>JONAS QUEIROZ - J FLEX REPRES</option> <option value='354'>JOSE ADMILSON</option> <option value='565'>JOSE ROBERTO</option> <option value='20'>LUIS ARRIGHI</option> <option value='1090'>LUIS FELIPE</option> <option value='22'>MACIEL</option> <option value='160'>MARCELO MEDEIROS - PHB LIMA</option> <option value='1128'>MARIO SERGIO LEO</option> <option value='15'>MAURICIO</option> <option value='1172'>PAULO STRUMIELLO</option> <option value='1642'>ROBERTO ALVIM - POLIBAG</option> <option value='23'>ROBERTO BRANDãO</option> <option value='1236'>SAVIO - YVESA REPR.</option> <option value='1212'>TUBEL</option> </select> </td>   
+  </tr> 
+  
+  <tr style="height: 30px">  
+    <th colspan="2"> Tipo da OP </th> 
+  </tr>
+  
+  <tr style="height: 30px">  
+    <td />
+    <td > <input name="TIPOOP" type="checkbox" value="'P'" style="border: 0px solid white" /> Prova </td> 
+  </tr>                                                 
+  <tr style="height: 30px">                            
+    <td />
+    <td > <input name="TIPOOP" type="checkbox" value="'N'"  style="border: 0px solid white" /> Novo </td> 
+  </tr>                                                               
+  <tr style="height: 30px">                             
+    <td />                                             
+    <td ><input name="TIPOOP" type="checkbox" value="'I'"  style="border: 0px solid white" /> Nova Imposição </td> 
+  </tr>                                                  
+  <tr style="height: 30px">
+    <td />
+    <td > <input name="TIPOOP" type="checkbox" value="'S'"  style="border: 0px solid white" /> Repetição s/ Alteração </td> 
+  </tr>                                                
+  <tr style="height: 30px">
+    <td />
+    <td > <input name="TIPOOP" type="checkbox" value="'C'"  style="border: 0px solid white" /> Repetição c/ Alteração </td> 
+  </tr>   
+  
+  <tr> 
+    <td height="20"> &nbsp; </td>
+  </tr>
+                                                 
+  <tr style="height: 30px"> <td colspan="2" align="center"> <div title="Exibir informações dos Pré-Pedidos"><input name="EXIBEPREORCA" type="checkbox" checked style="border: 0px solid white" /> Exibir Pré - Orçamento </div> </td> </tr>
+  <tr style="height: 30px"> <td colspan="2" align="center"> <div title="Exibir informações das Entregas Pendentes"><input name="EXIBEATRASOS" type="checkbox" style="border: 0px solid white" /> Exibir Entregas Pendentes </div> </td> </tr>  
+                                                                                                                                                                                                                               
+  <tr style="height: 30px"> <td colspan="2" align="center"> <div title="Modelo de Carteira sem as colunas Pedido, Codigo Item, Pagamento, Gestor e Informações das Tarefas"><input name="pMODELO_VENDEDOR" type="checkbox" style="border: 0px solid white" /> Modelo para envio aos Vendedores </div> </td> </tr>                                                                 
+                                   
+  <tr style="height: 60px"> 
+    <td colspan="2" ALIGN="CENTER"> <input type="submit" value=" Consultar "> </td>     
+  </tr>                                                                                                         
+                                                                                                                                                    
+  </form>
+  
+</table>
+</center>
+
+ </body> 
+ </html>

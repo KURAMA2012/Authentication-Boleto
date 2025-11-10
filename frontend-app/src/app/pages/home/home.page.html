@@ -1,0 +1,68 @@
+<ion-header translucent="true">
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">
+      <ion-icon name="shield-checkmark-outline"></ion-icon>
+        Authentication Boleto
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding modern-bg" [@pageAnimations]>
+
+  <div class="welcome-container">
+    <h2>Bem-vindo 👋</h2>
+    <p>Escolha uma das opções abaixo para começar</p>
+  </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-card routerLink="/cadastro-boleto" class="action-card">
+          <ion-icon name="document-text-outline" class="card-icon"></ion-icon>
+          <ion-card-header>
+            <ion-card-title>Gerar Boleto</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Crie um novo boleto e associe à empresa.
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6">
+        <ion-card routerLink="/boleto-validacao" class="action-card">
+          <ion-icon name="lock-closed-outline" class="card-icon"></ion-icon>
+          <ion-card-header>
+            <ion-card-title>Validar Boleto</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Verifique a autenticidade de um boleto existente.
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6">
+        <ion-card routerLink="/cadastro-empresa" class="action-card">
+          <ion-icon name="business-outline" class="card-icon"></ion-icon>
+          <ion-card-header>
+            <ion-card-title>Empresas</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Consulte e gerencie empresas cadastradas.
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="6">
+        <ion-card routerLink="/logs" class="action-card">
+          <ion-icon name="list-outline" class="card-icon"></ion-icon>
+          <ion-card-header>
+            <ion-card-title>Logs</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Veja o histórico de autenticações e eventos.
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

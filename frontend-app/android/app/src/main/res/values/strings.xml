@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Raj Diretor</string>
+    <string name="title_activity_main">Raj Diretor</string>
+    <string name="package_name">com.raj.diretor</string>
+    <string name="custom_url_scheme">com.raj.diretor</string>
+</resources>

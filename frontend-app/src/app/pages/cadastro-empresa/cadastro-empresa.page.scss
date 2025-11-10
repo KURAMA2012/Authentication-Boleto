@@ -1,0 +1,35 @@
+ion-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+ion-card-title {
+  font-weight: 600;
+  text-align: center;
+}
+
+ion-item {
+  --highlight-color-focused: var(--ion-color-primary);
+  margin-bottom: 10px;
+}
+
+ion-button[color="tertiary"] {
+  height: 36px;
+  font-size: 14px;
+  margin-top: 8px;
+  --border-radius: 12px;
+}
+
+ion-button[color="success"] {
+  margin-top: 20px;
+  font-weight: bold;
+  --border-radius: 12px;
+}
+
+ion-spinner {
+  margin-right: 6px;
+}
+
+ion-content {
+  background: #f7f8fa;
+}

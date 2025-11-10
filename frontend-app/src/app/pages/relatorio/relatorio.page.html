@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="author-photo-Home img">
+      <ion-text color="secondary" class="author-photo img">
+        <ion-grid>
+          <ion-row class="custom-spacing">
+            <ion-col size="2" (click)="goToHome()">
+              <ion-icon name="arrow-back-outline"
+                style="font-size: 28px; color: #000; margin-bottom: -5px;"></ion-icon>
+            </ion-col>
+            <ion-col size="9" style="overflow-x: scroll;">
+              <span class="titulo-header">{{titulo_cabecalho}}</span>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-text>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button><ion-icon name="menu" class="menu" style="color: #000;"></ion-icon></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-content *ngIf="preparandoRelatorio === true">
+    <div
+      style="height: 100%; display: flex; align-items: center; justify-content: center;">
+      <ion-card>
+        <ion-item>
+          <ion-spinner name="circles" slot="end"></ion-spinner>
+          <strong color="primary">Preparando Relatório...</strong>
+        </ion-item>
+      </ion-card>
+    </div>
+  </ion-content>
+
+  <iframe #frameFiltro [src]="urlScript" scrolling="yes" width="100%"
+    height="100%" frameborder="0"
+    allowfullscreen sandbox="allow-same-origin allow-scripts allow-forms" *ngIf="relatorio == true" webkit-playsinline="yes">
+  </iframe>
+
+  <iframe #frameFiltro [src]="urlCamera" scrolling="yes" width="100%"
+    height="100%" frameborder="0" 
+    allowfullscreen sandbox="allow-same-origin allow-scripts allow-forms" *ngIf="codigo == true" webkit-playsinline="yes">
+  </iframe>
+</ion-content>

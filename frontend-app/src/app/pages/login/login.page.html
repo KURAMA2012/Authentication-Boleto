@@ -1,0 +1,97 @@
+<ion-content padding class="animated fadeIn login auth-page">
+  <div class="wave"></div>
+  <div class="auth-content">
+
+    <!-- Logo -->
+    <div class="ion-text-center div-cabec">
+      <div class="logo">
+      </div>
+      <h3 ion-text class="text-primary">
+        <strong>Diretor</strong>
+      </h3>
+      <strong class="text-primary">{{version}}</strong>
+    </div>
+
+    <!-- Formulario -->
+    <form #viewLogin [formGroup]="onLoginForm" class="list-form div-cabec">
+      <div class="div-list">
+        <ion-list>
+          <ion-item class="animated fadeInUp inpt-login">
+            <ion-icon name="person-outline" item-start></ion-icon>
+            <ion-input (click)="scrollIntoView()" placeholder="Usuário"
+              color="secondary"
+              formControlName="codigoOperador"
+              [(ngModel)]="codigoOperador" style="text-transform: uppercase;"></ion-input>
+          </ion-item>
+          <br>
+          <ion-item no-padding class="animated fadeInUp inpt-login">
+            <ion-icon name="lock-open-outline" item-start></ion-icon>
+            <ion-input placeholder="Senha" color="secondary" type="password"
+              formControlName="senha" [(ngModel)]="senha" style="text-transform: uppercase;"></ion-input>
+          </ion-item>
+          <ion-item>
+            <strong class="text-primary cinza">Lembrar Usuário/Senha</strong>
+            <ion-checkbox formControlName="lembrarUsuario" color="primary"
+              slot="start" [(ngModel)]="lembrarUsuario"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </div>
+    </form>
+
+    <!-- Botão -->
+    <div class="div-Entrar div-cabec">
+      <ion-button class="botao-padrao btn-login" id="btn" type="submit"
+        (click)="login()" [disabled]="bloquearLogin">
+        Entrar
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Conexão -->
+  <ion-grid class="div-cabec">
+    <ion-row center-content-around>
+      <!-- verde -->
+      <ion-col class="col-server" *ngIf="statusDoServidor == 1">
+        <div class="label-sucesso-conexao"
+          (click)="apresentarLogsConexao()"></div>
+        <span class="span-status">Sucesso na Conexão</span>
+      </ion-col>
+
+      <!-- vermelho -->
+      <ion-col class="col-server" *ngIf="statusDoServidor == 4">
+        <div class="label-falha-conexao"
+          (click)="apresentarLogsConexao()"></div>
+        <span class="span-status">Falha de Conexão</span>
+      </ion-col>
+
+      <!-- vermelho -->
+      <ion-col class="col-server" *ngIf="statusDoServidor == 3">
+        <div class="label-servidor-Nconfigurado"
+          (click)="apresentarLogsConexao()"></div>
+        <span class="span-status">Servidor não configurado</span>
+      </ion-col>
+
+      <!-- cinza -->
+      <ion-col class="col-server" *ngIf="statusDoServidor == 5">
+        <div class="label-iniciando-sistema"
+          (click)="apresentarLogsConexao()"></div>
+        <span class="span-status">Iniciando sistema</span>
+      </ion-col>
+
+      <!-- amarelo -->
+      <ion-col class="col-server" *ngIf="statusDoServidor == 2">
+        <div class="label-testando-config"
+          (click)="apresentarLogsConexao()"></div>
+        <span class="span-status">Testando Configuração</span>
+      </ion-col>
+
+      <ion-col class="col-server">
+        <ion-button class="botao-padrao" expand="block" fill="clear"
+          (click)="configurar()">
+          <ion-icon slot="icon-only" name="settings"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

@@ -1,0 +1,171 @@
+// http://ionicframework.com/docs/theming/
+@import '~@ionic/angular/css/core.css';
+@import '~@ionic/angular/css/normalize.css';
+@import '~@ionic/angular/css/structure.css';
+@import '~@ionic/angular/css/typography.css';
+
+@import '~@ionic/angular/css/padding.css';
+@import '~@ionic/angular/css/float-elements.css';
+@import '~@ionic/angular/css/text-alignment.css';
+@import '~@ionic/angular/css/text-transformation.css';
+@import '~@ionic/angular/css/flex-utils.css';
+
+// REMOVIDO: @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap');
+
+:host {
+  ion-toolbar {
+    --background: linear-gradient(180deg, #b0d1ff, #f7fafe) !important;
+  }
+}
+
+:root {
+  --ion-font-family: 'Roboto', sans-serif; // atualizado para Roboto local
+}
+
+* {
+  font-family: 'Roboto', sans-serif !important;
+}
+
+ion-item {
+  --ion-item-background: transparent;
+}
+
+.header-md.header-md::after {
+  background-image: unset;
+}
+
+// backgrounds //
+.bg-white { background-color: rgb(192, 20, 20); }
+.bg-light { background-color: var(--ion-color-light); }
+.bg-dark { background-color: var(--ion-color-dark); }
+.bg-primary { background-color: var(--ion-color-primary); }
+.bg-secondary { background-color: var(--ion-color-secondary); }
+.bg-tertiary { background-color: var(--ion-color-tertiary); }
+.bg-profile { background-image: linear-gradient(135deg, var(--ion-color-dark), var(--ion-color-primary)); }
+.bg-main { background-image: linear-gradient(-135deg, var(--ion-color-medium), var(--ion-color-light)); }
+
+// Helpers //
+.w100 { width: 100%; }
+.bold, .fw500 { font-weight: 200 !important; }
+.fw700 { font-weight: 700 !important; }
+.text08 { font-size: .8rem; }
+.text1 { font-size: 1rem !important; }
+.text12 { font-size: 1.2rem; }
+.text15 { font-size: 1.5rem; }
+.text20 { font-size: 2rem; }
+.text-white { color: #fff; }
+.text-primary { color: var(--ion-color-primary); }
+.text-secondary { color: var(--ion-color-secondary); }
+.text-dark { color: var(--ion-color-dark); }
+.text-red { color: rgb(231, 17, 17); }
+.text-grenn { color: rgb(231, 17, 17); }
+
+// menu //
+// Menu user profile
+ion-toolbar.user-profile {
+  .user-avatar { width: 68px; height: 68px; }
+  .item-inner { border-width: 0; }
+}
+
+// Custom toolbar (overriding Shadow DOM)
+ion-toolbar {
+  &.ion-color-primary {
+    --ion-color-base: linear-gradient(135deg, var(--ion-color-dark), var(--ion-color-primary)) !important;
+  }
+}
+
+// Android card shadow
+ion-card {
+  &.sc-ion-card-md-h {
+    box-shadow: 0 2px 4px rgba(var(--ion-color-dark-rgb), .24);
+  }
+}
+
+// style for auth pages
+.auth-page {
+  .grid { padding: 0; .col { padding: 0; } }
+  .btn-group {
+    .button-ios, .button-md {
+      border-radius: 0;
+      &:first-of-type { border-radius: 2px 0 0 2px; }
+      &:last-of-type { border-radius: 0 2px 2px 0; }
+    }
+  }
+  .auth-content {
+    margin: 0 5%;
+    .logo {
+      height: 10em;
+      margin: 15px auto 8px;
+      position: relative;
+      border-radius: 0%;
+      background: url("/assets/img/tela_login2.png") no-repeat;
+      width: 20em;
+      background-size: 100%;
+    }
+    .list-form {
+      padding: 0;
+      margin-bottom: 0;
+      ion-item {
+        background: none;
+        padding: 0;
+        &:after { display: none; }
+        ion-label { font-size: 1em; color: var(--ion-color-primary); }
+        input { color: var(--ion-color-primary); }
+      }
+    }
+  }
+}
+
+// Custom Menu styles (overriding Shadow DOM)
+ion-menu {
+  ion-header {
+    ion-toolbar {
+      &.ion-color-dark {
+        --ion-color-base: linear-gradient(135deg, var(--ion-color-dark), var(--ion-color-primary)) !important;
+      }
+    }
+  }
+}
+
+.mto { margin-top: 12px; ion-icon { margin-bottom: -2px; } }
+
+// Buttons / Inputs / Misc
+.botao-padrao {
+  border: 1px solid #cdcdcd;
+  box-shadow: 3px 3px 2px #cbcbcb;
+  margin: 0px 3px;
+  border-radius: 8px;
+  font-size: 10px;
+}
+.input-padrao {
+  width: 140px; height: 40px; margin: 10px;
+  background-color: #F8F8F8;
+  border: solid 2px #e8ebf0;
+  border-radius: 8px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+  text-align: end;
+  font-size: 15px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+}
+
+// Tab bar / frame
+ion-tab-bar ion-tab-button { border: 1px solid #cdcdcd; box-shadow: 3px 3px 2px #cbcbcb; margin: 0px 3px; border-radius: 8px; font-size: 12px; }
+ion-tab-bar { padding: 5px; padding-top: 0; background-color: #ffffff !important; }
+.frame-HTML { width: 100%; height: 100%; overflow: scroll !important; -webkit-overflow-scrolling: touch !important; position: absolute; top: 0; left: 0; z-index: 1; }
+input[type='text'], input[type='number'], textarea { font-size: 16px !important; }
+.header-ios ion-toolbar:last-of-type { --border-width: 0; }
+
+// Roboto local fonts
+@font-face {
+  font-family: 'Roboto'; src: url('/assets/fonts/roboto/Roboto-Thin.ttf') format('truetype'); font-weight:100; font-style:normal;
+}
+@font-face {
+  font-family: 'Roboto'; src: url('/assets/fonts/roboto/Roboto-Light.ttf') format('truetype'); font-weight:300; font-style:normal;
+}
+@font-face {
+  font-family: 'Roboto'; src: url('/assets/fonts/roboto/Roboto-Regular.ttf') format('truetype'); font-weight:400; font-style:normal;
+}
+@font-face {
+  font-family: 'Roboto'; src: url('/assets/fonts/roboto/Roboto-Medium.ttf') format('truetype'); font-weight:500; font-style:normal;
+}

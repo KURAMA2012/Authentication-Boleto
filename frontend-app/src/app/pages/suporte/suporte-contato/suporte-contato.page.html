@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Chamado</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="profile">
+  <ion-card no-margin>
+    <ion-card-content class="bg-profile">
+      <img src="assets/img/img_chamado.png">
+    </ion-card-content>
+
+    <ion-grid fixed no-padding>
+      <ion-row>
+
+        <ion-col size="12" padding>
+
+          <ion-list margin-bottom>
+            <ion-item>
+              <ion-label>Assunto</ion-label>
+              <ion-select interface="action-sheet" [(ngModel)] = "chamado.assunto"  >
+                <ion-select-option value="FINANCEIRO">Financeiro</ion-select-option>
+                <ion-select-option value="DUVIDA">Dúvida</ion-select-option>
+                <ion-select-option value="CONEXAO">Conexão</ion-select-option>
+                <ion-select-option value="Cadastro">Cadastro</ion-select-option>
+                <ion-select-option value="CRITICA">Crítica</ion-select-option>
+                <ion-select-option value="SUGESTAO">Sugestão</ion-select-option>
+                <ion-select-option value="RETIRADA_KIT">Retirada de KIT</ion-select-option>
+                <ion-select-option value="DUVIDA">Cancelamento</ion-select-option>
+                <ion-select-option value="OUTROS">Outros</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item>
+              <ion-label color="dark" position="stacked">Mensagem:</ion-label>
+              <ion-textarea rows="14" cols="20" [(ngModel)] = "chamado.mensagem"></ion-textarea>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-card>
+
+</ion-content>
+<ion-toolbar>
+    <ion-segment>
+        <ion-segment-button color="primary" (click)="enviarChamado()">
+            <img src="assets/img/img_enviar_chamado.png">
+        </ion-segment-button>
+    </ion-segment>
+</ion-toolbar>

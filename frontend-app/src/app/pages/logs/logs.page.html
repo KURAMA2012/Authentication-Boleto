@@ -1,0 +1,65 @@
+<ion-header translucent="true">
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">
+      <ion-icon name="shield-checkmark-outline"></ion-icon>
+        Logs de Boletos
+    </ion-title>
+  </ion-toolbar>
+
+
+  <ion-toolbar>
+    <ion-searchbar
+      placeholder="Buscar por código, IP ou mensagem"
+      [(ngModel)]="searchTerm"
+      (ionInput)="buscar()"
+      animated
+      debounce="300">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="logs-bg">
+
+  <ion-refresher slot="fixed" (ionRefresh)="carregarLogs($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="loading" class="loading-area">
+    <ion-spinner name="crescent" color="light"></ion-spinner>
+    <p>Carregando logs...</p>
+  </div>
+
+  <ion-list *ngIf="!loading && logs.length > 0" class="animate__animated animate__fadeInUp">
+
+    <ion-item *ngFor="let log of logs" lines="inset" class="log-item">
+      <ion-avatar slot="start" [style.background]="log.valido ? '#28a745' : '#dc3545'">
+        <ion-icon [name]="log.valido ? 'checkmark-done-outline' : 'alert-circle-outline'" color="light"></ion-icon>
+      </ion-avatar>
+
+      <ion-label>
+        <h2>{{ log.mensagem }}</h2>
+        <p><strong>Código:</strong> {{ log.codigoAutenticacao }}</p>
+        <p><strong>IP:</strong> {{ log.ipUsuario }}</p>
+        <p><strong>Data:</strong> {{ formatarData(log.dataConsulta) }}</p>
+      </ion-label>
+
+      <ion-badge [color]="corStatus(log.valido)">
+        {{ log.valido ? 'Válido' : 'Inválido' }}
+      </ion-badge>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="carregarMais($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="crescent"
+      loadingText="Carregando mais logs...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <div *ngIf="!loading && logs.length === 0" class="empty-area">
+    <ion-icon name="document-text-outline" size="large" color="medium"></ion-icon>
+    <p>Nenhum log encontrado</p>
+  </div>
+
+</ion-content>

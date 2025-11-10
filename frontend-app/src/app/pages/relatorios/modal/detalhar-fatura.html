@@ -1,0 +1,30 @@
+<ion-card>
+    <ion-card-header>
+        <ion-card-subtitle>FATURA: {{ fatura.id }}</ion-card-subtitle>
+        <ion-card-title  color="primary">{{ fatura.periodo }}</ion-card-title>
+    </ion-card-header>
+    <ion-item>
+        <ion-label  >Valor</ion-label>
+        <ion-label slot="end">{{fatura.valor | number : '1.2-2'}}</ion-label>
+    </ion-item>
+    <ion-item>
+        <ion-label  >Data Vencimento</ion-label>
+        <ion-label slot="end">{{fatura.dataVencimento | date: 'dd/MM/yyyy' }}</ion-label>
+    </ion-item>
+    <ion-item>
+        <ion-label >Data Pagamento</ion-label>
+        <ion-label slot="end">{{fatura.dataPagamento | date: 'dd/MM/yyyy' }}</ion-label>
+    </ion-item>
+    <ion-item>
+        <ion-label  >Status</ion-label>
+        <ion-label slot="end">{{fatura.status}}</ion-label>
+    </ion-item>
+</ion-card>
+
+<ion-toolbar>
+    <ion-segment>
+        <ion-segment-button color="primary" (click)="fecharModal()">
+            <ion-icon name="arrow-round-back"></ion-icon>
+        </ion-segment-button>
+    </ion-segment>
+</ion-toolbar>

@@ -1,0 +1,40 @@
+<ion-header translucent="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Confirmar Token</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Confirmação de Token</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form (ngSubmit)="confirmarToken()">
+        <ion-item>
+          <ion-label position="floating">Código de Autenticação do Boleto</ion-label>
+          <ion-input [(ngModel)]="codigoAutenticacao" name="codigoAutenticacao" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Token de Verificação</ion-label>
+          <ion-input [(ngModel)]="tokenVerificacao" name="tokenVerificacao" required></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" color="success" type="submit" class="ion-margin-top">
+          <ion-icon name="checkmark-done-outline" slot="start"></ion-icon>
+          Confirmar Token
+        </ion-button>
+      </form>
+
+      <div *ngIf="resultado" class="resultado ion-margin-top ion-text-center">
+        <ion-label color="success">{{ resultado }}</ion-label>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

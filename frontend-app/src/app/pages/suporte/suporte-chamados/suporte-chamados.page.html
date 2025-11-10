@@ -1,0 +1,114 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Chamados</ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar color="primary">
+    <ion-segment>
+      <ion-segment-button checked layout="icon-bottom" (click)="setOpenChamadosAberto()">
+        <ion-icon color="danger" name="call"></ion-icon>
+        <ion-label>Abertos </ion-label>
+      </ion-segment-button>
+      <ion-segment-button layout="icon-bottom" (click)="setOpenChamadosAtendimento()">
+        <ion-icon color="warning" name="build"></ion-icon>
+        <ion-label>Em Atendimento</ion-label>
+      </ion-segment-button>
+      <ion-segment-button   layout="icon-bottom" (click)="setOpenChamadosEncerrado()">
+        <ion-icon color="success" name="checkmark-circle"></ion-icon>
+        <ion-label>ENCERRADO</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content>
+
+
+
+  <ion-list no-border *ngIf="loadChamadosAberto === true">
+    <ion-menu-toggle auto-hide="false" *ngFor="let p of chamadosAbertos">
+      <ion-card>
+        <ion-item (click)="abrirChat(p)" class="activated">
+          <ion-icon color="primary" [name]="p.icone" slot="start"></ion-icon>
+          <ion-card-title>{{p.assunto}} </ion-card-title>
+          <ion-icon color="primary" name="chatbubbles" slot="end"></ion-icon>
+        </ion-item>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6">
+                <div class="card-title">
+                  <ion-icon color="primary"  name="create" slot="start"></ion-icon>
+                  PROTOCOLO
+                </div>
+                <div class="card-subtitle">
+                  {{p.chamado }}
+                </div>
+              </ion-col>
+              <ion-col size="6">
+                <div class="card-title">
+                  <ion-icon color="primary"   name="calendar" slot="start"></ion-icon>
+                  DATA ABRTURA
+                </div>
+                <div class="card-subtitle">
+                  {{p.dataHoraAbertura | date: 'dd/MM/yyyy hh:mm:ss'}}
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12">
+                <div class="card-title">
+                  MENSAGEM
+                </div>
+                <div class="card-subtitle">
+                  <p>
+                    {{p.mensagem }}
+                  </p>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-menu-toggle>
+  </ion-list>
+
+  <ion-list no-border *ngIf="loadChamadosAtendimento === true">
+    <ion-menu-toggle auto-hide="false" *ngFor="let p of chamadosAtendimento">
+      <ion-card>
+        <ion-item (click)="abrirChat(p)" class="activated">
+          <ion-icon color="primary" [name]="p.icone" slot="start"></ion-icon>
+          <ion-card-title>{{p.assunto}} </ion-card-title>
+          <ion-icon color="primary" name="chatbubbles" slot="end"></ion-icon>
+        </ion-item>
+        <ion-card-header>
+          <ion-card-title>{{p.mensagem}}</ion-card-title>
+        </ion-card-header>
+        <ion-item>
+          <ion-label>Protocolo : {{p.chamado}} </ion-label>
+        </ion-item>
+      </ion-card>
+    </ion-menu-toggle>
+  </ion-list>
+  <ion-list no-border *ngIf="loadChamadosEncerrado === true">
+    <ion-menu-toggle auto-hide="false" *ngFor="let p of chamadosEncerrados">
+      <ion-card>
+        <ion-item class="activated">
+          <ion-icon color="primary" [name]="p.icone" slot="start"></ion-icon>
+          <ion-card-title>{{p.assunto}} </ion-card-title>
+        </ion-item>
+        <ion-card-header>
+          <ion-card-title>{{p.mensagem}}</ion-card-title>
+        </ion-card-header>
+        <ion-item>
+          <ion-label>Protocolo : {{p.chamado}} </ion-label>
+        </ion-item>
+      </ion-card>
+    </ion-menu-toggle>
+  </ion-list>
+</ion-content>

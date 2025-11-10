@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Análise</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let p of relatorios">
+    <ion-item>
+      <ion-icon name="pin" slot="start"></ion-icon>
+      <ion-label>{{p.titulo}}</ion-label>
+    </ion-item>
+
+    <div style="width:100%;height:100%;overflow:scroll !important;-webkit-overflow-scrolling:touch !important">
+      <iframe #frameFiltro [src]="p.url" class="iframe" scrolling="yes" width="100%" height="100%" frameborder="0"
+        align="left" allowfullscreen></iframe>
+    </div>
+
+    <ion-row>
+      <ion-toolbar>
+        <ion-tab-button (click)="removerAnalise(p)">
+          <ion-icon color="primary" name="trash"></ion-icon>
+        </ion-tab-button>
+      </ion-toolbar>
+    </ion-row>
+
+  </ion-card>
+</ion-content>

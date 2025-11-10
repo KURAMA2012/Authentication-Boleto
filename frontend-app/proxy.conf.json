@@ -1,0 +1,8 @@
+{
+    "/api": {
+        "changeOrigin": true,
+        "secure": false,
+        "logLevel": "debug",
+        "target": "http://rajportal.no-ip.org:11869"
+     }
+}

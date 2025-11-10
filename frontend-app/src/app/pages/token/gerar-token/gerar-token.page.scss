@@ -1,0 +1,83 @@
+.gradient-bg {
+  --background: linear-gradient(135deg, #1a73e8, #6a11cb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  color: #fff;
+}
+
+ion-card-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+ion-card-subtitle {
+  color: #d0d0d0;
+  font-size: 0.9rem;
+}
+
+.input-item {
+  margin-top: 12px;
+  --background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+}
+
+.btn-enviar {
+  margin-top: 20px;
+  border-radius: 12px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  --background: linear-gradient(90deg, #6a11cb, #2575fc);
+}
+
+.btn-enviar:hover {
+  filter: brightness(1.1);
+}
+
+.token-area {
+  text-align: center;
+  margin-top: 30px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  animation: fadeIn 0.6s ease;
+}
+
+.token-label {
+  font-size: 1rem;
+  color: #d0d0d0;
+  margin-top: 8px;
+}
+
+.token-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  word-wrap: break-word;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

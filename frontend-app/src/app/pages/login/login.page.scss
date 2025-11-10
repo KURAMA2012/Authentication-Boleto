@@ -1,0 +1,137 @@
+.wave {
+    background: url("../../../assets/img/fundo.svg") repeat-x;
+    position: absolute;
+    width: 6400px;
+    height: 250px;
+    animation: wave 30s linear infinite;
+    z-index: 1;
+    top: -5px;
+}
+
+@keyframes wave {
+    0% {
+        margin-left: 0;
+    }
+
+    100% {
+        margin-left: -1600px;
+    }
+}
+
+@keyframes swell {
+
+    0%,
+    100% {
+        transform: translate3d(0, -25px, 0);
+    }
+
+    50% {
+        transform: translate3d(0, 5px, 0);
+    }
+}
+
+.div-cabec {
+    position: relative;
+    z-index: 2;
+}
+
+.list-form {
+    margin: 15px 0;
+
+    .div-list {
+        display: grid;
+        grid-template-columns: auto;
+        justify-items: center;
+    }
+
+    .inpt-login {
+        width: 225px;
+        margin: 0 10px;
+        border: 1px solid #A1A1A1;
+        background-color: #f8f8f8;
+        border-radius: 10px;
+        box-shadow: 1px 6px 8px hwb(0deg 0% 100% / 50%);
+    }
+
+
+    .cinza {
+        color: #7d7d7d;
+    }
+
+    ion-checkbox {
+        margin-right: 7px;
+        border-radius: 2px;
+    }
+
+    ion-list {
+        padding-bottom: 17px;
+        background: none;
+    }
+
+}
+
+.div-Entrar {
+    width: 100%;
+    text-align: center;
+}
+
+.btn-login {
+    width: 125px;
+    height: 45px;
+    background-color: #0C2D69;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.col-server {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+    .label-sucesso-conexao {
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        background-color: green;
+    }
+
+    .label-falha-conexao {
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        background-color: rgb(233, 64, 22);
+    }
+
+    .label-servidor-Nconfigurado {
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        background-color: rgb(233, 64, 22);
+    }
+
+    .label-iniciando-sistema {
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        background-color: rgb(166, 168, 163);
+    }
+
+    .label-testando-config {
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        background-color: rgb(241, 202, 24);
+    }
+
+    span {
+        margin-left: 5px;
+        font-size: 10px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+}
+
+ion-footer {
+    position: fixed;
+    bottom: 0;
+}
