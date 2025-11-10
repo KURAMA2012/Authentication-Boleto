@@ -19,42 +19,34 @@ Garantir segurança e integridade nas transações por meio de tokens de verific
 
 🚀 Tecnologias Utilizadas
 ☕ Back-end (Spring Boot)
-
+````
 Java 17
-
 Spring Boot 3
-
 Spring Web / Data JPA
-
 Spring AMQP (RabbitMQ)
-
 Spring Batch (processamento em lote)
-
 PostgreSQL
-
 Swagger UI
-
 RestTemplate (para integração com APIs públicas)
-
 Lombok
-
 Maven
+```
 
 📱 Front-end (Ionic + Angular)
-
+```
 Ionic 7 / Angular 17
 
 Capacitor 6
 
 PrimeNG / Ionic Components
-
+```
 
 🌐 APIs Externas
-
+```
 ReceitaWS → Consulta automática de dados da empresa pelo CNPJ
 
 ViaCEP → Consulta de endereço automático pelo CEP
-
+```
 
 ⚙️ Arquitetura do Sistema
 
