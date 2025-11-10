@@ -88,6 +88,7 @@ O AuthenticationBoleto consome essas mensagens, valida e armazena os boletos no 
 ```
 📦 Estrutura dos Projetos
 
+```
 🔹 AuthenticationBoleto
 com.A3.projeto.Faculdade.AuthenticationBoleto
  ┣ 📁 controller          → Endpoints REST (Boleto, Empresa, Token, Consulta)
@@ -98,18 +99,20 @@ com.A3.projeto.Faculdade.AuthenticationBoleto
  ┣ 📁listener             →  Escuta mensagens do RabbitMQ
  ┣ 📁 dto                 → Objetos de transferência de dados (Request/Response)
  ┗ 📄 AuthenticationBoletoApplication.java
-
+```
+```
 🔹 BoletoBatchService
  com.A3.projeto.Faculdade.BoletoBatchService
  ┣ 📁 producer          → Envia boletos para a fila RabbitMQ
  ┣ 📁 service           → Lógica de leitura e parsing do CSV
  ┣ 📁 config            → Configuração do RabbitMQ
  ┗ 📄 BoletoBatchApplication.java
+```
 
- Fluxo do Sistema
+``` Fluxo do Sistema
 🧭 Etapas:
 
-```Empresa se cadastra — dados são validados via ReceitaWS e ViaCEP;
+Empresa se cadastra — dados são validados via ReceitaWS e ViaCEP;
 
 Empresa cria boletos manualmente ou envia CSV via upload (Ionic);
 
@@ -120,40 +123,4 @@ O AuthenticationBoleto consome a fila e armazena os boletos no banco;
 O usuário (pagador) valida o boleto e recebe um token de confirmação;
 
 O sistema valida o token e autentica o pagamento do boleto.```
-
-
-1. Cadastro e consulta de empresas
-
-```
-Endpoints:
-POST /api/empresas → cria uma empresa.
-
-GET /api/empresas → lista todas as empresas.
-
-GET /api/empresas/{cnpj} → busca empresa por CNPJ.
-
-Fluxo:
-
-A empresa é cadastrada no sistema.
-
-Cada boleto criado estará vinculado a uma empresa
-```
-2. Criação de boleto
-
-```
-Endpoint: POST /api/boleto/criar
-
-Fluxo:
-
-O usuário envia um BoletoRequest com código de barras, valor, vencimento, CNPJ do beneficiário, etc.
-
-O service (BoletoService) cria um novo Boleto:
-
-Gera codigoAutenticacao.
-
-Define StatusBoleto inicial (ex.: GERADO).
-
-Salva no banco (BoletoRepository.save()).
-
-Retorna um BoletoResponse com os dados do boleto.
 ```
