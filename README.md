@@ -19,7 +19,7 @@ Garantir segurança e integridade nas transações por meio de tokens de verific
 
 🚀 Tecnologias Utilizadas
 ☕ Back-end (Spring Boot)
-````
+```
 Java 17
 Spring Boot 3
 Spring Web / Data JPA
@@ -52,7 +52,7 @@ ViaCEP → Consulta de endereço automático pelo CEP
 
 O sistema é composto por dois projetos principais:
 
-🧩 1. AuthenticationBoleto (Serviço Principal)
+```🧩 1. AuthenticationBoleto (Serviço Principal)
 
 Responsável por:
 
@@ -65,7 +65,9 @@ Consulta de empresas (CNPJ / CEP)
 Registro de logs
 
 Comunicação com o RabbitMQ
+```
 
+```
 ⚙️ 2. BoletoBatchService (Serviço Secundário)
 
 Responsável por:
@@ -83,7 +85,7 @@ Atua como mensageiro entre os dois serviços.
 O Batch Service envia mensagens (boletos processados) para uma fila.
 
 O AuthenticationBoleto consome essas mensagens, valida e armazena os boletos no banco de dados.
-
+```
 📦 Estrutura dos Projetos
 
 🔹 AuthenticationBoleto
