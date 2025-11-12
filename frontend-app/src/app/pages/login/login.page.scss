@@ -1,137 +1,116 @@
-.wave {
-    background: url("../../../assets/img/fundo.svg") repeat-x;
-    position: absolute;
-    width: 6400px;
-    height: 250px;
-    animation: wave 30s linear infinite;
-    z-index: 1;
-    top: -5px;
+.login-container {
+  --background: #f5f7fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@keyframes wave {
-    0% {
-        margin-left: 0;
-    }
-
-    100% {
-        margin-left: -1600px;
-    }
+.login-card {
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  max-width: 800px;
+  height: 420px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-@keyframes swell {
-
-    0%,
-    100% {
-        transform: translate3d(0, -25px, 0);
-    }
-
-    50% {
-        transform: translate3d(0, 5px, 0);
-    }
+/* Lado esquerdo */
+.left-panel {
+  background-color: #0037ff;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding: 30px;
 }
 
-.div-cabec {
-    position: relative;
-    z-index: 2;
+.left-content {
+  text-align: center;
 }
 
-.list-form {
-    margin: 15px 0;
-
-    .div-list {
-        display: grid;
-        grid-template-columns: auto;
-        justify-items: center;
-    }
-
-    .inpt-login {
-        width: 225px;
-        margin: 0 10px;
-        border: 1px solid #A1A1A1;
-        background-color: #f8f8f8;
-        border-radius: 10px;
-        box-shadow: 1px 6px 8px hwb(0deg 0% 100% / 50%);
-    }
-
-
-    .cinza {
-        color: #7d7d7d;
-    }
-
-    ion-checkbox {
-        margin-right: 7px;
-        border-radius: 2px;
-    }
-
-    ion-list {
-        padding-bottom: 17px;
-        background: none;
-    }
-
+.left-content h2 {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-.div-Entrar {
+.left-content p {
+  font-size: 0.95rem;
+  margin-bottom: 30px;
+}
+
+.btn-entrar {
+  background: white;
+  color: #0037ff;
+  border-radius: 20px;
+  font-weight: bold;
+  width: 130px;
+  margin: 0 auto;
+}
+
+/* Lado direito */
+.right-panel {
+  flex: 1.2;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.right-content {
+  text-align: center;
+}
+
+.right-content h2 {
+  color: #0037ff;
+  font-weight: bold;
+}
+
+.right-content p {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+}
+
+/* Campos */
+.input-item {
+  --background: #f3f3f3;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+ion-icon {
+  color: #888;
+}
+
+.btn-cadastrar {
+  background-color: black;
+  border-radius: 20px;
+  width: 130px;
+  margin: 0 auto;
+  font-weight: bold;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .login-card {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .left-panel {
+    flex: none;
     width: 100%;
-    text-align: center;
-}
+    padding: 40px 20px;
+  }
 
-.btn-login {
-    width: 125px;
-    height: 45px;
-    background-color: #0C2D69;
-    border-radius: 10px;
-    font-size: 15px;
-}
-
-.col-server {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-
-    .label-sucesso-conexao {
-        width: 20px;
-        height: 20px;
-        border-radius: 100%;
-        background-color: green;
-    }
-
-    .label-falha-conexao {
-        width: 20px;
-        height: 20px;
-        border-radius: 100%;
-        background-color: rgb(233, 64, 22);
-    }
-
-    .label-servidor-Nconfigurado {
-        width: 20px;
-        height: 20px;
-        border-radius: 100%;
-        background-color: rgb(233, 64, 22);
-    }
-
-    .label-iniciando-sistema {
-        width: 20px;
-        height: 20px;
-        border-radius: 100%;
-        background-color: rgb(166, 168, 163);
-    }
-
-    .label-testando-config {
-        width: 20px;
-        height: 20px;
-        border-radius: 100%;
-        background-color: rgb(241, 202, 24);
-    }
-
-    span {
-        margin-left: 5px;
-        font-size: 10px;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-    }
-}
-
-ion-footer {
-    position: fixed;
-    bottom: 0;
+  .right-panel {
+    flex: none;
+    width: 100%;
+    padding: 20px;
+  }
 }
