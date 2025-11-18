@@ -1,6 +1,12 @@
 # Authentication-Boleto
 ProjetoA3
 
+Apresentação
+https://youtu.be/3DozZnX-OZg parte 1
+https://youtu.be/zjEa-hGpCfQ parte 2
+https://youtu.be/3XuRNAA6-4s parte 3
+
+
 
 Facilitar a autenticação e verificação de boletos bancários por parte de empresas e usuários;
 
