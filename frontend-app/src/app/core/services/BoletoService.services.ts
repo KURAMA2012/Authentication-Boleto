@@ -1,29 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoletoService {
-  private mainApiUrl = 'http://localhost:8080/api/boleto'; // serviço principal
-  private batchApiUrl = 'http://localhost:8082/api/boleto'; // serviço batch
+
+  private mainApiUrl = 'http://localhost:8080/api/boleto';
+  private batchApiUrl = 'http://localhost:8082/api/boleto';
 
   constructor(private http: HttpClient) {}
 
-  criarBoleto(request: any): Observable<any> {
-    return this.http.post(`${this.mainApiUrl}/criar`, request);
+  criarBoleto(req: any): Observable<any> {
+    return this.http.post(`${this.mainApiUrl}/criar`, req);
   }
 
-  buscarPorCodigoBarras(codigoBarras: string): Observable<any> {
-    return this.http.get(`${this.mainApiUrl}/buscar/${codigoBarras}`);
-  }
-
-  confirmarToken(codigoAutenticacao: string, tokenVerificacao: string): Observable<any> {
-    return this.http.post(`${this.mainApiUrl}/confirmar`, {
-      codigoAutenticacao,
-      tokenVerificacao
-    });
+  buscarPorCodigoBarras(codigo: string): Observable<any> {
+    return this.http.get(`${this.mainApiUrl}/buscar/${codigo}`);
   }
 
   validarBoleto(codigoAutenticacao: string): Observable<any> {
@@ -34,21 +28,27 @@ export class BoletoService {
     return this.http.post(`${this.mainApiUrl}/enviar-token`, { codigoAutenticacao });
   }
 
-uploadCsv(file: File): Observable<HttpEvent<any>> {
-  const formData = new FormData();
-  formData.append('file', file, file.name);
+  confirmarToken(codigoAutenticacao: string, token: string): Observable<any> {
+    return this.http.post(`${this.mainApiUrl}/confirmar`, {
+      codigoAutenticacao,
+      tokenVerificacao: token
+    });
+  }
 
-  return this.http.post<HttpEvent<any>>(
-    `${this.batchApiUrl}/upload`,
-    formData,
-    {
-      reportProgress: true,
-      observe: 'events',
-      responseType: 'text' as 'json'
-    }
-  );
-}
+  uploadCsv(file: File): Observable<HttpEvent<any>> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
 
+    return this.http.post<HttpEvent<any>>(
+      `${this.batchApiUrl}/upload`,
+      formData,
+      {
+        reportProgress: true,
+        observe: 'events',
+        responseType: 'text' as 'json'
+      }
+    );
+  }
 
   getLogs(): Observable<any> {
     return this.http.get(`${this.mainApiUrl}/logs`);

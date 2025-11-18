@@ -1,101 +1,83 @@
-<ion-content padding class="login auth-page">
+<ion-content class="login-container">
 
-  <div class="auth-content">
-    <!-- Logo -->
-    <div padding-horizontal text-center>
-      <div class="logo"></div>
-      <h3 no-margin>
-        <ion-text color="light" class="fw700">
-          <ion-text color="secondary">Register</ion-text>
-        </ion-text>
-      </h3>
+  <div class="login-card">
+
+    <!-- LADO ESQUERDO (FUNDO AZUL) -->
+    <div class="left-panel">
+      <ion-icon name="person-add-outline" class="login-logo"></ion-icon>
+      <h1 class="login-title">Criar Conta</h1>
     </div>
 
-    <!-- Register form -->
-    <form [formGroup]="onRegisterForm" class="list-form">
-      <ion-item no-padding class="animated fadeInUp">
-        <ion-label position="floating">
-          <ion-icon name="mail" item-start></ion-icon>
-          Full Name
-        </ion-label>
-        <ion-input color="secondary" type="text" formControlName="fullName"></ion-input>
-      </ion-item>
-      <p ion-text class="text08" *ngIf="onRegisterForm.get('fullName').touched && onRegisterForm.get('fullName').hasError('required')">
-        <ion-text color="warning">
-          This field is required
-        </ion-text>
-      </p>
+    <!-- LADO DIREITO - FORM -->
+    <div class="right-panel">
 
-      <ion-item no-padding class="animated fadeInUp">
-        <ion-label position="floating">
-          <ion-icon name="mail" item-start></ion-icon>
-          Email
-        </ion-label>
-        <ion-input color="secondary" type="email" formControlName="email"></ion-input>
-      </ion-item>
-      <p ion-text class="text08" *ngIf="onRegisterForm.get('email').touched && onRegisterForm.get('email').hasError('required')">
-        <ion-text color="warning">
-          This field is required
-        </ion-text>
-      </p>
+      <h2 class="welcome-title">Bem-vindo 👋</h2>
+      <p class="welcome-subtitle">Crie sua conta para usar o aplicativo</p>
 
-      <ion-item no-padding class="animated fadeInUp">
-        <ion-label position="floating">
-          <ion-icon name="lock" item-start></ion-icon>
-          Password
-        </ion-label>
-        <ion-input color="secondary" type="password" formControlName="password"></ion-input>
-      </ion-item>
-      <p ion-text color="warning" class="text08" *ngIf="onRegisterForm.get('password').touched && onRegisterForm.get('password').hasError('required')">
-        <ion-text color="warning">
-          This field is required
-        </ion-text>
-      </p>
-    </form>
+      <form [formGroup]="form" (ngSubmit)="registrar()">
 
-    <div margin-top>
-      <ion-button icon-left size="medium" expand="full" shape="round" color="dark" (click)="signUp()" [disabled]="!onRegisterForm.valid"
-        tappable>
-        <ion-icon name="log-in"></ion-icon>
-        Sign Up
-      </ion-button>
+        <!-- Nome -->
+        <div class="input-group">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-input formControlName="nome" placeholder="Seu nome"></ion-input>
+        </div>
 
-      <p text-center>
-        <ion-text color="light">
-          Or Sign Up with:
-        </ion-text>
-      </p>
+        <!-- Email -->
+        <div class="input-group">
+          <ion-icon name="mail-outline"></ion-icon>
+          <ion-input formControlName="email" placeholder="E-mail"></ion-input>
+        </div>
 
-      <ion-grid class="btn-group">
-        <ion-row>
-          <ion-col size="4">
-            <ion-button shape="round" expand="full" fill="outline" color="tertiary">
-              <ion-icon slot="icon-only" name="logo-facebook"></ion-icon>
-            </ion-button>
-          </ion-col>
-          <ion-col size="4">
-            <ion-button shape="round" expand="full" fill="outline" color="tertiary">
-              <ion-icon slot="icon-only" name="logo-twitter"></ion-icon>
-            </ion-button>
-          </ion-col>
-          <ion-col size="4">
-            <ion-button shape="round" expand="full" fill="outline" color="tertiary">
-              <ion-icon slot="icon-only" name="logo-googleplus"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+        <!-- CPF -->
+        <div class="input-group">
+          <ion-icon name="id-card-outline"></ion-icon>
+          <ion-input formControlName="cpf" placeholder="CPF"></ion-input>
+        </div>
 
-    </div>
+        <!-- Telefone -->
+        <div class="input-group">
+          <ion-icon name="call-outline"></ion-icon>
+          <ion-input formControlName="telefone" placeholder="Telefone"></ion-input>
+        </div>
 
-    <!-- Other links -->
-    <div text-center margin-top>
-      <span (click)="goToLogin()" tappable>
-        <ion-text color="light">
-          <strong>I have an account!</strong>
-        </ion-text>
-      </span>
+        <!-- Senha -->
+        <div class="input-group">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+
+          <ion-input 
+            formControlName="senha" 
+            [type]="mostrarSenha ? 'text' : 'password'"
+            placeholder="Senha">
+          </ion-input>
+
+          <ion-icon 
+            [name]="mostrarSenha ? 'eye-off-outline' : 'eye-outline'"
+            (click)="toggleSenha()"
+            class="toggle-password">
+          </ion-icon>
+        </div>
+
+        <!-- BOTÕES LADO A LADO -->
+        <div class="button-row">
+          <ion-button 
+            expand="block" 
+            class="btn-secondary" 
+            routerLink="/login">
+            Entrar
+          </ion-button>
+
+          <ion-button 
+            expand="block" 
+            class="btn-primary" 
+            type="submit">
+            Cadastrar
+          </ion-button>
+        </div>
+
+      </form>
+
     </div>
 
   </div>
+
 </ion-content>

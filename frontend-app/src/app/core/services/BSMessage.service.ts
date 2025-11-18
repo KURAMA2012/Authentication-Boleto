@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { BSLoading } from './BSLoading.service';
-import { RAJResource } from 'src/app/core/services/raj-model.services';
 
 @Injectable()
 export class BSMessage {

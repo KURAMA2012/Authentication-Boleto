@@ -12,49 +12,37 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class SecurityConfig {
 
-	 @Bean
-	    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-	        http
-	            .csrf(csrf -> csrf.disable()) // desativa CSRF (necessário para APIs REST)
-	            .cors(cors -> {}) // ativa suporte a CORS
-	            .authorizeHttpRequests(auth -> auth
-	                .anyRequest().permitAll() // libera tudo (por enquanto)
-	            )
-	            .httpBasic(httpBasic -> httpBasic.disable()) // desativa autenticação básica
-	            .formLogin(form -> form.disable()); // desativa tela de login
+    //BEAN DO PASSWORD ENCODER
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	        return http.build();
-	    }
+    //CONFIG DO CORS (PERMISSÃO PARA O IONIC)
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOriginPatterns("http://localhost:8100")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
+    }
 
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
-	
-	  @Bean
-	    public WebMvcConfigurer corsConfigurer() {
-	        return new WebMvcConfigurer() {
-	            @Override
-	            public void addCorsMappings(CorsRegistry registry) {
-	                registry.addMapping("/**")
-	                        .allowedOriginPatterns("http://localhost:8100")
-	                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-	                        .allowedHeaders("*")
-	                        .allowCredentials(true);
-	            }
-	        };
-	    }
+    // SECURITY FILTER CHAIN ÚNICO
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> {})
+            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+            .httpBasic(httpBasic -> httpBasic.disable())
+            .formLogin(form -> form.disable());
 
-//	@Bean
-//	public WebMvcConfigurer corsConfigurer() {
-//		return new WebMvcConfigurer() {
-//			@Override
-//			public void addCorsMappings(CorsRegistry registry) {
-//				registry.addMapping("/**") // Libera todos os endpoints da API
-//						.allowedOrigins("http://localhost:8100") // URL do app Ionic
-//						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*")
-//						.allowCredentials(true);
-//			}
-//		};
-//	}
+        return http.build();
+    }
 }

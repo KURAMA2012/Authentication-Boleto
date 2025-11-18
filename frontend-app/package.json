@@ -39,6 +39,7 @@
     "@capawesome/capacitor-file-picker": "^6.2.0",
     "@capgo/capacitor-native-biometric": "^7.1.13",
     "@ionic/angular": "^7.2.0",
+    "@ionic/storage-angular": "^4.0.0",
     "chart.js": "^4.5.0",
     "core-js": "^3.32.0",
     "html2canvas": "^1.4.1",

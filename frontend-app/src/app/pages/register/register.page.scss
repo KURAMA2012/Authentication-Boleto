@@ -1,9 +1,96 @@
-:host {
-  ion-content {
-      --background: url("/assets/img/bg_fundo.png") no-repeat center center / cover !important;
-  }
+/* Fundo azul atrás de tudo */
+.login-container {
+  --background: linear-gradient(to bottom, #0057ff, #003ad6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  ion-tab-button {
-      background-color: var(--ion-color-secondary); // black
-  }
+/* Card branco central */
+.login-card {
+  width: 90%;
+  max-width: 420px;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Painel azul do topo */
+.left-panel {
+  background: #0057ff;
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.login-logo {
+  font-size: 55px;
+  color: white;
+}
+
+.login-title {
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Painel branco (formulário) */
+.right-panel {
+  padding: 25px;
+}
+
+/* Título */
+.welcome-title {
+  text-align: center;
+  font-weight: 700;
+  font-size: 22px;
+  color: #0057ff;
+}
+
+.welcome-subtitle {
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* INPUTS */
+.input-group {
+  background: #f1f5ff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+}
+
+.input-group ion-icon {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #444;
+}
+
+.toggle-password {
+  margin-left: auto;
+  font-size: 20px;
+  color: #666;
+}
+
+/* BOTÕES LADO A LADO */
+.button-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-primary {
+  --background: #0057ff;
+  --border-radius: 10px;
+}
+
+.btn-secondary {
+  --background: #e0e0e0;
+  --color: #333;
+  --border-radius: 10px;
 }

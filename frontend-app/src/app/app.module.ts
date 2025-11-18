@@ -1,83 +1,62 @@
-import {  registerLocaleData } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import br from '@angular/common/locales/pt';
-import { CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, LOCALE_ID, NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { IonicStorageModule } from '@ionic/storage-angular';
+
+// === COMPONENTES DO PROJETO ===
 import { MenuTabsComponent } from './components/menu-tabs/menu-tabs.component';
-import { ModalComponent } from './components/modal/modal.component';
 
-import { NotificationsComponent } from './components/notifications/notifications.component';
-import { ChamadoResource, ClienteResource, TituloResource } from './core/services/app-model.services';
-import { BSAnaliseRelatorios } from './core/services/BSAnaliseRelatorios';
-import { BSAppService } from './core/services/BSApp.services';
-import { BSAuth } from './core/services/BSAuth.service';
-import { AuthInterceptor } from './core/services/BSAuthInterceptor';
-import { BSLoading } from './core/services/BSLoading.service';
+// === SERVICES DO PROJETO ===
+import { AccessDigitalService } from './core/services/AccessDigitalService';
+import { AuthService } from './core/services/AuthService';
+import { BoletoService } from './core/services/BoletoService.services';
+import { EmpresaService } from './core/services/EmpresaService.services';
+import { AuthGuard } from './core/services/AuthGuard.services';
 import { BSMessage } from './core/services/BSMessage.service';
-import { BSResource } from './core/services/BSResource.service';
+import { BSLoading } from './core/services/BSLoading.service';
 import { BSUtils } from './core/services/BSUtils.service';
-import { RAJResource } from './core/services/raj-model.services';
-import { ModalFastTestComponent } from './pages/home-results/modal/modal-fast-test';
-
-import { ImagePageModule } from './pages/modal/image/image.module';
-import { DetalharFaturaComponent } from './pages/relatorios/modal/detalhar-fatura';
-import { VisualizarBoletoComponent } from './pages/relatorios/modal/visualizar-boleto';
-import { SuporteChatComponent } from './pages/suporte/modal/suporte-chat';
-
-import { NgChartsModule } from 'ng2-charts';
-import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
-
-
-registerLocaleData(br, 'pt-BR');
+import { LogService } from './core/services/LogService.services';
+import { TokenService } from './core/services/TokenService.services';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NotificationsComponent,
-    ModalComponent,
-    DetalharFaturaComponent,
-    MenuTabsComponent,
-    VisualizarBoletoComponent,
-    SuporteChatComponent,
-    ModalFastTestComponent,
+    MenuTabsComponent
   ],
   imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    IonicModule.forRoot(),
-    AppRoutingModule,
-    HttpClientModule,
-    NgChartsModule,
-    ImagePageModule,
-    NgxMaskDirective,
-    NgxMaskPipe
-  ],
+  BrowserModule,
+  IonicModule.forRoot(),
+  AppRoutingModule,
+  HttpClientModule,
+  FormsModule,
+  ReactiveFormsModule
+],
   providers: [
-    { provide: LOCALE_ID, useValue: 'pt-BR' },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    BSMessage,
-    BSLoading,
-    BSAuth,
-    ClienteResource,
-    BSResource,
-    ChamadoResource,
-    TituloResource,
-    RAJResource,
-    BSAnaliseRelatorios,
-    BSAppService,
-    BSUtils,
+
+    // SERVICES
+  AuthService,
+  AuthGuard,
+
+  AccessDigitalService,
+  BoletoService,
+  EmpresaService,
+
+  BSMessage,
+  BSLoading,
+  BSUtils,
+  LogService,
+  TokenService
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}

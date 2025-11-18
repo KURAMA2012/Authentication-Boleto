@@ -1,55 +1,55 @@
 <ion-content class="login-container">
 
-  <div class="login-card">
+  <div class="login-wrapper">
 
-    <!-- Lado esquerdo (Boas-vindas) -->
-    <div class="left-panel">
-      <div class="left-content">
-        <h2>Bem-vindo de volta</h2>
-        <p>Acesse sua conta agora mesmo</p>
-        <ion-button expand="block" color="light" class="btn-entrar" (click)="loginRapido()">
-          ENTRAR
-        </ion-button>
-      </div>
+    <!-- LOGO -->
+    <div class="logo-area">
+      <ion-icon name="wallet-outline"></ion-icon>
+      <h1>Meu Boleto</h1>
     </div>
 
-    <!-- Lado direito (Cadastro/Login) -->
-    <div class="right-panel">
-      <div class="right-content">
-        <h2>Crie sua conta</h2>
-        <p>Cadastre seus dados</p>
+    <div class="login-card">
 
-        <form [formGroup]="loginForm" (ngSubmit)="login()">
-          <ion-item class="input-item">
-            <ion-icon name="person-outline" slot="start"></ion-icon>
-            <ion-input formControlName="nome" placeholder="Nome"></ion-input>
-          </ion-item>
+      <h2>Bem-vindo 👋</h2>
+      <p class="subtitle">Entre para continuar usando o aplicativo</p>
 
-          <ion-item class="input-item">
-            <ion-icon name="mail-outline" slot="start"></ion-icon>
-            <ion-input formControlName="email" type="email" placeholder="E-mail"></ion-input>
-          </ion-item>
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
 
-          <ion-item class="input-item">
-            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-            <ion-input
-              formControlName="senha"
-              [type]="mostrarSenha ? 'text' : 'password'"
-              placeholder="Senha">
-            </ion-input>
-            <ion-icon
-              [name]="mostrarSenha ? 'eye-off-outline' : 'eye-outline'"
-              slot="end"
-              (click)="toggleSenha()">
-            </ion-icon>
-          </ion-item>
+        <!-- EMAIL -->
+        <div class="input-group">
+          <ion-icon name="mail-outline"></ion-icon>
+          <ion-input formControlName="email" placeholder="E-mail" type="email"></ion-input>
+        </div>
 
-          <ion-button expand="block" class="btn-cadastrar" type="submit">
-            CADASTRAR
-          </ion-button>
-        </form>
-      </div>
+        <!-- SENHA -->
+        <div class="input-group">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          <ion-input 
+            formControlName="senha"
+            placeholder="Senha"
+            [type]="mostrarSenha ? 'text' : 'password'">
+          </ion-input>
+
+          <ion-icon 
+            class="toggle-icon"
+            [name]="mostrarSenha ? 'eye-off-outline' : 'eye-outline'"
+            (click)="toggleSenha()">
+          </ion-icon>
+        </div>
+
+        <ion-button expand="block" class="btn-login" type="submit">
+          Entrar
+        </ion-button>
+
+      </form>
+
+      <p class="signup-text">
+        Não tem conta?
+        <a (click)="irParaCadastro()">Criar conta</a>
+      </p>
+
     </div>
 
   </div>
+
 </ion-content>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController, MenuController, LoadingController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
+import { AuthService } from 'src/app/core/services/AuthService';
+
 
 @Component({
   selector: 'app-register',
@@ -8,46 +10,61 @@ import { NavController, MenuController, LoadingController } from '@ionic/angular
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  public onRegisterForm: FormGroup;
+
+  form!: FormGroup;
+  mostrarSenha = false;
 
   constructor(
-    public navCtrl: NavController,
-    public menuCtrl: MenuController,
-    public loadingCtrl: LoadingController,
-    private formBuilder: FormBuilder
-  ) { }
-
-  ionViewWillEnter() {
-    this.menuCtrl.enable(false);
-  }
+    private fb: FormBuilder,
+    private usuarioService: AuthService,
+    private toastCtrl: ToastController,
+    private navCtrl: NavController
+  ) {}
 
   ngOnInit() {
-    this.onRegisterForm = this.formBuilder.group({
-      'fullName': [null, Validators.compose([
-        Validators.required
-      ])],
-      'email': [null, Validators.compose([
-        Validators.required
-      ])],
-      'password': [null, Validators.compose([
-        Validators.required
-      ])]
+    this.form = this.fb.group({
+      nome: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      cpf: ['', Validators.required],
+      telefone: ['', Validators.required],
+      senha: ['', [Validators.required, Validators.minLength(4)]],
     });
   }
 
-  async signUp() {
-    const loader = await this.loadingCtrl.create({
-      duration: 2000
-    });
+  toggleSenha() {
+    this.mostrarSenha = !this.mostrarSenha;
+  }
 
-    loader.present();
-    loader.onWillDismiss().then(() => {
-      this.navCtrl.navigateRoot('/home-results');
+  async registrar() {
+    if (this.form.invalid) {
+      const toast = await this.toastCtrl.create({
+        message: 'Preencha todos os campos corretamente.',
+        duration: 1800,
+        color: 'danger'
+      });
+      return toast.present();
+    }
+
+    this.usuarioService.cadastrar(this.form.value).subscribe(async () => {
+      const toast = await this.toastCtrl.create({
+        message: 'Cadastro realizado com sucesso!',
+        duration: 1500,
+        color: 'success'
+      });
+
+      toast.present();
+      toast.onDidDismiss().then(() => {
+        this.navCtrl.navigateRoot('/login');
+      });
+
+    }, async () => {
+      const toast = await this.toastCtrl.create({
+        message: 'Erro ao cadastrar. Tente novamente.',
+        duration: 2000,
+        color: 'danger'
+      });
+      toast.present();
     });
   }
 
-  // // //
-  goToLogin() {
-    this.navCtrl.navigateRoot('/');
-  }
 }
