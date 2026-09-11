@@ -1,5 +1,7 @@
 package com.A3.projeto.Faculdade.AuthenticationBoleto.listener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,9 @@ public class BoletoBatchListener {
 
 	@Autowired
 	 private  BoletoService boletoService;
+	
+		private static final Logger logger = LoggerFactory.getLogger(BoletoBatchListener.class);
+	
 	    private final ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
 
 	    @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
@@ -25,10 +30,10 @@ public class BoletoBatchListener {
 
 	            boletoService.criarBoletoAPartirDoBatch(boleto);
 
-	            System.out.println("✅ Boleto recebido e salvo: " + boleto.getCodigoBarras());
+	            logger.info("✅ Boleto recebido e salvo: " + boleto.getCodigoBarras());
 	        } catch (Exception e) {
-	            System.err.println("❌ Erro ao processar boleto: " + e.getMessage());
-	        }
+	            logger.info("❌ Erro ao processar boleto: " + e.getMessage());
+	        } 
 	    }
 	    
 //	    @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)

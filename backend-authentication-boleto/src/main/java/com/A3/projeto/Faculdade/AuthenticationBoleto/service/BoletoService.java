@@ -145,6 +145,7 @@ public class BoletoService {
         boleto.setTokenVerificacao(tokenGerado);
         boletoRepository.save(boleto);
 
+        // Implementar(Estudar ideia)
         // enviar token via SMS/email
         // smsService.enviarSMS(boleto.getTelefonePagador(), "Seu token é: " + tokenGerado);
 

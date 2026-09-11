@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="C:\Davy\projetos\Authentication-Boleto\backend-authentication-boleto\.metadata"/>
 			<item value="C:\A3_BRADESCO_GOLPE_FINANCEIRO\.mvn"/>
 			<item value="C:\A3_BRADESCO_GOLPE_FINANCEIRO\src"/>
 			<item value="C:\A3_BRADESCO_GOLPE_FINANCEIRO\.metadata"/>
