@@ -3,6 +3,8 @@ package com.A3.projeto.Faculdade.AuthenticationBoleto.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.A3.projeto.Faculdade.AuthenticationBoleto.mapper.EmpresaMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.EmpresaRequest;
@@ -14,25 +16,19 @@ import com.A3.projeto.Faculdade.AuthenticationBoleto.repository.EmpresaRepositor
 @Service
 public class EmpresaService {
 
+	@Autowired
 	private final EmpresaRepository repository;
 
-	public EmpresaService(EmpresaRepository repository) {
+	@Autowired
+	private final EmpresaMapper empresaMapper;
+
+	public EmpresaService(EmpresaRepository repository, EmpresaMapper empresaMapper) {
 		this.repository = repository;
-	}
+        this.empresaMapper = empresaMapper;
+    }
 
 	public EmpresaResponse salvar(EmpresaRequest request) {
-		Empresa empresa = new Empresa();
-		empresa.setNome(request.getNome());
-		empresa.setCnpj(request.getCnpj());
-		empresa.setEmailContato(request.getEmailContato());
-		empresa.setTelefone(request.getTelefone());
-		empresa.setNomeFantasia(request.getFantasia());
-		empresa.setCep(request.getCep());
-		empresa.setLogradouro(request.getLogradouro());
-		empresa.setNumero(request.getNumero());
-		empresa.setBairro(request.getBairro());
-		empresa.setMunicipio(request.getMunicipio());
-		empresa.setUf(request.getUf());
+		Empresa empresa = empresaMapper.toEntity(request);
 
 		Empresa salva = repository.save(empresa);
 		return new EmpresaResponse(salva.getId(), salva.getNome(), salva.getCnpj(), salva.getEmailContato(),

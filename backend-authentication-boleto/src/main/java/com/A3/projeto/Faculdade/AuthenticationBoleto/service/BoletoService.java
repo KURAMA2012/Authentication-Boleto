@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.A3.projeto.Faculdade.AuthenticationBoleto.listener.BoletoBatchListener;
+import com.A3.projeto.Faculdade.AuthenticationBoleto.mapper.BoletoMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +25,18 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class BoletoService {
- 
-    
+
+
+    private static final Logger logger = LoggerFactory.getLogger(BoletoBatchListener.class);
+
     @Autowired
     private BoletoRepository boletoRepository;
+
+    @Autowired
+    private BoletoMapper boletoMapper;
     
     @Autowired
-    private TokenVerificacaoRepository tokenVerificacaoRepository;
+    private  TokenVerificacaoRepository tokenVerificacaoRepository;
     
     @Autowired
     private EmpresaService empresaService;
@@ -70,23 +79,9 @@ public class BoletoService {
     	
     	Empresa empresa = empresaService.buscarPorCnpj(request.getCnpjBeneficiario());
     	
-        Boleto boleto = new Boleto();
-        boleto.setValor(request.getValor());
-        boleto.setVencimento(request.getVencimento());
-        boleto.setCnpjBeneficiario(request.getCnpjBeneficiario());
-        boleto.setDataGeracao(LocalDateTime.now());
-        boleto.setNomePagador(request.getNomePagador());
-        boleto.setEmpresa(empresa);
-        boleto.setStatus(StatusBoleto.GERADO);
-        
-        
-        
-        boleto.setAutenticado(false);
+        Boleto boleto = boletoMapper.toEntity(request);
 
-        // gera códigos
-        boleto.setCodigoAutenticacao(UUID.randomUUID().toString());
-        boleto.setCodigoBarras(request.getCodigoBarras());
-        boleto.setTokenVerificacao(UUID.randomUUID().toString());
+        boleto.setEmpresa(empresa);
 
         return boletoRepository.save(boleto);
     }
@@ -96,7 +91,7 @@ public class BoletoService {
     public void criarBoletoAPartirDoBatch(Boleto boleto) {
     	Boleto existe = boletoRepository.buscarPorCodigoBarras(boleto.getCodigoBarras());
         if (existe != null) {
-            System.out.println("⚠️ Boleto já existe: " + boleto.getCodigoBarras());
+            logger.warn("⚠️ Boleto já existe: " + boleto.getCodigoBarras());
             return;
         }
         

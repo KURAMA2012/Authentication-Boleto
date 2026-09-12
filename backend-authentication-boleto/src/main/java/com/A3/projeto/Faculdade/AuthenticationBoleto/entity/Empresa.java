@@ -3,6 +3,7 @@ package com.A3.projeto.Faculdade.AuthenticationBoleto.entity;
 import java.util.List;
 import java.util.Objects;
 
+import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.EmpresaRequest;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,6 +56,7 @@ public class Empresa {
 
 	@OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
 	private List<Boleto> boletos;
+
 
 	public Long getId() {
 		return id;
