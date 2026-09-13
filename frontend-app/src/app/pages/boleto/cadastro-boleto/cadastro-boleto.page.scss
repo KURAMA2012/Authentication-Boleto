@@ -1,41 +1,64 @@
 .mt-3 { margin-top: 16px; }
 
+ion-card {
+  border: none;
+}
+
+ion-card-subtitle {
+  color: #64748b;
+  margin-top: 4px;
+}
+
+ion-segment {
+  margin-bottom: 8px;
+  background: #ccfbf1;
+  border-radius: 14px;
+  padding: 4px;
+}
+
 .campo-erro {
-  color: #eb445a;
+  color: #e11d48;
   font-size: 0.8rem;
   margin: 4px 0 10px 12px;
 }
 
 .painel-erro {
-  background: #fde8ea;
-  color: #b21e2e;
-  border-radius: 8px;
+  background: #fff1f2;
+  color: #9f1239;
+  border-radius: 12px;
   padding: 10px 12px;
   margin: 12px 0;
   font-size: 0.9rem;
+  border: 1px solid #fecdd3;
 }
 
 .sucesso-card {
-  margin-top: 16px;
+  margin-top: 12px;
+  padding: 18px 12px 8px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ecfdf5, #fff);
+  border: 1px solid #a7f3d0;
 }
-
 .icone-ok {
   font-size: 56px;
 }
-
 .codigo {
-  font-family: monospace;
-  font-size: 1.1rem;
-  font-weight: bold;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
   word-break: break-all;
+  color: #065f46;
+  background: #d1fae5;
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 10px;
 }
-
 .arquivo-nome {
   margin-top: 10px;
   text-align: center;
-  color: #555;
+  color: #475569;
+  font-weight: 600;
 }
-
 ion-button ion-spinner {
   width: 18px;
   height: 18px;

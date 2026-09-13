@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
   animations: [
     trigger('pageAnimations', [
       transition(':enter', [
-        query('.welcome-container, .action-card', [
+        query('.ab-hero, .action-card', [
           style({ opacity: 0, transform: 'translateY(20px)' }),
           stagger(120, [
             animate('600ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))

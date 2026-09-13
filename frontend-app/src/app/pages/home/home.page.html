@@ -1,66 +1,58 @@
 <ion-header translucent="true">
   <ion-toolbar color="primary">
-    <ion-title class="ion-text-center">
-      <ion-icon name="shield-checkmark-outline"></ion-icon>
-        Authentication Boleto
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Authentication Boleto</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding modern-bg" [@pageAnimations]>
-
-  <div class="welcome-container">
-    <h2>Bem-vindo 👋</h2>
-    <p>Escolha uma das opções abaixo para começar</p>
+<ion-content class="ab-page ion-padding">
+  <div class="ab-hero">
+    <div class="chip">Area segura</div>
+    <h2>Ola — o que deseja fazer?</h2>
+    <p>Cadastre, valide e acompanhe boletos com autenticacao.</p>
   </div>
 
-  <ion-grid>
+  <ion-grid class="home-grid">
     <ion-row>
       <ion-col size="12" size-md="6">
-        <ion-card routerLink="/cadastro-boleto" class="action-card">
-          <ion-icon name="document-text-outline" class="card-icon"></ion-icon>
+        <ion-card routerLink="/cadastro-boleto" class="action-card c-boleto">
+          <div class="icon-wrap"><ion-icon name="document-text-outline"></ion-icon></div>
           <ion-card-header>
             <ion-card-title>Gerar Boleto</ion-card-title>
           </ion-card-header>
-          <ion-card-content>
-            Crie um novo boleto e associe à empresa.
-          </ion-card-content>
+          <ion-card-content>Crie um boleto manualmente ou importe CSV.</ion-card-content>
         </ion-card>
       </ion-col>
 
       <ion-col size="12" size-md="6">
-        <ion-card routerLink="/boleto-validacao" class="action-card">
-          <ion-icon name="lock-closed-outline" class="card-icon"></ion-icon>
+        <ion-card routerLink="/boleto-validacao" class="action-card c-validar">
+          <div class="icon-wrap"><ion-icon name="shield-checkmark-outline"></ion-icon></div>
           <ion-card-header>
             <ion-card-title>Validar Boleto</ion-card-title>
           </ion-card-header>
-          <ion-card-content>
-            Verifique a autenticidade de um boleto existente.
-          </ion-card-content>
+          <ion-card-content>Confirme autenticidade com token em 3 etapas.</ion-card-content>
         </ion-card>
       </ion-col>
 
       <ion-col size="12" size-md="6">
-        <ion-card routerLink="/cadastro-empresa" class="action-card">
-          <ion-icon name="business-outline" class="card-icon"></ion-icon>
+        <ion-card routerLink="/cadastro-empresa" class="action-card c-empresa">
+          <div class="icon-wrap"><ion-icon name="business-outline"></ion-icon></div>
           <ion-card-header>
             <ion-card-title>Empresas</ion-card-title>
           </ion-card-header>
-          <ion-card-content>
-            Consulte e gerencie empresas cadastradas.
-          </ion-card-content>
+          <ion-card-content>Cadastre empresas com CNPJ e CEP automaticos.</ion-card-content>
         </ion-card>
       </ion-col>
 
       <ion-col size="12" size-md="6">
-        <ion-card routerLink="/logs" class="action-card">
-          <ion-icon name="list-outline" class="card-icon"></ion-icon>
+        <ion-card routerLink="/logs" class="action-card c-logs">
+          <div class="icon-wrap"><ion-icon name="pulse-outline"></ion-icon></div>
           <ion-card-header>
             <ion-card-title>Logs</ion-card-title>
           </ion-card-header>
-          <ion-card-content>
-            Veja o histórico de autenticações e eventos.
-          </ion-card-content>
+          <ion-card-content>Historico de autenticacoes e eventos.</ion-card-content>
         </ion-card>
       </ion-col>
     </ion-row>

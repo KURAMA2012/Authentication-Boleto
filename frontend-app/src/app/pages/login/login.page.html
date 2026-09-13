@@ -1,14 +1,17 @@
-<ion-content class="login-container">
+﻿<ion-content class="login-container">
+  <div class="login-orb login-orb-a"></div>
+  <div class="login-orb login-orb-b"></div>
 
   <div class="login-wrapper">
-
     <div class="logo-area">
-      <ion-icon name="wallet-outline" aria-hidden="true"></ion-icon>
+      <div class="logo-badge">
+        <ion-icon name="shield-checkmark-outline" aria-hidden="true"></ion-icon>
+      </div>
       <h1>Authentication Boleto</h1>
+      <p class="logo-tag">Segurança e confiança em cada boleto</p>
     </div>
 
     <div class="login-card">
-
       <h2>Bem-vindo</h2>
       <p class="subtitle">Entre para continuar</p>
 
@@ -17,7 +20,6 @@
       </div>
 
       <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
-
         <div class="input-group" [class.invalid]="campoInvalido('email')">
           <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
           <ion-input
@@ -61,24 +63,17 @@
           <span *ngIf="senha?.errors?.['minlength']">Mínimo de 4 caracteres.</span>
         </p>
 
-        <ion-button
-          expand="block"
-          class="btn-login"
-          type="submit"
-          [disabled]="carregando">
+        <ion-button expand="block" class="btn-login" type="submit" [disabled]="carregando">
           <ion-spinner *ngIf="carregando" name="crescent"></ion-spinner>
           <span *ngIf="!carregando">Entrar</span>
           <span *ngIf="carregando">Entrando…</span>
         </ion-button>
-
       </form>
 
       <p class="signup-text">
         Não tem conta?
         <a routerLink="/register" (click)="$event.preventDefault(); irParaCadastro()">Criar conta</a>
       </p>
-
     </div>
   </div>
-
 </ion-content>

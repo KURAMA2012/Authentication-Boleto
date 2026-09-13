@@ -1,96 +1,79 @@
-/* Fundo azul atrás de tudo */
 .login-container {
-  --background: linear-gradient(to bottom, #0057ff, #003ad6);
+  --background: linear-gradient(145deg, #052e2b 0%, #115e59 48%, #0f766e 100%);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Card branco central */
 .login-card {
-  width: 90%;
-  max-width: 420px;
-  background: white;
-  border-radius: 20px;
+  width: 92%;
+  max-width: 440px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  box-shadow: 0 24px 60px rgba(5, 46, 43, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  margin: 24px auto;
 }
 
-/* Painel azul do topo */
 .left-panel {
-  background: #0057ff;
+  background: linear-gradient(135deg, #0f766e, #14b8a6);
   text-align: center;
-  padding: 30px 20px;
+  padding: 28px 20px;
 }
-
 .login-logo {
-  font-size: 55px;
-  color: white;
+  font-size: 48px;
+  color: #fff;
 }
-
 .login-title {
-  color: white;
-  font-size: 26px;
-  font-weight: bold;
-  margin-top: 10px;
+  color: #fff;
+  font-size: 1.45rem;
+  font-weight: 800;
+  margin: 8px 0 0;
+  letter-spacing: -0.02em;
 }
 
-/* Painel branco (formulário) */
 .right-panel {
-  padding: 25px;
+  padding: 22px;
 }
-
-/* Título */
 .welcome-title {
+  margin: 0;
   text-align: center;
-  font-weight: 700;
-  font-size: 22px;
-  color: #0057ff;
+  color: #115e59;
+  font-weight: 800;
 }
-
 .welcome-subtitle {
   text-align: center;
-  color: #777;
-  font-size: 14px;
-  margin-bottom: 20px;
+  color: #64748b;
+  margin: 6px 0 18px;
 }
 
-/* INPUTS */
 .input-group {
-  background: #f1f5ff;
-  border-radius: 12px;
+  background: #ecfdf5;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   padding: 10px 12px;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
+  border: 1px solid transparent;
 }
-
+.input-group:focus-within {
+  background: #ccfbf1;
+  border-color: #5eead4;
+  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.15);
+}
 .input-group ion-icon {
   font-size: 20px;
+  color: #64748b;
   margin-right: 10px;
-  color: #444;
 }
 
-.toggle-password {
-  margin-left: auto;
-  font-size: 20px;
-  color: #666;
-}
-
-/* BOTÕES LADO A LADO */
-.button-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.btn-primary {
-  --background: #0057ff;
-  --border-radius: 10px;
-}
-
-.btn-secondary {
-  --background: #e0e0e0;
-  --color: #333;
-  --border-radius: 10px;
+ion-button {
+  --background: linear-gradient(135deg, #0f766e, #14b8a6);
+  --border-radius: 14px;
+  --box-shadow: 0 10px 24px rgba(15, 118, 110, 0.3);
+  font-weight: 700;
+  height: 48px;
+  margin-top: 6px;
 }
