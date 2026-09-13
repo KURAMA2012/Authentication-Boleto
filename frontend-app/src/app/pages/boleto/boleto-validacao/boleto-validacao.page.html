@@ -1,13 +1,15 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Autenticação de Boleto (2FA)</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Autenticação de Boleto</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
 
-  <!-- 🌈 BARRA DE PROGRESSO -->
-  <div class="progresso-container">
+  <div class="progresso-container" *ngIf="etapa !== 'sucesso'">
     <div class="texto-etapa">
       Etapa {{ indiceEtapa }} de 3 — {{ descricaoEtapa }}
     </div>
@@ -16,66 +18,92 @@
     </div>
   </div>
 
-  <!-- 🌟 ESTEIRA DE ETAPAS -->
-  <div class="etapas-container">
+  <div class="etapas-container" *ngIf="etapa !== 'sucesso'">
     <div class="etapa" [class.ativa]="etapa === 'validar'">
       <ion-icon name="document-text-outline"></ion-icon>
       <span>Validar</span>
     </div>
-
     <div class="linha"></div>
-
     <div class="etapa" [class.ativa]="etapa === 'token'">
       <ion-icon name="mail-outline"></ion-icon>
       <span>Token</span>
     </div>
-
     <div class="linha"></div>
-
     <div class="etapa" [class.ativa]="etapa === 'confirmar'">
       <ion-icon name="lock-closed-outline"></ion-icon>
       <span>Confirmar</span>
     </div>
   </div>
 
-  <!-- 🧩 Etapa 1: VALIDAR -->
+  <!-- Painel de rejeição / erro (slot futuro LLM) -->
+  <div class="painel-rejeicao" *ngIf="erroPainel" role="alert">
+    <h3>Por que falhou</h3>
+    <p>{{ erroPainel }}</p>
+  </div>
+
   <div *ngIf="etapa === 'validar'" class="animar">
     <ion-item>
       <ion-label position="stacked">Código de Autenticação</ion-label>
-      <ion-input [(ngModel)]="codigoAutenticacao" placeholder="Digite o código"></ion-input>
+      <ion-input
+        [(ngModel)]="codigoAutenticacao"
+        placeholder="Digite o código"
+        [disabled]="carregando">
+      </ion-input>
     </ion-item>
 
-    <ion-button expand="block" color="primary" (click)="validarBoleto()">
-      Validar Boleto
+    <ion-button expand="block" color="primary" (click)="validarBoleto()" [disabled]="carregando">
+      <ion-spinner *ngIf="carregando" name="crescent"></ion-spinner>
+      <span>{{ carregando ? 'Validando…' : 'Validar Boleto' }}</span>
     </ion-button>
   </div>
 
-  <!-- 🧩 Etapa 2: ENVIAR TOKEN -->
   <div *ngIf="etapa === 'token'" class="animar">
     <ion-text color="medium">
-      <p>O token foi gerado e enviado (simulado).</p>
+      <p>O token foi gerado e enviado (simulado). Continue para digitar o código.</p>
     </ion-text>
 
-    <ion-button expand="block" color="secondary" (click)="confirmarEtapaToken()">
+    <ion-button expand="block" color="secondary" (click)="confirmarEtapaToken()" [disabled]="carregando">
       Prosseguir para Confirmação
     </ion-button>
-  </div>
 
-  <!-- 🧩 Etapa 3: CONFIRMAR TOKEN -->
-  <div *ngIf="etapa === 'confirmar'" class="animar">
-    <ion-item>
-      <ion-label position="stacked">Token de Verificação</ion-label>
-      <ion-input [(ngModel)]="tokenVerificacao" placeholder="Digite o token de 6 dígitos"></ion-input>
-    </ion-item>
-
-    <ion-button expand="block" color="success" (click)="confirmarToken()">
-      Confirmar Token
+    <ion-button expand="block" fill="outline" (click)="reenviarToken()" [disabled]="carregando">
+      Reenviar token
     </ion-button>
 
     <ion-button expand="block" fill="clear" color="medium" (click)="voltarEtapa()">
-      <ion-icon name="arrow-back-outline"></ion-icon>
       Voltar
     </ion-button>
+  </div>
+
+  <div *ngIf="etapa === 'confirmar'" class="animar">
+    <ion-item>
+      <ion-label position="stacked">Token de Verificação</ion-label>
+      <ion-input
+        [(ngModel)]="tokenVerificacao"
+        placeholder="6 dígitos"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        maxlength="8"
+        [disabled]="carregando">
+      </ion-input>
+    </ion-item>
+
+    <ion-button expand="block" color="success" (click)="confirmarToken()" [disabled]="carregando">
+      <ion-spinner *ngIf="carregando" name="crescent"></ion-spinner>
+      <span>{{ carregando ? 'Confirmando…' : 'Confirmar Token' }}</span>
+    </ion-button>
+
+    <ion-button expand="block" fill="clear" color="medium" (click)="voltarEtapa()" [disabled]="carregando">
+      <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+      Voltar
+    </ion-button>
+  </div>
+
+  <div *ngIf="etapa === 'sucesso'" class="sucesso-final animar ion-text-center">
+    <ion-icon name="checkmark-circle" color="success" class="icone-sucesso"></ion-icon>
+    <h2>Boleto autenticado</h2>
+    <p>O pagamento pode seguir com segurança.</p>
+    <ion-button expand="block" (click)="reiniciar()">Validar outro boleto</ion-button>
   </div>
 
 </ion-content>

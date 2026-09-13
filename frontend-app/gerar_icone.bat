@@ -1,6 +1,4 @@
 @echo off
-cd /d C:\raj\Desenvs\appDiretor
-echo === Gerando recursos para Android ===
-npx cordova-res android --skip-config --copy
-echo === Concluído! ===
-pause
+REM Authentication Boleto ? ajuste o caminho do projeto se for gerar icones
+cd /d "%~dp0"
+echo Rode os comandos de icone a partir desta pasta (frontend-app).

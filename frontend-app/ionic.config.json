@@ -1,14 +1,8 @@
-{
-  "name": "Mega",
+﻿{
+  "name": "Authentication Boleto",
   "integrations": {
     "cordova": {}
   },
   "type": "angular",
-  "id": "3fff720e",
-  "proxies": [
-    {
-      "path": "/api",
-      "proxyUrl": "http://45.181.229.153:8081"
-    }
-  ]
+  "id": "authentication-boleto"
 }

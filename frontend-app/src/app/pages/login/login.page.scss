@@ -115,3 +115,31 @@
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+/* Cole no final de login.page.scss */
+
+.input-group.invalid {
+  box-shadow: 0 0 0 2px #eb445a inset;
+  background: #fff5f5;
+}
+
+.campo-erro {
+  color: #eb445a;
+  font-size: 0.8rem;
+  margin: -8px 0 12px 4px;
+}
+
+.banner-erro {
+  background: #fde8ea;
+  color: #b21e2e;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.btn-login ion-spinner {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}

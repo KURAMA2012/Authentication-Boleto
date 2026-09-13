@@ -2,54 +2,83 @@
 
   <div class="login-wrapper">
 
-    <!-- LOGO -->
     <div class="logo-area">
-      <ion-icon name="wallet-outline"></ion-icon>
-      <h1>Meu Boleto</h1>
+      <ion-icon name="wallet-outline" aria-hidden="true"></ion-icon>
+      <h1>Authentication Boleto</h1>
     </div>
 
     <div class="login-card">
 
-      <h2>Bem-vindo 👋</h2>
-      <p class="subtitle">Entre para continuar usando o aplicativo</p>
+      <h2>Bem-vindo</h2>
+      <p class="subtitle">Entre para continuar</p>
 
-      <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="banner-erro" *ngIf="erroApi" role="alert">
+        {{ erroApi }}
+      </div>
 
-        <!-- EMAIL -->
-        <div class="input-group">
-          <ion-icon name="mail-outline"></ion-icon>
-          <ion-input formControlName="email" placeholder="E-mail" type="email"></ion-input>
+      <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+
+        <div class="input-group" [class.invalid]="campoInvalido('email')">
+          <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
+          <ion-input
+            formControlName="email"
+            placeholder="E-mail"
+            type="email"
+            inputmode="email"
+            autocomplete="email"
+            [attr.aria-invalid]="campoInvalido('email')"
+            [attr.aria-describedby]="campoInvalido('email') ? 'erro-email' : null">
+          </ion-input>
         </div>
+        <p class="campo-erro" id="erro-email" *ngIf="campoInvalido('email')">
+          <span *ngIf="email?.errors?.['required']">Informe o e-mail.</span>
+          <span *ngIf="email?.errors?.['email']">E-mail inválido.</span>
+        </p>
 
-        <!-- SENHA -->
-        <div class="input-group">
-          <ion-icon name="lock-closed-outline"></ion-icon>
-          <ion-input 
+        <div class="input-group" [class.invalid]="campoInvalido('senha')">
+          <ion-icon name="lock-closed-outline" aria-hidden="true"></ion-icon>
+          <ion-input
             formControlName="senha"
             placeholder="Senha"
-            [type]="mostrarSenha ? 'text' : 'password'">
+            [type]="mostrarSenha ? 'text' : 'password'"
+            autocomplete="current-password"
+            [attr.aria-invalid]="campoInvalido('senha')"
+            [attr.aria-describedby]="campoInvalido('senha') ? 'erro-senha' : null">
           </ion-input>
-
-          <ion-icon 
+          <ion-icon
             class="toggle-icon"
             [name]="mostrarSenha ? 'eye-off-outline' : 'eye-outline'"
-            (click)="toggleSenha()">
+            (click)="toggleSenha()"
+            role="button"
+            tabindex="0"
+            [attr.aria-label]="mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'"
+            (keydown.enter)="toggleSenha()"
+            (keydown.space)="toggleSenha(); $event.preventDefault()">
           </ion-icon>
         </div>
+        <p class="campo-erro" id="erro-senha" *ngIf="campoInvalido('senha')">
+          <span *ngIf="senha?.errors?.['required']">Informe a senha.</span>
+          <span *ngIf="senha?.errors?.['minlength']">Mínimo de 4 caracteres.</span>
+        </p>
 
-        <ion-button expand="block" class="btn-login" type="submit">
-          Entrar
+        <ion-button
+          expand="block"
+          class="btn-login"
+          type="submit"
+          [disabled]="carregando">
+          <ion-spinner *ngIf="carregando" name="crescent"></ion-spinner>
+          <span *ngIf="!carregando">Entrar</span>
+          <span *ngIf="carregando">Entrando…</span>
         </ion-button>
 
       </form>
 
       <p class="signup-text">
         Não tem conta?
-        <a (click)="irParaCadastro()">Criar conta</a>
+        <a routerLink="/register" (click)="$event.preventDefault(); irParaCadastro()">Criar conta</a>
       </p>
 
     </div>
-
   </div>
 
 </ion-content>

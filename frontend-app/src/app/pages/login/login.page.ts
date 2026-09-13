@@ -9,9 +9,10 @@ import { AuthService } from 'src/app/core/services/AuthService';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
-
   loginForm: FormGroup;
   mostrarSenha = false;
+  carregando = false;
+  erroApi: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -25,54 +26,57 @@ export class LoginPage {
     });
   }
 
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get senha() {
+    return this.loginForm.get('senha');
+  }
+
   toggleSenha() {
     this.mostrarSenha = !this.mostrarSenha;
   }
 
-  async login() {
+  campoInvalido(nome: 'email' | 'senha'): boolean {
+    const c = this.loginForm.get(nome);
+    return !!(c && c.invalid && (c.dirty || c.touched));
+  }
 
-    if (this.loginForm.invalid) {
-      const toast = await this.toastCtrl.create({
-        message: 'Preencha os campos corretamente!',
-        duration: 2000,
-        color: 'warning',
-      });
-      return toast.present();
+  async login() {
+    this.erroApi = null;
+    this.loginForm.markAllAsTouched();
+
+    if (this.loginForm.invalid || this.carregando) {
+      return;
     }
 
     const { email, senha } = this.loginForm.value;
+    this.carregando = true;
 
-    this.auth.login(email, senha).subscribe(
-      async (resp) => {
-
-        if (resp.success) {
+    this.auth.login(email, senha).subscribe({
+      next: async (resp) => {
+        this.carregando = false;
+        if (resp?.success) {
           const toast = await this.toastCtrl.create({
             message: 'Login realizado com sucesso!',
-            duration: 1500,
+            duration: 1200,
             color: 'success',
           });
-
           toast.present();
-
-          toast.onDidDismiss().then(() => {
-            this.navCtrl.navigateRoot('/home');
-          });
+          this.navCtrl.navigateRoot('/home');
+        } else {
+          this.erroApi = resp?.message || 'E-mail ou senha inválidos.';
         }
       },
-      async () => {
-        const toast = await this.toastCtrl.create({
-          message: 'Email ou senha inválidos!',
-          duration: 2000,
-          color: 'danger',
-        });
-        toast.present();
-      }
-    );
+      error: () => {
+        this.carregando = false;
+        this.erroApi = 'E-mail ou senha inválidos.';
+      },
+    });
   }
 
   irParaCadastro() {
     this.navCtrl.navigateForward('/register');
   }
-
-  
 }

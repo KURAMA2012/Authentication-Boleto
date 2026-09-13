@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpEventType } from '@angular/common/http';
-import { ToastController, LoadingController } from '@ionic/angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpEventType } from '@angular/common/http';
+import { ToastController } from '@ionic/angular';
 import { BoletoService } from 'src/app/core/services/BoletoService.services';
-import { BSMessage } from 'src/app/core/services/BSMessage.service';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 @Component({
@@ -11,84 +11,99 @@ import { FilePicker } from '@capawesome/capacitor-file-picker';
   styleUrls: ['./cadastro-boleto.page.scss'],
 })
 export class CadastroBoletoPage {
-
   modo: 'manual' | 'csv' = 'manual';
+  form: FormGroup;
 
-  boleto = {
-    codigoBarras: '',
-    valor: '',
-    vencimento: '',
-    cpfCnpjPagador: '',
-    nomePagador: '',
-    cnpjBeneficiario: ''
-  };
-
-  arquivoSelecionado?: File;
+  arquivoNome: string | null = null;
+  progressoUpload = 0;
   carregando = false;
-  mensagem: string | null = null;
-  erro: boolean = false;
-
-  resposta: any = null;
+  erroPainel: string | null = null;
+  codigoAutenticacao: string | null = null;
 
   constructor(
+    private fb: FormBuilder,
     private boletoService: BoletoService,
-    private toastCtrl: ToastController,
-    private bsMessage:BSMessage
-  ) {}
-
-  async gerarBoleto() {
-    if (
-      !this.boleto.codigoBarras ||
-      !this.boleto.valor ||
-      !this.boleto.vencimento ||
-      !this.boleto.cnpjBeneficiario ||
-      !this.boleto.nomePagador
-    ) {
-      const toast = await this.toastCtrl.create({
-        message: 'Preencha todos os campos obrigatórios!',
-        duration: 2000,
-        color: 'warning'
-      });
-      toast.present();
-      return;
-    }
-    this.boletoService.criarBoleto(this.boleto).subscribe({
-      next: async (res) => {
-        if (res.success) {
-          this.bsMessage.sucesso(res.message || 'Boleto criado com sucesso!');
-          this.limparFormulario();
-        }
-      },
-      error: async (err) => {
-        const backendMessage = err?.error?.message || 'Erro ao criar boleto!';
-        this.bsMessage.error(backendMessage);
-      }
+    private toastCtrl: ToastController
+  ) {
+    this.form = this.fb.group({
+      codigoBarras: ['', [Validators.required, Validators.minLength(8)]],
+      valor: ['', [Validators.required]],
+      vencimento: ['', [Validators.required]],
+      cpfCnpjPagador: [''],
+      nomePagador: ['', [Validators.required]],
+      cnpjBeneficiario: ['', [Validators.required, Validators.minLength(14)]],
     });
-  
-
   }
 
-  limparFormulario() {
-        this.boleto = {
-          codigoBarras: '',
-          valor: '',
-          vencimento: '',
-          cpfCnpjPagador: '',
-          nomePagador: '',
-          cnpjBeneficiario: ''
-        };
+  campoInvalido(nome: string): boolean {
+    const c = this.form.get(nome);
+    return !!(c && c.invalid && (c.dirty || c.touched));
+  }
+
+  private async toast(message: string, color: string = 'success') {
+    const t = await this.toastCtrl.create({ message, duration: 1800, color });
+    await t.present();
+  }
+
+  gerarBoleto() {
+    this.erroPainel = null;
+    this.form.markAllAsTouched();
+    if (this.form.invalid || this.carregando) {
+      this.erroPainel = 'Preencha os campos obrigatórios.';
+      return;
+    }
+
+    this.carregando = true;
+    this.boletoService.criarBoleto(this.form.value).subscribe({
+      next: async (res) => {
+        this.carregando = false;
+        if (res?.success) {
+          this.codigoAutenticacao =
+            res?.data?.codigoAutenticacao ||
+            res?.codigoAutenticacao ||
+            null;
+          await this.toast(res.message || 'Boleto criado com sucesso!');
+          this.form.reset();
+        } else {
+          this.erroPainel = res?.message || 'Erro ao criar boleto.';
+        }
+      },
+      error: (err) => {
+        this.carregando = false;
+        this.erroPainel = err?.error?.message || 'Erro ao criar boleto.';
+      },
+    });
+  }
+
+  async copiarCodigo() {
+    if (!this.codigoAutenticacao) {
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(this.codigoAutenticacao);
+      await this.toast('Código copiado!');
+    } catch {
+      await this.toast('Não foi possível copiar.', 'warning');
+    }
+  }
+
+  gerarOutro() {
+    this.codigoAutenticacao = null;
+    this.erroPainel = null;
+  }
+
+  async selecionarCsv() {
+    this.erroPainel = null;
+    this.arquivoNome = null;
+    this.progressoUpload = 0;
+
+    try {
+      const result = await FilePicker.pickFiles({ types: ['text/csv'] });
+      if (!result.files.length) {
+        return;
       }
 
-  // =============== UPLOAD DE CSV ===============
-async selecionarCsv() {
-  try {
-    const result = await FilePicker.pickFiles({
-      types: ['text/csv']
-    });
-
-    if (result.files.length > 0) {
       const file = result.files[0];
-
       let blob: Blob;
       if (file.blob) {
         blob = file.blob;
@@ -100,37 +115,40 @@ async selecionarCsv() {
         }
         blob = new Blob([new Uint8Array(byteNumbers)], { type: 'text/csv' });
       } else {
-        this.bsMessage.error('Erro ao ler o arquivo CSV.');
+        this.erroPainel = 'Erro ao ler o arquivo CSV.';
         return;
       }
 
-      // ✅ converte Blob para File antes de enviar
-      const arquivo = new File([blob], file.name || 'arquivo.csv', { type: 'text/csv' });
-
+      const nome = file.name || 'arquivo.csv';
+      this.arquivoNome = nome;
+      const arquivo = new File([blob], nome, { type: 'text/csv' });
       this.enviarCsv(arquivo);
+    } catch (error) {
+      console.error(error);
+      this.erroPainel = 'Erro ao selecionar o arquivo CSV.';
     }
-  } catch (error) {
-    console.error('Erro ao selecionar arquivo:', error);
-    this.bsMessage.error('Erro ao selecionar o arquivo CSV.');
   }
-}
-
 
   enviarCsv(file: File) {
     this.carregando = true;
+    this.progressoUpload = 0;
 
     this.boletoService.uploadCsv(file).subscribe({
       next: (event) => {
+        if (event.type === HttpEventType.UploadProgress && event.total) {
+          this.progressoUpload = Math.round((100 * event.loaded) / event.total);
+        }
         if (event.type === HttpEventType.Response) {
           this.carregando = false;
-          this.bsMessage.sucesso('Arquivo CSV enviado e processado com sucesso!');
+          this.progressoUpload = 100;
+          this.toast('CSV enviado. Acompanhe o processamento em Logs.');
         }
       },
       error: (err) => {
         this.carregando = false;
-        const backendMessage = err?.error?.message || 'Erro ao enviar CSV!';
-        this.bsMessage.error(backendMessage);
-      }
+        this.progressoUpload = 0;
+        this.erroPainel = err?.error?.message || 'Erro ao enviar CSV.';
+      },
     });
   }
 }

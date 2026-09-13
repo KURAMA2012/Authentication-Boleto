@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="br.raj.diretor" version="2.0.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>RAJ Diretor</name>
-    <description>RAJ App</description>
-    <author email="rbfboni23@gmail.com" href="http://www.rajweb.com.br/">RAJ</author>
+<widget id="com.authentication.boleto" version="2.0.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Authentication Boleto</name>
+    <description>Authentication Boleto - autenticacao e verificacao de boletos</description>
+    <author email="davy@local" href="https://github.com/KURAMA2012/Authentication-Boleto">Davy Lucas</author>
     <content src="index.html" />
     <access origin="*" />
     <preference name="android-minSdkVersion" value="19" />

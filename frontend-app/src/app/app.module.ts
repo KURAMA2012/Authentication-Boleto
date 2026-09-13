@@ -9,13 +9,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { IonicStorageModule } from '@ionic/storage-angular';
 
 // === COMPONENTES DO PROJETO ===
-import { MenuTabsComponent } from './components/menu-tabs/menu-tabs.component';
 
 // === SERVICES DO PROJETO ===
-import { AccessDigitalService } from './core/services/AccessDigitalService';
 import { AuthService } from './core/services/AuthService';
 import { BoletoService } from './core/services/BoletoService.services';
 import { EmpresaService } from './core/services/EmpresaService.services';
@@ -29,7 +26,6 @@ import { TokenService } from './core/services/TokenService.services';
 @NgModule({
   declarations: [
     AppComponent,
-    MenuTabsComponent
   ],
   imports: [
   BrowserModule,
@@ -45,8 +41,6 @@ import { TokenService } from './core/services/TokenService.services';
     // SERVICES
   AuthService,
   AuthGuard,
-
-  AccessDigitalService,
   BoletoService,
   EmpresaService,
 
@@ -60,3 +54,4 @@ import { TokenService } from './core/services/TokenService.services';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}
+

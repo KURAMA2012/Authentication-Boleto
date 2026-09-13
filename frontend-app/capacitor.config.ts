@@ -1,8 +1,8 @@
-import { CapacitorConfig } from '@capacitor/cli';
+﻿import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.raj.diretor',
-  appName: 'Raj Diretor',
+  appId: 'com.authentication.boleto',
+  appName: 'Authentication Boleto',
   webDir: 'www',
   bundledWebRuntime: false,
   plugins: {
@@ -18,10 +18,10 @@ const config: CapacitorConfig = {
   },
   server: {
     allowNavigation: [
-      "fonts.googleapis.com",
-      "fonts.gstatic.com"
+      'fonts.googleapis.com',
+      'fonts.gstatic.com'
     ],
-      androidScheme: 'http'
+    androidScheme: 'http'
   }
 };
 

@@ -1,13 +1,43 @@
-ion-card {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  border-radius: 16px;
+.mt-3 { margin-top: 16px; }
+
+.campo-erro {
+  color: #eb445a;
+  font-size: 0.8rem;
+  margin: 4px 0 10px 12px;
 }
 
-ion-button {
-  font-weight: 600;
+.painel-erro {
+  background: #fde8ea;
+  color: #b21e2e;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 12px 0;
+  font-size: 0.9rem;
 }
 
-ion-card-title {
-  font-size: 1.2rem;
-  color: #1a1a1a;
+.sucesso-card {
+  margin-top: 16px;
+}
+
+.icone-ok {
+  font-size: 56px;
+}
+
+.codigo {
+  font-family: monospace;
+  font-size: 1.1rem;
+  font-weight: bold;
+  word-break: break-all;
+}
+
+.arquivo-nome {
+  margin-top: 10px;
+  text-align: center;
+  color: #555;
+}
+
+ion-button ion-spinner {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
 }

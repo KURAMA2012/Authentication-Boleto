@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoletoService {
 
-  private mainApiUrl = 'http://localhost:8080/api/boleto';
-  private batchApiUrl = 'http://localhost:8082/api/boleto';
+  private mainApiUrl = `${environment.apiBaseUrl}/api/boleto`;
+  private batchApiUrl = `${environment.batchApiBaseUrl}/api/boleto`;
 
   constructor(private http: HttpClient) {}
 

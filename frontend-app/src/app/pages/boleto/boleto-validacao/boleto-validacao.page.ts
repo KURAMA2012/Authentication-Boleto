@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ToastController, LoadingController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { BoletoService } from 'src/app/core/services/BoletoService.services';
-import { BSMessage } from 'src/app/core/services/BSMessage.service';
+
+type Etapa = 'validar' | 'token' | 'confirmar' | 'sucesso';
 
 @Component({
   selector: 'app-validar-boleto',
@@ -10,7 +10,7 @@ import { BSMessage } from 'src/app/core/services/BSMessage.service';
   styleUrls: ['./boleto-validacao.page.scss'],
 })
 export class BoletoValidacaoPage {
-  etapa: 'validar' | 'token' | 'confirmar' = 'validar';
+  etapa: Etapa = 'validar';
   codigoAutenticacao = '';
   tokenVerificacao = '';
 
@@ -18,7 +18,13 @@ export class BoletoValidacaoPage {
   indiceEtapa = 1;
   descricaoEtapa = 'Validar Boleto';
 
-  constructor(private boletoService: BoletoService, private bsMessage: BSMessage) {}
+  carregando = false;
+  erroPainel: string | null = null;
+
+  constructor(
+    private boletoService: BoletoService,
+    private toastCtrl: ToastController
+  ) {}
 
   private atualizarProgresso() {
     switch (this.etapa) {
@@ -30,79 +36,131 @@ export class BoletoValidacaoPage {
       case 'token':
         this.progresso = 66;
         this.indiceEtapa = 2;
-        this.descricaoEtapa = 'Enviar Token';
+        this.descricaoEtapa = 'Token enviado';
         break;
       case 'confirmar':
         this.progresso = 100;
         this.indiceEtapa = 3;
         this.descricaoEtapa = 'Confirmar Token';
         break;
+      case 'sucesso':
+        this.progresso = 100;
+        this.indiceEtapa = 3;
+        this.descricaoEtapa = 'Concluído';
+        break;
     }
   }
 
+  private async toast(message: string, color: string = 'success') {
+    const t = await this.toastCtrl.create({ message, duration: 1600, color });
+    await t.present();
+  }
+
   validarBoleto() {
-    if (!this.codigoAutenticacao) {
-      this.bsMessage.alerta('Informe o código de autenticação!');
+    this.erroPainel = null;
+
+    if (!this.codigoAutenticacao?.trim()) {
+      this.erroPainel = 'Informe o código de autenticação.';
+      return;
+    }
+    if (this.carregando) {
       return;
     }
 
-    this.boletoService.validarBoleto(this.codigoAutenticacao).subscribe({
+    this.carregando = true;
+    this.boletoService.validarBoleto(this.codigoAutenticacao.trim()).subscribe({
       next: (res) => {
-        if (res.success) {
-          this.bsMessage.sucesso(res.message || 'Boleto validado com sucesso!');
+        this.carregando = false;
+        if (res?.success) {
+          this.toast(res.message || 'Boleto validado.');
           this.enviarToken();
         } else {
-          this.bsMessage.error(res.message || 'Erro ao validar boleto!');
+          this.erroPainel = res?.message || 'Não foi possível validar o boleto.';
         }
       },
       error: (err) => {
-        const msg = err?.error?.message || 'Erro ao validar boleto!';
-        this.bsMessage.error(msg);
+        this.carregando = false;
+        this.erroPainel =
+          err?.error?.message ||
+          'Boleto rejeitado ou código inválido. Verifique e tente de novo.';
       },
     });
   }
 
   enviarToken() {
-    this.boletoService.enviarToken(this.codigoAutenticacao).subscribe({
+    this.carregando = true;
+    this.boletoService.enviarToken(this.codigoAutenticacao.trim()).subscribe({
       next: (res) => {
-        this.bsMessage.sucesso(res.message || 'Token enviado com sucesso!');
+        this.carregando = false;
+        this.toast(res?.message || 'Token enviado (simulado).');
         this.etapa = 'token';
         this.atualizarProgresso();
       },
       error: (err) => {
-        const msg = err?.error?.message || 'Erro ao enviar token!';
-        this.bsMessage.error(msg);
+        this.carregando = false;
+        this.erroPainel = err?.error?.message || 'Erro ao enviar o token.';
       },
     });
   }
 
+  reenviarToken() {
+    this.erroPainel = null;
+    this.enviarToken();
+  }
+
   confirmarEtapaToken() {
+    this.erroPainel = null;
     this.etapa = 'confirmar';
     this.atualizarProgresso();
   }
 
   confirmarToken() {
-    if (!this.tokenVerificacao) {
-      this.bsMessage.alerta('Digite o token de verificação!');
+    this.erroPainel = null;
+
+    if (!this.tokenVerificacao?.trim()) {
+      this.erroPainel = 'Digite o token de verificação.';
+      return;
+    }
+    if (this.carregando) {
       return;
     }
 
-    this.boletoService.confirmarToken(this.codigoAutenticacao, this.tokenVerificacao).subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.bsMessage.sucesso(res.message || 'Token confirmado com sucesso!');
-        } else {
-          this.bsMessage.error(res.message || 'Token inválido!');
-        }
-      },
-      error: (err) => {
-        const msg = err?.error?.message || 'Erro ao confirmar token!';
-        this.bsMessage.error(msg);
-      },
-    });
+    this.carregando = true;
+    this.boletoService
+      .confirmarToken(this.codigoAutenticacao.trim(), this.tokenVerificacao.trim())
+      .subscribe({
+        next: (res) => {
+          this.carregando = false;
+          if (res?.success) {
+            this.etapa = 'sucesso';
+            this.atualizarProgresso();
+            this.toast(res.message || 'Boleto autenticado!');
+          } else {
+            this.erroPainel = res?.message || 'Token inválido ou expirado.';
+          }
+        },
+        error: (err) => {
+          this.carregando = false;
+          this.erroPainel =
+            err?.error?.message || 'Token inválido ou expirado. Tente novamente.';
+        },
+      });
   }
 
   voltarEtapa() {
+    this.erroPainel = null;
+    if (this.etapa === 'confirmar') {
+      this.etapa = 'token';
+    } else {
+      this.etapa = 'validar';
+    }
+    this.atualizarProgresso();
+  }
+
+  reiniciar() {
+    this.codigoAutenticacao = '';
+    this.tokenVerificacao = '';
+    this.erroPainel = null;
     this.etapa = 'validar';
     this.atualizarProgresso();
   }
