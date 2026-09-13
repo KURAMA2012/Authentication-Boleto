@@ -1,2 +1,7 @@
+# Secrets and local overrides
+.env
+*.pem
+application-local.properties
+
 /build/*
 !/build/.npmkeep

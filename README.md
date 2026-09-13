@@ -1,6 +1,8 @@
 # Authentication-Boleto
 ProjetoA3
 
+**Secrets:** copy `.env.example` → `.env`, export the variables (Spring Boot does not load `.env` by itself), and never commit passwords. Details: [docs/security.md](docs/security.md).
+
 Apresentação
 https://youtu.be/3DozZnX-OZg parte 1
 https://youtu.be/zjEa-hGpCfQ parte 2

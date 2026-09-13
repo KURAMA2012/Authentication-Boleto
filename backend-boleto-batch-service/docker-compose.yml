@@ -9,5 +9,5 @@ services:
       - "5672:5672"      # Porta usada pelo Spring Boot
       - "15672:15672"    # Painel web
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}

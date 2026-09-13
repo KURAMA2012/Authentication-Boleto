@@ -1,1 +1,26 @@
+# Secrets and local overrides
+.env
+.env.*
+!.env.example
+*.pem
+application-local.properties
+
+# Eclipse / STS workspace
 /.metadata/
+
+# IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs and temp
+*.log
+*.tmp
+
+# Maven leftovers at repo root
+/target/
