@@ -1,3 +1,4 @@
+import { somenteDigitos } from 'src/app/shared/documento.util';
 import { Injectable } from '@angular/core';
 import { BSResource } from './BSResource.service';
 
@@ -69,7 +70,7 @@ export class ClienteResource {
   }
 
    getClienteByCpfCnpj(cpfCnpj) {
-    return this.resoruce.get('clientes/get-cliente-by-cpfCnpj?cpfCnpj=' + cpfCnpj);
+    return this.resoruce.get('clientes/get-cliente-by-cpfCnpj?cpfCnpj=' + somenteDigitos(cpfCnpj));
   }
 
   getInfoPlanoByLogin(login) {

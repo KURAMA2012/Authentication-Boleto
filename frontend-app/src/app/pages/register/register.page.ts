@@ -1,3 +1,4 @@
+import { somenteDigitos } from 'src/app/shared/documento.util';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
@@ -41,7 +42,7 @@ export class RegisterPage implements OnInit {
       return this.feedback.erro(null, 'Preencha todos os campos corretamente.');
     }
 
-    this.usuarioService.cadastrar(this.form.value).subscribe(async () => {
+    this.usuarioService.cadastrar({ ...this.form.value, cpf: somenteDigitos(this.form.value.cpf) }).subscribe(async () => {
       await this.feedback.sucesso('Cadastro realizado com sucesso!');
       this.navCtrl.navigateRoot('/login');
 

@@ -1,3 +1,4 @@
+import { somenteDigitos } from 'src/app/shared/documento.util';
 import { Component } from '@angular/core';
 import { EmpresaService } from 'src/app/core/services/EmpresaService.services';
 import { BSMessage } from 'src/app/core/services/BSMessage.service';
@@ -46,7 +47,7 @@ export class CadastroEmpresaPage {
     });
     await loading.present();
 
-    this.empresaService.buscarCnpj(this.empresa.cnpj).subscribe({
+    this.empresaService.buscarCnpj(somenteDigitos(this.empresa.cnpj)).subscribe({
       next: (res) => {
         loading.dismiss();
         this.carregandoCnpj = false;
@@ -114,7 +115,7 @@ export class CadastroEmpresaPage {
     await loading.present();
 
     
-    this.empresaService.cadastrarEmpresa(this.empresa).subscribe({
+    this.empresaService.cadastrarEmpresa({ ...this.empresa, cnpj: somenteDigitos(this.empresa.cnpj) }).subscribe({
       next: (res) => {
         loading.dismiss();
         this.carregandoSalvar = false;

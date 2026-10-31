@@ -7,6 +7,7 @@ import com.A3.projeto.Faculdade.AuthenticationBoleto.mapper.EmpresaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.A3.projeto.Faculdade.AuthenticationBoleto.common.Cnpj;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.EmpresaRequest;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.EmpresaResponse;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.Empresa;
@@ -28,6 +29,7 @@ public class EmpresaService {
     }
 
 	public EmpresaResponse salvar(EmpresaRequest request) {
+		request.setCnpj(Cnpj.normalizar(request.getCnpj()));
 		Empresa empresa = empresaMapper.toEntity(request);
 
 		Empresa salva = repository.save(empresa);
@@ -44,7 +46,8 @@ public class EmpresaService {
 				.collect(Collectors.toList());
 	}
 
-	public EmpresaResponse buscarResponsePorCnpj(String cnpj) {
+	public EmpresaResponse buscarResponsePorCnpj(String cnpjInformado) {
+		String cnpj = Cnpj.normalizar(cnpjInformado);
 		Empresa empresa = repository.findByCnpj(cnpj)
 				.orElseThrow(() -> new EmpresaNaoEncontradaException("Empresa com CNPJ " + cnpj + " não encontrada"));
 		return new EmpresaResponse(empresa.getId(), empresa.getNome(), empresa.getCnpj(), empresa.getEmailContato(),

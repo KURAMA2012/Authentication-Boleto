@@ -1,3 +1,4 @@
+import { somenteDigitos } from 'src/app/shared/documento.util';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpEventType } from '@angular/common/http';
@@ -31,7 +32,7 @@ export class CadastroBoletoPage {
       vencimento: ['', [Validators.required]],
       cpfCnpjPagador: [''],
       nomePagador: ['', [Validators.required]],
-      cnpjBeneficiario: ['', [Validators.required, Validators.minLength(14)]],
+      cnpjBeneficiario: ['', [Validators.required, (c: any) => somenteDigitos(c.value).length === 14 ? null : { cnpj: true }]],
     });
   }
 
@@ -53,7 +54,11 @@ export class CadastroBoletoPage {
     }
 
     this.carregando = true;
-    this.boletoService.criarBoleto(this.form.value).subscribe({
+    this.boletoService.criarBoleto({
+      ...this.form.value,
+      cpfCnpjPagador: somenteDigitos(this.form.value.cpfCnpjPagador),
+      cnpjBeneficiario: somenteDigitos(this.form.value.cnpjBeneficiario),
+    }).subscribe({
       next: async (res) => {
         this.carregando = false;
         if (res?.success) {

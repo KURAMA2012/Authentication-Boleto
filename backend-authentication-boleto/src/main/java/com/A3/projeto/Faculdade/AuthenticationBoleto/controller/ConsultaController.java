@@ -3,7 +3,13 @@ package com.A3.projeto.Faculdade.AuthenticationBoleto.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
+import com.A3.projeto.Faculdade.AuthenticationBoleto.common.Cnpj;
+
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,10 +32,14 @@ public class ConsultaController {
         System.out.println("✅ ConsultaController carregado com sucesso!");
     }
 
-    @GetMapping("/cnpj/{cnpj}")
-    public ResponseEntity<Map<String, Object>> consultarCnpj(@PathVariable String cnpj) {
+    @GetMapping("/cnpj/**")
+    public ResponseEntity<Map<String, Object>> consultarCnpj(HttpServletRequest httpRequest) {
+        // "/cnpj/**" aceita CNPJ com mascara: a barra de "0001/90" nao quebra mais a rota.
+        String uri = httpRequest.getRequestURI();
+        String bruto = uri.substring(uri.indexOf("/cnpj/") + "/cnpj/".length());
+        String cnpj = Cnpj.normalizar(URLDecoder.decode(bruto, StandardCharsets.UTF_8));
         try {
-            String url = RECEITA_URL + cnpj.replaceAll("\\D", "");
+            String url = RECEITA_URL + cnpj;
             Map<?, ?> response = restTemplate.getForObject(url, Map.class);
 
             if (response == null || (response.get("status") != null && !"OK".equals(response.get("status")))) {
