@@ -106,3 +106,21 @@ ion-button ion-spinner {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+/* Layout responsivo */
+.validacao-wrap { max-width: 640px; margin: 0 auto; }
+.ab-page ion-card.etapa-card { margin: 0 0 24px; border: none; }
+.etapa-card ion-card-content { padding: 18px 16px; }
+.etapa-card ion-item { --background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; }
+.etapa-card ion-button { margin-top: 10px; }
+.etapa-card ion-button[expand="block"]:not([fill]) { height: 50px; }
+.sucesso-final { max-width: 520px; margin-left: auto; margin-right: auto; }
+@media (min-width: 768px) {
+  .etapa-card ion-card-content { padding: 26px 28px; }
+  .etapa { min-width: 96px; }
+  .linha { width: 56px; }
+  .progresso-container { padding: 16px 20px; }
+}
+@media (max-width: 380px) {
+  .etapa { min-width: 60px; font-size: 0.8rem; }
+  .linha { width: 16px; }
+}

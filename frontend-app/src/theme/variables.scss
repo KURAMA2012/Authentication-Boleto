@@ -12,6 +12,27 @@
   --ab-shadow: 0 10px 30px rgba(15, 118, 110, 0.12);
   --ab-shadow-lg: 0 20px 50px rgba(15, 118, 110, 0.22);
 
+  /* Tokens de design (raio, sombra, espacamento, layout) */
+  --ab-primary: #0f766e;
+  --ab-secondary: #14b8a6;
+  --ab-border: rgba(45, 212, 191, 0.22);
+  --ab-border-input: #e2e8f0;
+  --ab-radius-sm: 12px;
+  --ab-radius-md: 14px;
+  --ab-radius-lg: 22px;
+  --ab-shadow-sm: 0 6px 18px rgba(15, 118, 110, 0.06);
+  --ab-shadow-hover: 0 18px 40px rgba(15, 118, 110, 0.16);
+  --ab-space-1: 4px;
+  --ab-space-2: 8px;
+  --ab-space-3: 12px;
+  --ab-space-4: 16px;
+  --ab-space-5: 24px;
+  --ab-space-6: 32px;
+  --ab-container: 1120px;
+  --ab-container-form: 860px;
+  --ab-container-auth: 440px;
+  --ab-gradient-primary: linear-gradient(135deg, #0f766e, #14b8a6);
+
   --ion-color-primary: #0f766e;
   --ion-color-primary-rgb: 15, 118, 110;
   --ion-color-primary-contrast: #ffffff;

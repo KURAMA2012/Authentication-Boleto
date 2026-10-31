@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ToastController } from '@ionic/angular';
+import { FeedbackService } from '../../shared/feedback.service';
+import { environment } from '../../../environments/environment';
 
 interface BoletoLog {
   id: number;
@@ -25,8 +26,19 @@ export class LogsPage implements OnInit {
   searchTerm: string = '';
   page: number = 1;
   pageSize: number = 10;
+  erro = false;
+  skeletons = [1, 2, 3, 4, 5];
 
-  constructor(private http: HttpClient, private toastCtrl: ToastController) {}
+  get totalValidos(): number {
+    return this.todosLogs.filter(l => l.valido).length;
+  }
+
+  recarregar(event?: any) {
+    this.page = 1;
+    this.carregarLogs(event);
+  }
+
+  constructor(private http: HttpClient, private feedback: FeedbackService) {}
 
   ngOnInit() {
     this.carregarLogs();
@@ -34,26 +46,23 @@ export class LogsPage implements OnInit {
 
   async carregarLogs(event?: any) {
     if (this.page === 1) this.loading = true;
+    this.erro = false;
 
-    this.http.get<BoletoLog[]>('http://localhost:8080/api/logs')
+    this.http.get<BoletoLog[]>(`${environment.apiBaseUrl}/api/logs`)
       .subscribe({
         next: (data) => {
-          this.todosLogs = data;
+          this.todosLogs = data || [];
           this.aplicarFiltro();
 
           this.loading = false;
           if (event) event.target.complete();
         },
-        error: async () => {
+        error: async (err) => {
           this.loading = false;
+          this.erro = true;
           if (event) event.target.complete();
 
-          const toast = await this.toastCtrl.create({
-            message: 'Erro ao carregar logs!',
-            duration: 2500,
-            color: 'danger'
-          });
-          toast.present();
+          await this.feedback.erro(err, 'Erro ao carregar logs.');
         }
       });
   }

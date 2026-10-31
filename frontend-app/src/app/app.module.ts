@@ -6,7 +6,8 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './core/services/AuthInterceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -37,6 +38,8 @@ import { TokenService } from './core/services/TokenService.services';
 ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
 
     // SERVICES
   AuthService,

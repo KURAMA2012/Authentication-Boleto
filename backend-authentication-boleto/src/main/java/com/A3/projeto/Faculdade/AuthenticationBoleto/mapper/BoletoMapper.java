@@ -6,7 +6,7 @@ import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.Boleto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", imports = { com.A3.projeto.Faculdade.AuthenticationBoleto.entity.StatusBoleto.class, java.time.LocalDateTime.class, java.util.UUID.class })
 public interface BoletoMapper extends GenericMapper<Boleto, BoletoRequest> {
 
 

@@ -105,7 +105,7 @@ public class BoletoController {
         String token = boletoService.gerarOuRecuperarToken(request.getCodigoAutenticacao());
         
         return ResponseEntity.ok(
-            new ApiResponse<>(true, "Token de verificação enviado com sucesso (simulado). Token: " + token)
+            new ApiResponse<>(true, "Token de verifica\u00e7\u00e3o enviado por e-mail.")
         );
     }
 

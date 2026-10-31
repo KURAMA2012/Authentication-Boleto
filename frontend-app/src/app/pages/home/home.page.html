@@ -1,60 +1,70 @@
 <ion-header translucent="true">
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-menu-button autoHide="false"></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title class="ion-text-center">Authentication Boleto</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ab-page ion-padding">
+  <div class="ab-container">
   <div class="ab-hero">
-    <div class="chip">Area segura</div>
+    <ion-chip class="ab-chip"><ion-icon name="shield-checkmark-outline"></ion-icon><ion-label>&Aacute;rea segura</ion-label></ion-chip>
     <h2>Ola — o que deseja fazer?</h2>
-    <p>Cadastre, valide e acompanhe boletos com autenticacao.</p>
+    <p>Cadastre, valide e acompanhe boletos com autentica&ccedil;&atilde;o.</p>
   </div>
 
   <ion-grid class="home-grid">
     <ion-row>
-      <ion-col size="12" size-md="6">
+      <ion-col size="12" size-md="6" size-xl="3">
         <ion-card routerLink="/cadastro-boleto" class="action-card c-boleto">
           <div class="icon-wrap"><ion-icon name="document-text-outline"></ion-icon></div>
           <ion-card-header>
             <ion-card-title>Gerar Boleto</ion-card-title>
           </ion-card-header>
-          <ion-card-content>Crie um boleto manualmente ou importe CSV.</ion-card-content>
+          <ion-card-content>
+            Crie um boleto manualmente ou importe CSV.</ion-card-content>
+          <div class="card-cta">Acessar <ion-icon name="arrow-forward-outline"></ion-icon></div>
         </ion-card>
       </ion-col>
 
-      <ion-col size="12" size-md="6">
+      <ion-col size="12" size-md="6" size-xl="3">
         <ion-card routerLink="/boleto-validacao" class="action-card c-validar">
           <div class="icon-wrap"><ion-icon name="shield-checkmark-outline"></ion-icon></div>
           <ion-card-header>
             <ion-card-title>Validar Boleto</ion-card-title>
           </ion-card-header>
-          <ion-card-content>Confirme autenticidade com token em 3 etapas.</ion-card-content>
+          <ion-card-content>
+            Confirme autenticidade com token em 3 etapas.</ion-card-content>
+          <div class="card-cta">Acessar <ion-icon name="arrow-forward-outline"></ion-icon></div>
         </ion-card>
       </ion-col>
 
-      <ion-col size="12" size-md="6">
+      <ion-col size="12" size-md="6" size-xl="3">
         <ion-card routerLink="/cadastro-empresa" class="action-card c-empresa">
           <div class="icon-wrap"><ion-icon name="business-outline"></ion-icon></div>
           <ion-card-header>
             <ion-card-title>Empresas</ion-card-title>
           </ion-card-header>
-          <ion-card-content>Cadastre empresas com CNPJ e CEP automaticos.</ion-card-content>
+          <ion-card-content>
+            Cadastre empresas com CNPJ e CEP autom&aacute;ticos.</ion-card-content>
+          <div class="card-cta">Acessar <ion-icon name="arrow-forward-outline"></ion-icon></div>
         </ion-card>
       </ion-col>
 
-      <ion-col size="12" size-md="6">
+      <ion-col size="12" size-md="6" size-xl="3">
         <ion-card routerLink="/logs" class="action-card c-logs">
           <div class="icon-wrap"><ion-icon name="pulse-outline"></ion-icon></div>
           <ion-card-header>
             <ion-card-title>Logs</ion-card-title>
           </ion-card-header>
-          <ion-card-content>Historico de autenticacoes e eventos.</ion-card-content>
+          <ion-card-content>
+            Hist&oacute;rico de autentica&ccedil;&otilde;es e eventos.</ion-card-content>
+          <div class="card-cta">Acessar <ion-icon name="arrow-forward-outline"></ion-icon></div>
         </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
+  </div>
 </ion-content>

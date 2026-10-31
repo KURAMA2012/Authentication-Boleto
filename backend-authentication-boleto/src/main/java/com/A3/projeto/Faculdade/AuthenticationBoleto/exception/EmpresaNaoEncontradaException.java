@@ -1,7 +1,9 @@
 package com.A3.projeto.Faculdade.AuthenticationBoleto.exception;
 
-public class EmpresaNaoEncontradaException extends RuntimeException {
+import com.A3.projeto.Faculdade.AuthenticationBoleto.common.ErrorCode;
+
+public class EmpresaNaoEncontradaException extends ApiException {
     public EmpresaNaoEncontradaException(String message) {
-        super(message);
+        super(ErrorCode.EMPRESA_NAO_ENCONTRADA, message);
     }
 }

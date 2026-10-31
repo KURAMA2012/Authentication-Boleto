@@ -1,13 +1,19 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-menu-button autoHide="false"></ion-menu-button>
+      <ion-back-button defaultHref="/home"></ion-back-button><ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Autenticação de Boleto</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ab-page ion-padding">
+<div class="validacao-wrap">
+
+  <div class="ab-hero" *ngIf="etapa !== 'sucesso'">
+    <h2>Validar boleto</h2>
+    <p>Confirme a autenticidade em 3 etapas com token de verifica&ccedil;&atilde;o.</p>
+  </div>
 
   <div class="progresso-container" *ngIf="etapa !== 'sucesso'">
     <div class="texto-etapa">
@@ -41,6 +47,8 @@
     <p>{{ erroPainel }}</p>
   </div>
 
+  <ion-card class="etapa-card" *ngIf="etapa !== 'sucesso'">
+  <ion-card-content>
   <div *ngIf="etapa === 'validar'" class="animar">
     <ion-item>
       <ion-label position="stacked">Código de Autenticação</ion-label>
@@ -98,6 +106,8 @@
       Voltar
     </ion-button>
   </div>
+  </ion-card-content>
+  </ion-card>
 
   <div *ngIf="etapa === 'sucesso'" class="sucesso-final animar ion-text-center">
     <ion-icon name="checkmark-circle" color="success" class="icone-sucesso"></ion-icon>
@@ -106,4 +116,5 @@
     <ion-button expand="block" (click)="reiniciar()">Validar outro boleto</ion-button>
   </div>
 
+</div>
 </ion-content>

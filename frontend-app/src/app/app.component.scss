@@ -58,3 +58,13 @@ ion-menu ion-icon {
   opacity: 0.75;
   font-size: 0.8rem;
 }
+ion-menu ion-item.ativo {
+  --background: rgba(255, 255, 255, 0.2);
+  --color: #fff;
+  box-shadow: inset 3px 0 0 #5eead4;
+}
+ion-menu ion-item.ativo ion-icon { color: #fff; }
+
+ion-split-pane ion-menu {
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}

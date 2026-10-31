@@ -37,6 +37,9 @@ public class BoletoService {
     
     @Autowired
     private  TokenVerificacaoRepository tokenVerificacaoRepository;
+
+    @Autowired
+    private TokenEmailService tokenEmailService;
     
     @Autowired
     private EmpresaService empresaService;
@@ -140,9 +143,9 @@ public class BoletoService {
         boleto.setTokenVerificacao(tokenGerado);
         boletoRepository.save(boleto);
 
-        // Implementar(Estudar ideia)
-        // enviar token via SMS/email
-        // smsService.enviarSMS(boleto.getTelefonePagador(), "Seu token é: " + tokenGerado);
+        String emailDestino = boleto.getEmpresa() != null ? boleto.getEmpresa().getEmailContato() : null;
+
+        tokenEmailService.enviarToken(emailDestino, boleto.getCodigoAutenticacao(), tokenGerado);
 
         return tokenGerado;
     }

@@ -20,12 +20,17 @@
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   border: none;
-  min-height: 168px;
+  min-height: 180px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--ab-radius-lg, 22px);
 }
 .action-card:hover,
-.action-card:active {
+.action-card:active,
+.action-card:focus-visible {
   transform: translateY(-4px);
-  box-shadow: 0 18px 40px rgba(15, 118, 110, 0.16);
+  box-shadow: var(--ab-shadow-hover, 0 18px 40px rgba(15, 118, 110, 0.16));
 }
 
 .icon-wrap {
@@ -53,4 +58,18 @@
 .action-card ion-card-content {
   color: #64748b;
   padding-top: 0;
+}
+ion-chip.ab-chip { margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.72rem; }
+.home-grid ion-row { align-items: stretch; }
+.home-grid ion-col { display: flex; flex-direction: column; }
+.action-card ion-card-content { flex: 1; }
+.card-cta {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 18px 18px; color: #0f766e; font-weight: 700; font-size: 0.88rem;
+}
+.card-cta ion-icon { transition: transform 0.2s ease; }
+.action-card:hover .card-cta ion-icon { transform: translateX(4px); }
+
+@media (min-width: 768px) {
+  .action-card ion-card-title { font-size: 1.2rem; }
 }

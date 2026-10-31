@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { FeedbackService } from 'src/app/shared/feedback.service';
 import { BoletoService } from 'src/app/core/services/BoletoService.services';
 
 type Etapa = 'validar' | 'token' | 'confirmar' | 'sucesso';
@@ -23,7 +23,7 @@ export class BoletoValidacaoPage {
 
   constructor(
     private boletoService: BoletoService,
-    private toastCtrl: ToastController
+    private feedback: FeedbackService
   ) {}
 
   private atualizarProgresso() {
@@ -52,8 +52,7 @@ export class BoletoValidacaoPage {
   }
 
   private async toast(message: string, color: string = 'success') {
-    const t = await this.toastCtrl.create({ message, duration: 1600, color });
-    await t.present();
+    if (color === 'success') { await this.feedback.sucesso(message); } else { await this.feedback.erro(null, message); }
   }
 
   validarBoleto() {
@@ -81,8 +80,7 @@ export class BoletoValidacaoPage {
       error: (err) => {
         this.carregando = false;
         this.erroPainel =
-          err?.error?.message ||
-          'Boleto rejeitado ou código inválido. Verifique e tente de novo.';
+          this.feedback.mensagemDeErro(err, 'Boleto rejeitado ou código inválido. Verifique e tente de novo.');
       },
     });
   }
@@ -98,7 +96,7 @@ export class BoletoValidacaoPage {
       },
       error: (err) => {
         this.carregando = false;
-        this.erroPainel = err?.error?.message || 'Erro ao enviar o token.';
+        this.erroPainel = this.feedback.mensagemDeErro(err, 'Erro ao enviar o token.');
       },
     });
   }
@@ -142,7 +140,7 @@ export class BoletoValidacaoPage {
         error: (err) => {
           this.carregando = false;
           this.erroPainel =
-            err?.error?.message || 'Token inválido ou expirado. Tente novamente.';
+            this.feedback.mensagemDeErro(err, 'Token inválido ou expirado. Tente novamente.');
         },
       });
   }

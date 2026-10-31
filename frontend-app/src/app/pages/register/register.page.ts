@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
+import { FeedbackService } from 'src/app/shared/feedback.service';
 import { AuthService } from 'src/app/core/services/AuthService';
 
 
@@ -17,7 +18,7 @@ export class RegisterPage implements OnInit {
   constructor(
     private fb: FormBuilder,
     private usuarioService: AuthService,
-    private toastCtrl: ToastController,
+    private feedback: FeedbackService,
     private navCtrl: NavController
   ) {}
 
@@ -37,33 +38,15 @@ export class RegisterPage implements OnInit {
 
   async registrar() {
     if (this.form.invalid) {
-      const toast = await this.toastCtrl.create({
-        message: 'Preencha todos os campos corretamente.',
-        duration: 1800,
-        color: 'danger'
-      });
-      return toast.present();
+      return this.feedback.erro(null, 'Preencha todos os campos corretamente.');
     }
 
     this.usuarioService.cadastrar(this.form.value).subscribe(async () => {
-      const toast = await this.toastCtrl.create({
-        message: 'Cadastro realizado com sucesso!',
-        duration: 1500,
-        color: 'success'
-      });
+      await this.feedback.sucesso('Cadastro realizado com sucesso!');
+      this.navCtrl.navigateRoot('/login');
 
-      toast.present();
-      toast.onDidDismiss().then(() => {
-        this.navCtrl.navigateRoot('/login');
-      });
-
-    }, async () => {
-      const toast = await this.toastCtrl.create({
-        message: 'Erro ao cadastrar. Tente novamente.',
-        duration: 2000,
-        color: 'danger'
-      });
-      toast.present();
+    }, async (err) => {
+      await this.feedback.erro(err, 'Erro ao cadastrar. Tente novamente.');
     });
   }
 

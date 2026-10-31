@@ -1,13 +1,17 @@
 .login-container {
   --background: linear-gradient(145deg, #052e2b 0%, #115e59 48%, #0f766e 100%);
+}
+.register-wrapper {
+  min-height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  padding: 16px 0;
 }
 
 .login-card {
-  width: 92%;
-  max-width: 440px;
+  width: calc(100% - 28px);
+  max-width: var(--ab-container-auth, 440px);
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(16px);
   border-radius: 24px;
@@ -50,18 +54,18 @@
 }
 
 .input-group {
-  background: #ecfdf5;
+  background: #fff;
   border-radius: 14px;
   display: flex;
   align-items: center;
   padding: 10px 12px;
   margin-bottom: 12px;
-  border: 1px solid transparent;
+  border: 1px solid #e2e8f0;
 }
 .input-group:focus-within {
-  background: #ccfbf1;
-  border-color: #5eead4;
-  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.15);
+  background: #fff;
+  border-color: #94a3b8;
+  box-shadow: none;
 }
 .input-group ion-icon {
   font-size: 20px;
@@ -76,4 +80,31 @@ ion-button {
   font-weight: 700;
   height: 48px;
   margin-top: 6px;
+}
+.toggle-password {
+  margin-left: auto;
+  margin-right: 0 !important;
+  font-size: 22px;
+  cursor: pointer;
+  color: #475569;
+}
+.button-row {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+  margin-top: 8px;
+}
+.button-row ion-button { margin: 0; flex: 1; }
+.button-row .btn-secondary {
+  --background: #fff;
+  --color: #0f766e;
+  --border-color: #99f6e4;
+  --box-shadow: none;
+}
+@media (min-width: 420px) {
+  .button-row { flex-direction: row; }
+}
+@media (min-width: 768px) {
+  .right-panel { padding: 28px 30px; }
+  .left-panel { padding: 34px 20px; }
 }

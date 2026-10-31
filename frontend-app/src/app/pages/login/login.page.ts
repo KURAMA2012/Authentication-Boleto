@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
+import { FeedbackService } from 'src/app/shared/feedback.service';
 import { AuthService } from 'src/app/core/services/AuthService';
 
 @Component({
@@ -16,7 +17,7 @@ export class LoginPage {
 
   constructor(
     private fb: FormBuilder,
-    private toastCtrl: ToastController,
+    private feedback: FeedbackService,
     private navCtrl: NavController,
     private auth: AuthService
   ) {
@@ -58,20 +59,15 @@ export class LoginPage {
       next: async (resp) => {
         this.carregando = false;
         if (resp?.success) {
-          const toast = await this.toastCtrl.create({
-            message: 'Login realizado com sucesso!',
-            duration: 1200,
-            color: 'success',
-          });
-          toast.present();
+          this.feedback.sucesso('Login realizado com sucesso!');
           this.navCtrl.navigateRoot('/home');
         } else {
           this.erroApi = resp?.message || 'E-mail ou senha inválidos.';
         }
       },
-      error: () => {
+      error: (err) => {
         this.carregando = false;
-        this.erroApi = 'E-mail ou senha inválidos.';
+        this.erroApi = this.feedback.mensagemDeErro(err, 'E-mail ou senha inválidos.');
       },
     });
   }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpEventType } from '@angular/common/http';
-import { ToastController } from '@ionic/angular';
+import { FeedbackService } from 'src/app/shared/feedback.service';
 import { BoletoService } from 'src/app/core/services/BoletoService.services';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 
@@ -23,7 +23,7 @@ export class CadastroBoletoPage {
   constructor(
     private fb: FormBuilder,
     private boletoService: BoletoService,
-    private toastCtrl: ToastController
+    private feedback: FeedbackService
   ) {
     this.form = this.fb.group({
       codigoBarras: ['', [Validators.required, Validators.minLength(8)]],
@@ -41,8 +41,7 @@ export class CadastroBoletoPage {
   }
 
   private async toast(message: string, color: string = 'success') {
-    const t = await this.toastCtrl.create({ message, duration: 1800, color });
-    await t.present();
+    if (color === 'success') { await this.feedback.sucesso(message); } else { await this.feedback.erro(null, message); }
   }
 
   gerarBoleto() {
@@ -70,7 +69,7 @@ export class CadastroBoletoPage {
       },
       error: (err) => {
         this.carregando = false;
-        this.erroPainel = err?.error?.message || 'Erro ao criar boleto.';
+        this.erroPainel = this.feedback.mensagemDeErro(err, 'Erro ao criar boleto.');
       },
     });
   }
@@ -147,7 +146,7 @@ export class CadastroBoletoPage {
       error: (err) => {
         this.carregando = false;
         this.progressoUpload = 0;
-        this.erroPainel = err?.error?.message || 'Erro ao enviar CSV.';
+        this.erroPainel = this.feedback.mensagemDeErro(err, 'Erro ao enviar CSV.');
       },
     });
   }

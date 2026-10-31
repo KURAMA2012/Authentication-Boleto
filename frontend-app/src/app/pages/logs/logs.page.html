@@ -1,65 +1,76 @@
 <ion-header translucent="true">
   <ion-toolbar color="primary">
-    <ion-title class="ion-text-center">
-      <ion-icon name="shield-checkmark-outline"></ion-icon>
-        Logs de Boletos
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button><ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Logs de autenticação</ion-title>
   </ion-toolbar>
-
-
-  <ion-toolbar>
+  <ion-toolbar class="search-bar">
     <ion-searchbar
       placeholder="Buscar por código, IP ou mensagem"
       [(ngModel)]="searchTerm"
       (ionInput)="buscar()"
-      animated
       debounce="300">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ab-page logs-bg" [fullscreen]="true">
-
-  <ion-refresher slot="fixed" (ionRefresh)="carregarLogs($event)">
+<ion-content class="ab-page" [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="recarregar($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <div *ngIf="loading" class="loading-area">
-    <ion-spinner name="crescent" color="light"></ion-spinner>
-    <p>Carregando logs...</p>
+  <div class="logs-wrap">
+    <div class="resumo" *ngIf="!loading && !erro && todosLogs.length > 0">
+      <div class="stat"><span>{{ todosLogs.length }}</span>Consultas</div>
+      <div class="stat ok"><span>{{ totalValidos }}</span>Válidas</div>
+      <div class="stat bad"><span>{{ todosLogs.length - totalValidos }}</span>Inválidas</div>
+    </div>
+
+    <div *ngIf="loading" aria-busy="true" class="logs-grid">
+      <div class="log-card skeleton" *ngFor="let s of skeletons">
+        <ion-skeleton-text animated class="sk-avatar"></ion-skeleton-text>
+        <div class="sk-lines">
+          <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 45%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!loading && erro" class="estado">
+      <ion-icon name="cloud-offline-outline"></ion-icon>
+      <h3>Não foi possível carregar os logs</h3>
+      <p>Verifique se a API está rodando e tente novamente.</p>
+      <ion-button fill="outline" (click)="recarregar()">Tentar de novo</ion-button>
+    </div>
+
+    <div *ngIf="!loading && !erro && logs.length === 0" class="estado">
+      <ion-icon name="document-text-outline"></ion-icon>
+      <h3>{{ searchTerm ? 'Nada encontrado' : 'Nenhum log ainda' }}</h3>
+      <p>{{ searchTerm ? 'Tente outro termo de busca.' : 'As validações de boleto aparecem aqui.' }}</p>
+      <ion-button *ngIf="!searchTerm" routerLink="/boleto-validacao">Validar um boleto</ion-button>
+    </div>
+
+    <div class="logs-grid" *ngIf="!loading && !erro">
+      <div class="log-card" *ngFor="let log of logs">
+        <div class="status-dot" [class.ok]="log.valido">
+          <ion-icon [name]="log.valido ? 'checkmark-outline' : 'close-outline'"></ion-icon>
+        </div>
+        <div class="log-info">
+          <h3>{{ log.mensagem }}</h3>
+          <p><code>{{ log.codigoAutenticacao }}</code></p>
+          <p class="meta">{{ log.ipUsuario }} · {{ formatarData(log.dataConsulta) }}</p>
+        </div>
+        <ion-chip class="ab-chip status-chip" [class.ok]="log.valido" [class.bad]="!log.valido">
+          <ion-icon [name]="log.valido ? 'checkmark-circle-outline' : 'close-circle-outline'"></ion-icon>
+          <ion-label>{{ log.valido ? 'Válido' : 'Inválido' }}</ion-label>
+        </ion-chip>
+      </div>
+    </div>
   </div>
-
-  <ion-list *ngIf="!loading && logs.length > 0" class="animate__animated animate__fadeInUp">
-
-    <ion-item *ngFor="let log of logs" lines="inset" class="log-item">
-      <ion-avatar slot="start" [style.background]="log.valido ? '#28a745' : '#dc3545'">
-        <ion-icon [name]="log.valido ? 'checkmark-done-outline' : 'alert-circle-outline'" color="light"></ion-icon>
-      </ion-avatar>
-
-      <ion-label>
-        <h2>{{ log.mensagem }}</h2>
-        <p><strong>Código:</strong> {{ log.codigoAutenticacao }}</p>
-        <p><strong>IP:</strong> {{ log.ipUsuario }}</p>
-        <p><strong>Data:</strong> {{ formatarData(log.dataConsulta) }}</p>
-      </ion-label>
-
-      <ion-badge [color]="corStatus(log.valido)">
-        {{ log.valido ? 'Válido' : 'Inválido' }}
-      </ion-badge>
-    </ion-item>
-
-  </ion-list>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="carregarMais($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="crescent"
-      loadingText="Carregando mais logs...">
-    </ion-infinite-scroll-content>
+    <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Carregando mais..."></ion-infinite-scroll-content>
   </ion-infinite-scroll>
-
-  <div *ngIf="!loading && logs.length === 0" class="empty-area">
-    <ion-icon name="document-text-outline" size="large" color="medium"></ion-icon>
-    <p>Nenhum log encontrado</p>
-  </div>
-
 </ion-content>
