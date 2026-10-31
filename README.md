@@ -41,7 +41,7 @@ O golpe do boleto falso troca a linha digitável ou o beneficiário antes de o p
 ```bash
 git clone https://github.com/KURAMA2012/Authentication-Boleto.git
 cd Authentication-Boleto
-cp .env.example .env   # preencha DB_PASSWORD, RABBITMQ_PASSWORD e JWT_SECRET (32+ caracteres)
+cp .env.example .env   # já vem com valores de demo; é só copiar e rodar
 docker compose up --build
 ```
 
@@ -152,7 +152,7 @@ Authentication-Boleto/
 ### Problemas comuns
 
 - **Porta ocupada (5432, 5672, 8025, 8080, 8082 ou 8100):** pare o serviço local ou o container antigo que usa a porta.
-- **O compose reclama de `DB_PASSWORD` ou `RABBITMQ_PASSWORD`:** essas variáveis estão vazias no `.env`.
+- **O compose reclama de `DB_PASSWORD`, `RABBITMQ_PASSWORD` ou `JWT_SECRET`:** o `.env` não existe ou foi editado com valor vazio. Rode de novo `cp .env.example .env`. Os valores do exemplo são apenas para demo local; troque em produção.
 - **O banco não sobe depois de trocar a senha:** o volume guarda a senha antiga. Rode `docker compose down -v` e suba de novo.
 
 Mais sobre secrets: [docs/security.md](docs/security.md).
