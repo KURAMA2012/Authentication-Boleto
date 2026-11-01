@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -60,6 +61,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse<Void>> handleIllegalArgument(IllegalArgumentException ex) {
         return build(ErrorCode.REGRA_NEGOCIO, ex.getMessage(), null);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDataIntegrity(DataIntegrityViolationException ex) {
+        log.warn("Violacao de integridade de dados: {}", ex.getMostSpecificCause().getClass().getSimpleName());
+        // Nao expor detalhes do banco (constraint, SQL) ao cliente.
+        return build(ErrorCode.REGRA_NEGOCIO, "Registro duplicado ou viola restri\u00e7\u00e3o de integridade.", null);
     }
 
     @ExceptionHandler(Exception.class)

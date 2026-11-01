@@ -3,6 +3,7 @@ package com.A3.projeto.Faculdade.AuthenticationBoleto.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -16,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.A3.projeto.Faculdade.AuthenticationBoleto.common.ErrorCode;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.EmpresaRequest;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.Empresa;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.exception.ApiException;
@@ -56,6 +58,20 @@ class EmpresaServiceTest {
         ArgumentCaptor<Empresa> captor = ArgumentCaptor.forClass(Empresa.class);
         verify(repository).save(captor.capture());
         assertThat(captor.getValue().getCnpj()).isEqualTo(CNPJ_DIGITOS);
+    }
+
+    @Test
+    void salvar_cnpjJaCadastrado_lancaEmpresaDuplicadaESemPersistir() {
+        EmpresaRequest request = new EmpresaRequest();
+        request.setCnpj(CNPJ_MASCARA);
+        when(repository.existsByCnpj(CNPJ_DIGITOS)).thenReturn(true);
+
+        assertThatThrownBy(() -> service.salvar(request))
+                .isInstanceOf(ApiException.class)
+                .extracting(ex -> ((ApiException) ex).getCode())
+                .isEqualTo(ErrorCode.EMPRESA_DUPLICADA);
+        verify(repository, never()).save(any());
+        verifyNoInteractions(empresaMapper);
     }
 
     @Test

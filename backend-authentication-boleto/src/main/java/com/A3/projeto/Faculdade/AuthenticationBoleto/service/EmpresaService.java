@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.A3.projeto.Faculdade.AuthenticationBoleto.common.Cnpj;
+import com.A3.projeto.Faculdade.AuthenticationBoleto.common.ErrorCode;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.EmpresaRequest;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.EmpresaResponse;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.Empresa;
+import com.A3.projeto.Faculdade.AuthenticationBoleto.exception.ApiException;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.exception.EmpresaNaoEncontradaException;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.repository.EmpresaRepository;
 
@@ -30,6 +32,11 @@ public class EmpresaService {
 
 	public EmpresaResponse salvar(EmpresaRequest request) {
 		request.setCnpj(Cnpj.normalizar(request.getCnpj()));
+		
+		if(repository.existsByCnpj(request.getCnpj())) {
+			 throw new ApiException(ErrorCode.EMPRESA_DUPLICADA, "CNPJ j\u00e1 cadastrado.");
+		}
+		
 		Empresa empresa = empresaMapper.toEntity(request);
 
 		Empresa salva = repository.save(empresa);
