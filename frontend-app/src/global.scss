@@ -204,3 +204,11 @@ ion-datetime { --background: #fff; --background-rgb: 255, 255, 255; color: #042f
   .ab-form-actions { flex-direction: column; align-items: stretch; }
   .ab-form-actions > ion-button { width: 100%; min-width: 0; }
 }
+/* Campo de data clicavel (abre ion-modal com ion-datetime) */
+.ab-date-field { cursor: pointer; }
+.ab-date-field .ab-date-valor { margin-left: auto; color: #042f2e; font-weight: 600; }
+.ab-date-field .ab-date-valor.vazio { color: #94a3b8; font-weight: 400; }
+.ab-date-field .ab-date-icone { color: #0f766e; font-size: 1.2rem; }
+/* Evita ligadura 'ti' quebrada de algumas instalações da fonte Inter no Windows (ex.: 'automaticamente' renderizando errado). */
+html, body, ion-app { font-variant-ligatures: no-common-ligatures; font-feature-settings: 'liga' 0, 'calt' 0; }
+

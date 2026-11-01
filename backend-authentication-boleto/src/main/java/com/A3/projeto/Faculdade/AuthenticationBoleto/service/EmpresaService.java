@@ -40,16 +40,12 @@ public class EmpresaService {
 		Empresa empresa = empresaMapper.toEntity(request);
 
 		Empresa salva = repository.save(empresa);
-		return new EmpresaResponse(salva.getId(), salva.getNome(), salva.getCnpj(), salva.getEmailContato(),
-				salva.getTelefone(), salva.getNomeFantasia(), salva.getCep(), salva.getLogradouro(), salva.getNumero(),
-				salva.getBairro(), salva.getMunicipio(), salva.getUf());
+		return toResponse(salva);
 	}
 
 	public List<EmpresaResponse> listarTodas() {
 		return repository.findAll().stream()
-				.map(e -> new EmpresaResponse(e.getId(), e.getNome(), e.getCnpj(), e.getEmailContato(), e.getTelefone(),
-						e.getTelefone(), e.getNomeFantasia(), e.getCep(), e.getLogradouro(), e.getNumero(),
-						e.getBairro(), e.getMunicipio()))
+				.map(this::toResponse)
 				.collect(Collectors.toList());
 	}
 
@@ -57,14 +53,18 @@ public class EmpresaService {
 		String cnpj = Cnpj.normalizar(cnpjInformado);
 		Empresa empresa = repository.findByCnpj(cnpj)
 				.orElseThrow(() -> new EmpresaNaoEncontradaException("Empresa com CNPJ " + cnpj + " não encontrada"));
-		return new EmpresaResponse(empresa.getId(), empresa.getNome(), empresa.getCnpj(), empresa.getEmailContato(),
-				empresa.getTelefone(), empresa.getTelefone(), empresa.getNomeFantasia(), empresa.getCep(),
-				empresa.getLogradouro(), empresa.getNumero(), empresa.getBairro(), empresa.getMunicipio());
+		return toResponse(empresa);
 	}
 
 	public Empresa buscarPorCnpj(String cnpj) {
 		return repository.findByCnpj(cnpj)
 				.orElseThrow(() -> new EmpresaNaoEncontradaException("Empresa com CNPJ " + cnpj + " não encontrada"));
+	}
+
+	private EmpresaResponse toResponse(Empresa e) {
+		return new EmpresaResponse(e.getId(), e.getNome(), e.getCnpj(), e.getEmailContato(), e.getTelefone(),
+				e.getNomeFantasia(), e.getCep(), e.getLogradouro(), e.getNumero(), e.getBairro(), e.getMunicipio(),
+				e.getUf());
 	}
 
 }

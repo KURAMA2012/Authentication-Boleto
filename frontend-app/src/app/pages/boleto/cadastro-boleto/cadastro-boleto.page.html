@@ -53,15 +53,16 @@
               <p class="campo-erro" *ngIf="campoInvalido('valor')">Informe o valor.</p>
               </ion-col>
               <ion-col size="12" size-md="6">
-              <div class="ab-date-field" [class.invalido]="campoInvalido('vencimento')">
+              <div id="abrir-vencimento" class="ab-date-field" role="button" tabindex="0" [class.invalido]="campoInvalido('vencimento')">
                 <span class="ab-date-label">Data de Vencimento *</span>
-                <ion-datetime-button datetime="dt-vencimento"></ion-datetime-button>
+                <span class="ab-date-valor" [class.vazio]="!form.get('vencimento')?.value">{{ vencimentoExibicao }}</span>
+                <ion-icon name="calendar-outline" class="ab-date-icone"></ion-icon>
               </div>
-              <ion-modal [keepContentsMounted]="true">
+              <ion-modal trigger="abrir-vencimento" [keepContentsMounted]="true" (didDismiss)="form.get('vencimento')?.markAsTouched()">
                 <ng-template>
                   <ion-datetime id="dt-vencimento" formControlName="vencimento" presentation="date" locale="pt-BR"
                     [formatOptions]="{ date: { day: '2-digit', month: '2-digit', year: 'numeric' } }"
-                    [showDefaultButtons]="true" doneText="OK" cancelText="Cancelar" (ionBlur)="form.get('vencimento')?.markAsTouched()"></ion-datetime>
+                    [showDefaultButtons]="true" doneText="OK" cancelText="Cancelar"></ion-datetime>
                 </ng-template>
               </ion-modal>              <p class="campo-erro" *ngIf="campoInvalido('vencimento')">Informe o vencimento.</p>
               </ion-col>

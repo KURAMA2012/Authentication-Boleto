@@ -18,6 +18,7 @@ import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.BoletoValidacaoRequest;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.BoletoValidacaoResponse;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.Boleto;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.StatusBoleto;
+import com.A3.projeto.Faculdade.AuthenticationBoleto.exception.BoletoNaoEncontradoException;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.service.BoletoLogService;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.service.BoletoService;
 
@@ -70,9 +71,16 @@ public class BoletoController {
             @RequestBody BoletoValidacaoRequest request,
             HttpServletRequest servletRequest) {
 
-        Boleto boleto = boletoService.buscarPorCodigoAutenticacao(request.getCodigoAutenticacao());
-        
         String ip = extractClientIp(servletRequest);
+        Boleto boleto;
+        try {
+            boleto = boletoService.buscarPorCodigoAutenticacao(request.getCodigoAutenticacao());
+        } catch (BoletoNaoEncontradoException e) {
+            // Antifraude: tentativa rejeitada tambem fica auditada na tela de Logs.
+            boletoLogService.registrarLog(request.getCodigoAutenticacao(), ip, false,
+                    "Tentativa rejeitada: boleto n\u00e3o encontrado.", null);
+            throw e;
+        }
 
         
         boleto.setAutenticado(true);

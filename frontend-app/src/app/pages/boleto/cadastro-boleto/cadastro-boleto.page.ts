@@ -42,6 +42,14 @@ export class CadastroBoletoPage {
   }
 
   /** ion-datetime devolve ISO (yyyy-MM-ddTHH:mm...); a API recebe yyyy-MM-dd (igual ao antigo input type=date). */
+  /** Texto exibido no campo de vencimento: dd/MM/yyyy ou 'Selecionar data' quando vazio (inclusive apos form.reset()). */
+  get vencimentoExibicao(): string {
+    const v = this.paraDataApi(this.form.get('vencimento')?.value);
+    if (!v) { return 'Selecionar data'; }
+    const [a, m, d] = v.split('-');
+    return `${d}/${m}/${a}`;
+  }
+
   private paraDataApi(valor: string | null | undefined): string {
     return valor ? String(valor).substring(0, 10) : '';
   }

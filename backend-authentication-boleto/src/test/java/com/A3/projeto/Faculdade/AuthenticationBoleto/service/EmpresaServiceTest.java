@@ -98,4 +98,24 @@ class EmpresaServiceTest {
         assertThatThrownBy(() -> service.buscarResponsePorCnpj("abc")).isInstanceOf(ApiException.class);
         verifyNoInteractions(repository);
     }
+
+    @Test
+    void listarTodas_mapeiaCadaCampoNoLugarCerto() {
+        Empresa e = new Empresa();
+        e.setId(1L); e.setNome("Empresa Demo"); e.setCnpj(CNPJ_DIGITOS); e.setEmailContato("contato@demo.local");
+        e.setTelefone("11999990000"); e.setNomeFantasia("Demo"); e.setCep("01001000"); e.setLogradouro("Rua Exemplo");
+        e.setNumero("100"); e.setBairro("Centro"); e.setMunicipio("Sao Paulo"); e.setUf("SP");
+        when(repository.findAll()).thenReturn(java.util.List.of(e));
+
+        var r = service.listarTodas().get(0);
+
+        assertThat(r.getTelefone()).isEqualTo("11999990000");
+        assertThat(r.getFantasia()).isEqualTo("Demo");
+        assertThat(r.getCep()).isEqualTo("01001000");
+        assertThat(r.getLogradouro()).isEqualTo("Rua Exemplo");
+        assertThat(r.getNumero()).isEqualTo("100");
+        assertThat(r.getBairro()).isEqualTo("Centro");
+        assertThat(r.getMunicipio()).isEqualTo("Sao Paulo");
+        assertThat(r.getUf()).isEqualTo("SP");
+    }
 }
