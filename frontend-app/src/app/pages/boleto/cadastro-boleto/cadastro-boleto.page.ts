@@ -41,6 +41,11 @@ export class CadastroBoletoPage {
     return !!(c && c.invalid && (c.dirty || c.touched));
   }
 
+  /** ion-datetime devolve ISO (yyyy-MM-ddTHH:mm...); a API recebe yyyy-MM-dd (igual ao antigo input type=date). */
+  private paraDataApi(valor: string | null | undefined): string {
+    return valor ? String(valor).substring(0, 10) : '';
+  }
+
   private async toast(message: string, color: string = 'success') {
     if (color === 'success') { await this.feedback.sucesso(message); } else { await this.feedback.erro(null, message); }
   }
@@ -56,6 +61,7 @@ export class CadastroBoletoPage {
     this.carregando = true;
     this.boletoService.criarBoleto({
       ...this.form.value,
+      vencimento: this.paraDataApi(this.form.value.vencimento),
       cpfCnpjPagador: somenteDigitos(this.form.value.cpfCnpjPagador),
       cnpjBeneficiario: somenteDigitos(this.form.value.cnpjBeneficiario),
     }).subscribe({

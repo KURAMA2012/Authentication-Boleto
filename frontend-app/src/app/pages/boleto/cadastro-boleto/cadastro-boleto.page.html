@@ -45,51 +45,42 @@
           <ion-grid class="ab-form-grid">
             <ion-row>
               <ion-col size="12" size-md="12">
-              <ion-item>
-                <ion-label position="floating">Código de Barras *</ion-label>
-                <ion-input formControlName="codigoBarras" inputmode="numeric"></ion-input>
-              </ion-item>
+              <ion-input fill="outline" labelPlacement="floating" label="Código de Barras *" formControlName="codigoBarras" inputmode="numeric"></ion-input>
               <p class="campo-erro" *ngIf="campoInvalido('codigoBarras')">Código de barras obrigatório.</p>
               </ion-col>
               <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">Valor *</ion-label>
-                <ion-input type="number" formControlName="valor" inputmode="decimal"></ion-input>
-              </ion-item>
+              <ion-input fill="outline" labelPlacement="floating" label="Valor *" type="number" formControlName="valor" inputmode="decimal"></ion-input>
               <p class="campo-erro" *ngIf="campoInvalido('valor')">Informe o valor.</p>
               </ion-col>
               <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">Data de Vencimento *</ion-label>
-                <ion-input type="date" formControlName="vencimento"></ion-input>
-              </ion-item>
-              <p class="campo-erro" *ngIf="campoInvalido('vencimento')">Informe o vencimento.</p>
+              <div class="ab-date-field" [class.invalido]="campoInvalido('vencimento')">
+                <span class="ab-date-label">Data de Vencimento *</span>
+                <ion-datetime-button datetime="dt-vencimento"></ion-datetime-button>
+              </div>
+              <ion-modal [keepContentsMounted]="true">
+                <ng-template>
+                  <ion-datetime id="dt-vencimento" formControlName="vencimento" presentation="date" locale="pt-BR"
+                    [formatOptions]="{ date: { day: '2-digit', month: '2-digit', year: 'numeric' } }"
+                    [showDefaultButtons]="true" doneText="OK" cancelText="Cancelar" (ionBlur)="form.get('vencimento')?.markAsTouched()"></ion-datetime>
+                </ng-template>
+              </ion-modal>              <p class="campo-erro" *ngIf="campoInvalido('vencimento')">Informe o vencimento.</p>
               </ion-col>
               <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">CPF/CNPJ Pagador</ion-label>
-                <ion-input formControlName="cpfCnpjPagador" inputmode="numeric"></ion-input>
-              </ion-item>
+              <ion-input fill="outline" labelPlacement="floating" label="CPF/CNPJ Pagador" formControlName="cpfCnpjPagador" inputmode="numeric"></ion-input>
               </ion-col>
               <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">Nome do Pagador *</ion-label>
-                <ion-input formControlName="nomePagador"></ion-input>
-              </ion-item>
+              <ion-input fill="outline" labelPlacement="floating" label="Nome do Pagador *" formControlName="nomePagador"></ion-input>
               <p class="campo-erro" *ngIf="campoInvalido('nomePagador')">Informe o nome do pagador.</p>
               </ion-col>
               <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">CNPJ Beneficiário *</ion-label>
-                <ion-input formControlName="cnpjBeneficiario" inputmode="numeric" maxlength="18"></ion-input>
-              </ion-item>
+              <ion-input fill="outline" labelPlacement="floating" label="CNPJ Beneficiário *" formControlName="cnpjBeneficiario" inputmode="numeric" maxlength="18"></ion-input>
               <p class="campo-erro" *ngIf="campoInvalido('cnpjBeneficiario')">CNPJ do beneficiário obrigatório.</p>
               </ion-col>
             </ion-row>
           </ion-grid>
 
-          <div class="acoes">
-          <ion-button expand="block" color="success" type="submit" [disabled]="carregando">
+          <div class="ab-form-actions">
+          <ion-button color="success" type="submit" [disabled]="carregando">
             <ion-spinner *ngIf="carregando" name="crescent"></ion-spinner>
             <ion-icon *ngIf="!carregando" name="add-circle-outline" slot="start"></ion-icon>
             {{ carregando ? 'Gerando…' : 'Gerar Boleto' }}

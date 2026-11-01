@@ -50,14 +50,7 @@
   <ion-card class="etapa-card" *ngIf="etapa !== 'sucesso'">
   <ion-card-content>
   <div *ngIf="etapa === 'validar'" class="animar">
-    <ion-item>
-      <ion-label position="stacked">Código de Autenticação</ion-label>
-      <ion-input
-        [(ngModel)]="codigoAutenticacao"
-        placeholder="Digite o código"
-        [disabled]="carregando">
-      </ion-input>
-    </ion-item>
+    <ion-input fill="outline" labelPlacement="floating" label="Código de Autenticação" [(ngModel)]="codigoAutenticacao" placeholder="Digite o código" [disabled]="carregando"></ion-input>
 
     <ion-button expand="block" color="primary" (click)="validarBoleto()" [disabled]="carregando">
       <ion-spinner *ngIf="carregando" name="crescent"></ion-spinner>
@@ -84,17 +77,7 @@
   </div>
 
   <div *ngIf="etapa === 'confirmar'" class="animar">
-    <ion-item>
-      <ion-label position="stacked">Token de Verificação</ion-label>
-      <ion-input
-        [(ngModel)]="tokenVerificacao"
-        placeholder="6 dígitos"
-        inputmode="numeric"
-        autocomplete="one-time-code"
-        maxlength="8"
-        [disabled]="carregando">
-      </ion-input>
-    </ion-item>
+    <ion-input fill="outline" labelPlacement="floating" label="Token de Verificação" [(ngModel)]="tokenVerificacao" placeholder="6 dígitos" inputmode="numeric" autocomplete="one-time-code" maxlength="8" [disabled]="carregando"></ion-input>
 
     <ion-button expand="block" color="success" (click)="confirmarToken()" [disabled]="carregando">
       <ion-spinner *ngIf="carregando" name="crescent"></ion-spinner>

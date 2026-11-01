@@ -19,23 +19,10 @@
 
       <ion-grid class="ab-form-grid">
         <ion-row>
-          <ion-col size="12" size-md="8">
-            <ion-item>
-              <ion-label position="floating">CNPJ</ion-label>
-              <ion-input 
-                [(ngModel)]="empresa.cnpj" 
-                mask="00.000.000/0000-00"
-                placeholder="00.000.000/0000-00">
-              </ion-input>
-              <ion-button 
-                slot="end" 
-                color="tertiary" 
-                (click)="buscarCnpj()" 
-                [disabled]="carregandoCnpj">
-                <ion-spinner *ngIf="carregandoCnpj" name="dots"></ion-spinner>
-                <span *ngIf="!carregandoCnpj">Buscar</span>
-              </ion-button>
-            </ion-item>
+          <ion-col size="12" size-md="6">
+            <ion-input fill="outline" labelPlacement="floating" label="CNPJ" [(ngModel)]="empresa.cnpj" mask="00.000.000/0000-00" placeholder="00.000.000/0000-00">
+              <ion-button slot="end" fill="clear" size="small" color="tertiary" (click)="buscarCnpj()" [disabled]="carregandoCnpj"> <ion-spinner *ngIf="carregandoCnpj" name="dots"></ion-spinner> <span *ngIf="!carregandoCnpj">Buscar</span> </ion-button>
+            </ion-input>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -45,32 +32,16 @@
       <ion-grid class="ab-form-grid">
         <ion-row>
           <ion-col size="12" size-md="6">
-            <ion-item>
-              <ion-label position="floating">Nome</ion-label>
-              <ion-input [(ngModel)]="empresa.nome"></ion-input>
-            </ion-item>
+            <ion-input fill="outline" labelPlacement="floating" label="Nome" [(ngModel)]="empresa.nome"></ion-input>
           </ion-col>
           <ion-col size="12" size-md="6">
-            <ion-item>
-              <ion-label position="floating">Nome Fantasia</ion-label>
-              <ion-input [(ngModel)]="empresa.fantasia"></ion-input>
-            </ion-item>
+            <ion-input fill="outline" labelPlacement="floating" label="Nome Fantasia" [(ngModel)]="empresa.fantasia"></ion-input>
           </ion-col>
           <ion-col size="12" size-md="6">
-            <ion-item>
-              <ion-label position="floating">E-mail</ion-label>
-              <ion-input [(ngModel)]="empresa.email" type="email"></ion-input>
-            </ion-item>
+            <ion-input fill="outline" labelPlacement="floating" label="E-mail" [(ngModel)]="empresa.email" type="email"></ion-input>
           </ion-col>
           <ion-col size="12" size-md="6">
-            <ion-item>
-              <ion-label position="floating">Telefone</ion-label>
-              <ion-input 
-                [(ngModel)]="empresa.telefone" 
-                mask="(00) 00000-0000"
-                placeholder="(00) 00000-0000">
-              </ion-input>
-            </ion-item>
+            <ion-input fill="outline" labelPlacement="floating" label="Telefone" [(ngModel)]="empresa.telefone" mask="(00) 00000-0000" placeholder="(00) 00000-0000"></ion-input>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -79,61 +50,31 @@
 
       <ion-grid class="ab-form-grid">
         <ion-row>
-          <ion-col size="12" size-md="5">
-            <ion-item>
-              <ion-label position="floating">CEP</ion-label>
-              <ion-input 
-                [(ngModel)]="empresa.cep" 
-                mask="00000-000"
-                placeholder="00000-000">
-              </ion-input>
-              <ion-button 
-                slot="end" 
-                color="tertiary" 
-                (click)="buscarCep()" 
-                [disabled]="carregandoCep">
-                <ion-spinner *ngIf="carregandoCep" name="dots"></ion-spinner>
-                <span *ngIf="!carregandoCep">Buscar</span>
-              </ion-button>
-            </ion-item>
+          <ion-col size="12" size-md="6">
+            <ion-input fill="outline" labelPlacement="floating" label="CEP" [(ngModel)]="empresa.cep" mask="00000-000" placeholder="00000-000">
+              <ion-button slot="end" fill="clear" size="small" color="tertiary" (click)="buscarCep()" [disabled]="carregandoCep"> <ion-spinner *ngIf="carregandoCep" name="dots"></ion-spinner> <span *ngIf="!carregandoCep">Buscar</span> </ion-button>
+            </ion-input>
           </ion-col>
-          <ion-col size="12" size-md="7">
-            <ion-item>
-              <ion-label position="floating">Logradouro</ion-label>
-              <ion-input [(ngModel)]="empresa.logradouro"></ion-input>
-            </ion-item>
+          <ion-col size="12" size-md="6">
+            <ion-input fill="outline" labelPlacement="floating" label="Logradouro" [(ngModel)]="empresa.logradouro"></ion-input>
           </ion-col>
-          <ion-col size="12" size-md="3">
-            <ion-item>
-              <ion-label position="floating">Número</ion-label>
-              <ion-input [(ngModel)]="empresa.numero"></ion-input>
-            </ion-item>
+          <ion-col size="12" size-md="6">
+            <ion-input fill="outline" labelPlacement="floating" label="Número" [(ngModel)]="empresa.numero"></ion-input>
           </ion-col>
-          <ion-col size="12" size-md="4">
-            <ion-item>
-              <ion-label position="floating">Bairro</ion-label>
-              <ion-input [(ngModel)]="empresa.bairro"></ion-input>
-            </ion-item>
+          <ion-col size="12" size-md="6">
+            <ion-input fill="outline" labelPlacement="floating" label="Bairro" [(ngModel)]="empresa.bairro"></ion-input>
           </ion-col>
-          <ion-col size="12" size-md="3">
-            <ion-item>
-              <ion-label position="floating">Município</ion-label>
-              <ion-input [(ngModel)]="empresa.municipio"></ion-input>
-            </ion-item>
+          <ion-col size="12" size-md="6">
+            <ion-input fill="outline" labelPlacement="floating" label="Município" [(ngModel)]="empresa.municipio"></ion-input>
           </ion-col>
-          <ion-col size="12" size-md="2">
-            <ion-item>
-              <ion-label position="floating">UF</ion-label>
-              <ion-input [(ngModel)]="empresa.uf" maxlength="2"></ion-input>
-            </ion-item>
+          <ion-col size="12" size-md="6">
+            <ion-input fill="outline" labelPlacement="floating" label="UF" [(ngModel)]="empresa.uf" maxlength="2"></ion-input>
           </ion-col>
         </ion-row>
       </ion-grid>
 
-      <div class="acoes">
-      <ion-button 
-        expand="block"
-        class="btn-salvar" 
+      <div class="ab-form-actions">
+      <ion-button class="btn-salvar" 
         (click)="cadastrar()" 
         [disabled]="carregandoSalvar">
         <ion-spinner *ngIf="carregandoSalvar" name="crescent"></ion-spinner>
