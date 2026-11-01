@@ -1,16 +1,20 @@
-﻿<ion-content class="login-container">
-  <div class="login-orb login-orb-a"></div>
-  <div class="login-orb login-orb-b"></div>
+<ion-content class="login-container">
+  <div class="login-split">
+    <section class="login-marca">
+      <a routerLink="/inicio" class="marca-topo">
+        <img src="assets/logo.svg" alt="" width="44" height="44" />
+        <span>Authentication Boleto</span>
+      </a>
+      <h1>Boleto adulterado &eacute; fraude. 2FA &eacute; a defesa.</h1>
+      <p>Golpistas alteram o c&oacute;digo de barras e desviam o pagamento. Cada boleto emitido aqui recebe autentica&ccedil;&atilde;o e confirma&ccedil;&atilde;o por token, e o pagador confere antes de pagar.</p>
+      <ul class="marca-pontos">
+        <li><ion-icon name="shield-checkmark-outline"></ion-icon> Autentica&ccedil;&atilde;o em dois fatores</li>
+        <li><ion-icon name="barcode-outline"></ion-icon> C&oacute;digo de barras verificado</li>
+        <li><ion-icon name="pulse-outline"></ion-icon> Hist&oacute;rico de valida&ccedil;&otilde;es</li>
+      </ul>
+    </section>
 
-  <div class="login-wrapper">
-    <div class="logo-area">
-      <div class="logo-badge">
-        <ion-icon name="shield-checkmark-outline" aria-hidden="true"></ion-icon>
-      </div>
-      <h1>Authentication Boleto</h1>
-      <p class="logo-tag">Segurança e confiança em cada boleto</p>
-    </div>
-
+    <section class="login-form-col">
     <div class="login-card">
       <h2>Bem-vindo</h2>
       <p class="subtitle">Entre para continuar</p>
@@ -34,7 +38,7 @@
         </div>
         <p class="campo-erro" id="erro-email" *ngIf="campoInvalido('email')">
           <span *ngIf="email?.errors?.['required']">Informe o e-mail.</span>
-          <span *ngIf="email?.errors?.['email']">E-mail inválido.</span>
+          <span *ngIf="email?.errors?.['email']">E-mail inv�lido.</span>
         </p>
 
         <div class="input-group" [class.invalid]="campoInvalido('senha')">
@@ -60,20 +64,22 @@
         </div>
         <p class="campo-erro" id="erro-senha" *ngIf="campoInvalido('senha')">
           <span *ngIf="senha?.errors?.['required']">Informe a senha.</span>
-          <span *ngIf="senha?.errors?.['minlength']">Mínimo de 4 caracteres.</span>
+          <span *ngIf="senha?.errors?.['minlength']">M�nimo de 4 caracteres.</span>
         </p>
 
         <ion-button expand="block" class="btn-login" type="submit" [disabled]="carregando">
           <ion-spinner *ngIf="carregando" name="crescent"></ion-spinner>
           <span *ngIf="!carregando">Entrar</span>
-          <span *ngIf="carregando">Entrando…</span>
+          <span *ngIf="carregando">Entrando.</span>
         </ion-button>
       </form>
 
       <p class="signup-text">
-        Não tem conta?
+        N�o tem conta?
         <a routerLink="/register" (click)="$event.preventDefault(); irParaCadastro()">Criar conta</a>
       </p>
+      <p class="signup-text"><a routerLink="/validar">Sou pagador: validar um boleto</a></p>
     </div>
+    </section>
   </div>
 </ion-content>

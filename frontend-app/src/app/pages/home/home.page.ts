@@ -1,5 +1,6 @@
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
+import { AuthService } from 'src/app/core/services/AuthService';
 
 @Component({
   selector: 'app-home',
@@ -19,5 +20,9 @@ import { Component } from '@angular/core';
   ]
 })
 export class HomePage {
-  constructor() {}
+  constructor(private auth: AuthService) {}
+
+  get usuarioNome(): string {
+    return this.auth.nomeExibicao();
+  }
 }

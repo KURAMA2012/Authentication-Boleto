@@ -1,0 +1,92 @@
+<ion-header translucent="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
+    <ion-title>Painel</ion-title>
+    <ion-buttons slot="end">
+      <ion-chip class="usuario-chip"><ion-icon name="business-outline"></ion-icon><ion-label>{{ usuarioNome }}</ion-label></ion-chip>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ab-page ion-padding">
+  <div class="ab-container painel-wrap">
+
+    <div *ngIf="carregandoEmpresas" aria-busy="true">
+      <ion-skeleton-text animated class="sk-select"></ion-skeleton-text>
+      <div class="cards"><div class="metrica" *ngFor="let s of [1,2,3]"><ion-skeleton-text animated style="width:60%"></ion-skeleton-text><ion-skeleton-text animated class="sk-num"></ion-skeleton-text></div></div>
+    </div>
+
+    <div *ngIf="!carregandoEmpresas && !erro && empresas.length === 0" class="estado">
+      <ion-icon name="business-outline"></ion-icon>
+      <h3>Nenhuma empresa cadastrada</h3>
+      <p>Cadastre sua empresa para emitir boletos e acompanhar as valida&ccedil;&otilde;es.</p>
+      <ion-button routerLink="/cadastro-empresa"><ion-icon name="add-outline" slot="start"></ion-icon>Cadastrar empresa</ion-button>
+    </div>
+
+    <ng-container *ngIf="!carregandoEmpresas && empresas.length > 0">
+      <div class="filtros">
+        <ion-select class="empresa-select" fill="outline" labelPlacement="floating" label="Empresa" interface="popover"
+          [ngModel]="empresaId" (ionChange)="selecionarEmpresa($event.detail.value)">
+          <ion-select-option *ngFor="let emp of empresas" [value]="emp.id">{{ emp.nome }} &middot; {{ formatarCnpj(emp.cnpj) }}</ion-select-option>
+        </ion-select>
+        <div class="periodos" role="group" aria-label="Per&iacute;odo">
+          <ion-chip *ngFor="let d of periodos" class="ab-chip" [class.ativo]="periodo === d" (click)="selecionarPeriodo(d)">
+            <ion-label>{{ d }} dias</ion-label>
+          </ion-chip>
+        </div>
+      </div>
+    </ng-container>
+
+    <div *ngIf="erro && !carregandoEmpresas && !carregandoMetricas" class="estado erro">
+      <ion-icon name="lock-closed-outline"></ion-icon>
+      <h3>{{ erro }}</h3>
+      <ion-button fill="outline" (click)="recarregar()">Tentar de novo</ion-button>
+    </div>
+
+    <ng-container *ngIf="!carregandoEmpresas && empresas.length > 0 && !erro">
+      <div class="cards">
+        <div class="metrica">
+          <span class="rotulo"><ion-icon name="document-text-outline"></ion-icon> Boletos emitidos</span>
+          <ion-skeleton-text *ngIf="carregandoMetricas" animated class="sk-num"></ion-skeleton-text>
+          <strong *ngIf="!carregandoMetricas">{{ metricas?.boletosEmitidos ?? 0 }}</strong>
+        </div>
+        <div class="metrica ok">
+          <span class="rotulo"><ion-icon name="shield-checkmark-outline"></ion-icon> Valida&ccedil;&otilde;es aut&ecirc;nticas</span>
+          <ion-skeleton-text *ngIf="carregandoMetricas" animated class="sk-num"></ion-skeleton-text>
+          <strong *ngIf="!carregandoMetricas">{{ metricas?.validacoesAutenticas ?? 0 }}</strong>
+        </div>
+        <div class="metrica bad">
+          <span class="rotulo"><ion-icon name="warning-outline"></ion-icon> Suspeitas</span>
+          <ion-skeleton-text *ngIf="carregandoMetricas" animated class="sk-num"></ion-skeleton-text>
+          <strong *ngIf="!carregandoMetricas">{{ metricas?.validacoesSuspeitas ?? 0 }}</strong>
+        </div>
+      </div>
+
+      <ion-card class="grafico-card">
+        <ion-card-content>
+          <div class="grafico-topo">
+            <h3>Valida&ccedil;&otilde;es por dia</h3>
+            <div class="legenda">
+              <span><i class="cor ok"></i>Aut&ecirc;nticas</span>
+              <span><i class="cor bad"></i>Suspeitas</span>
+            </div>
+          </div>
+          <ion-skeleton-text *ngIf="carregandoMetricas" animated class="sk-grafico"></ion-skeleton-text>
+          <ng-container *ngIf="!carregandoMetricas">
+            <p *ngIf="semDados" class="sem-dados">Nenhuma valida&ccedil;&atilde;o no per&iacute;odo.</p>
+            <div class="grafico" [class.denso]="barras.length > 30" role="img" aria-label="Gr&aacute;fico de valida&ccedil;&otilde;es por dia">
+              <div class="coluna" *ngFor="let b of barras" [attr.title]="b.rotulo + ': ' + b.autenticas + ' aut., ' + b.suspeitas + ' susp.'">
+                <div class="pilha">
+                  <div class="seg bad" [style.height.%]="b.pctSus"></div>
+                  <div class="seg ok" [style.height.%]="b.pctAut"></div>
+                </div>
+                <span class="eixo">{{ b.marcar ? b.rotulo : '' }}</span>
+              </div>
+            </div>
+            <p class="escala">M&aacute;x. {{ maxDia }} por dia</p>
+          </ng-container>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+  </div>
+</ion-content>

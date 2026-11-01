@@ -1,10 +1,10 @@
 .ab-page ion-card.empresa-card { max-width: var(--ab-container-form, 860px); margin: 0 auto 24px; }
 .ab-page .ab-hero { max-width: var(--ab-container-form, 860px); margin: 0 auto; }
-ion-card-title { font-weight: 800; color: #042f2e; }
+ion-card-title { font-weight: 800; color: #0f172a; }
 .btn-salvar, ion-button[color="success"] {
   font-weight: 700;
-  --background: linear-gradient(135deg, #0f766e, #14b8a6); --border-radius: 14px;
-  --box-shadow: 0 10px 24px rgba(15, 118, 110, 0.3);
+  --background: linear-gradient(135deg, #1e3a8a, #2563eb); --border-radius: 14px;
+  --box-shadow: 0 10px 24px rgba(30, 58, 138, 0.3);
 }
 ion-spinner { margin-right: 6px; }
 ion-card-subtitle { color: #64748b; margin-top: 4px; text-transform: none; letter-spacing: 0; }

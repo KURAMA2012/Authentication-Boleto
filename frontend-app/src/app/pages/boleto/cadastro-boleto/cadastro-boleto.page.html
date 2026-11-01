@@ -1,7 +1,7 @@
 <ion-header translucent="true">
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button><ion-menu-button></ion-menu-button>
+      <ion-back-button defaultHref="/painel"></ion-back-button><ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Boletos</ion-title>
   </ion-toolbar>
@@ -58,13 +58,15 @@
                 <span class="ab-date-valor" [class.vazio]="!form.get('vencimento')?.value">{{ vencimentoExibicao }}</span>
                 <ion-icon name="calendar-outline" class="ab-date-icone"></ion-icon>
               </div>
-              <ion-modal trigger="abrir-vencimento" [keepContentsMounted]="true" (didDismiss)="form.get('vencimento')?.markAsTouched()">
+              <ion-modal class="ab-datetime-modal" trigger="abrir-vencimento" [keepContentsMounted]="true" (didDismiss)="form.get('vencimento')?.markAsTouched()">
                 <ng-template>
-                  <ion-datetime id="dt-vencimento" formControlName="vencimento" presentation="date" locale="pt-BR"
+                  <ion-datetime id="dt-vencimento" formControlName="vencimento" presentation="date" locale="pt-BR" [min]="hoje"
                     [formatOptions]="{ date: { day: '2-digit', month: '2-digit', year: 'numeric' } }"
                     [showDefaultButtons]="true" doneText="OK" cancelText="Cancelar"></ion-datetime>
                 </ng-template>
-              </ion-modal>              <p class="campo-erro" *ngIf="campoInvalido('vencimento')">Informe o vencimento.</p>
+              </ion-modal>
+              <p class="campo-erro" *ngIf="campoInvalido('vencimento') && form.get('vencimento')?.hasError('required')">Informe o vencimento.</p>
+              <p class="campo-erro" *ngIf="campoInvalido('vencimento') && form.get('vencimento')?.hasError('passado')">A data de vencimento n&atilde;o pode ser no passado.</p>
               </ion-col>
               <ion-col size="12" size-md="6">
               <ion-input fill="outline" labelPlacement="floating" label="CPF/CNPJ Pagador" formControlName="cpfCnpjPagador" inputmode="numeric"></ion-input>

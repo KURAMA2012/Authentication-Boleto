@@ -1,0 +1,47 @@
+.painel-wrap { max-width: 1100px; margin: 0 auto; }
+.usuario-chip { --background: rgba(255, 255, 255, 0.14); --color: #fff; max-width: 260px; }
+.usuario-chip ion-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 16px; }
+.empresa-select { flex: 1 1 320px; min-width: 0; --background: #fff; }
+.periodos { display: flex; gap: 6px; }
+.periodos ion-chip { cursor: pointer; --background: #e2e8f0; --color: #0f172a; font-weight: 600; }
+.periodos ion-chip.ativo { --background: var(--ion-color-primary); --color: #fff; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px; }
+.metrica {
+  background: #fff; border-radius: 16px; padding: 16px 18px; box-shadow: var(--ab-shadow);
+  border-left: 5px solid var(--ion-color-primary); display: flex; flex-direction: column; gap: 6px;
+  .rotulo { color: #475569; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+  strong { font-size: 2.2rem; font-weight: 900; color: #0f172a; line-height: 1.1; }
+}
+.metrica.ok { border-left-color: var(--ab-ok, #16a34a); strong, ion-icon { color: var(--ab-ok, #16a34a); } }
+.metrica.bad { border-left-color: var(--ab-bad, #dc2626); strong, ion-icon { color: var(--ab-bad, #dc2626); } }
+
+.grafico-card { margin: 0; border-radius: 16px; }
+.grafico-topo { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 12px; }
+.grafico-topo h3 { margin: 0; font-weight: 800; color: #0f172a; }
+.legenda { display: flex; gap: 14px; color: #475569; font-size: 0.9rem; }
+.legenda span { display: inline-flex; align-items: center; gap: 6px; }
+.cor { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.cor.ok, .seg.ok { background: var(--ab-ok, #16a34a); }
+.cor.bad, .seg.bad { background: var(--ab-bad, #dc2626); }
+
+.grafico { display: flex; align-items: stretch; gap: 4px; height: 220px; padding-bottom: 22px; border-bottom: 1px solid #e2e8f0; position: relative; }
+.grafico.denso { gap: 1px; }
+.coluna { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; position: relative; }
+.pilha { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; background: #f8fafc; border-radius: 4px 4px 0 0; overflow: hidden; }
+.seg { width: 100%; transition: height 0.3s ease; }
+.eixo { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 0.68rem; color: #64748b; white-space: nowrap; }
+.escala, .sem-dados { color: #64748b; font-size: 0.85rem; margin: 8px 0 0; }
+.sem-dados { text-align: center; margin: 0 0 8px; }
+
+.estado { text-align: center; padding: 40px 16px; color: #475569;
+  ion-icon { font-size: 56px; color: #94a3b8; }
+  h3 { color: #0f172a; font-weight: 800; }
+}
+.estado.erro ion-icon { color: var(--ab-bad, #dc2626); }
+.sk-select { height: 56px; border-radius: 12px; margin-bottom: 16px; }
+.sk-num { height: 34px; width: 50%; border-radius: 8px; }
+.sk-grafico { height: 220px; border-radius: 12px; }
+@media (max-width: 576px) { .eixo { font-size: 0.6rem; } .metrica strong { font-size: 1.8rem; } }

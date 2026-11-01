@@ -1,9 +1,25 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { inject } from '@angular/core';
+import { Routes, RouterModule, PreloadAllModules, Router } from '@angular/router';
 import { AuthGuard } from './core/services/AuthGuard.services';
+import { AuthService } from './core/services/AuthService';
+
+/** Quem ja esta logado nao ve a home publica: vai direto para o painel. */
+const logadoVaiParaPainel = () => (inject(AuthService).isLogged() ? inject(Router).parseUrl('/painel') : true);
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'inicio', pathMatch: 'full' },
+
+  // Publicas (sem AuthGuard e sem menu)
+  {
+    path: 'inicio',
+    loadChildren: () => import('./pages/inicio/inicio.module').then((m) => m.InicioPageModule),
+    canActivate: [logadoVaiParaPainel],
+  },
+  {
+    path: 'validar',
+    loadChildren: () => import('./pages/validar/validar.module').then((m) => m.ValidarPageModule),
+  },
 
   {
     path: 'register',
@@ -39,18 +55,18 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'home',
-    loadChildren: () =>
-      import('./pages/home/home.module').then((m) => m.HomePageModule),
+    path: 'painel',
+    loadChildren: () => import('./pages/painel/painel.module').then((m) => m.PainelPageModule),
     canActivate: [AuthGuard],
   },
+  { path: 'home', redirectTo: 'painel', pathMatch: 'full' },
   {
     path: 'logs',
     loadChildren: () =>
       import('./pages/logs/logs.module').then((m) => m.LogsPageModule),
     canActivate: [AuthGuard],
   },
-  { path: '**', redirectTo: 'login' },
+  { path: '**', redirectTo: 'inicio' },
 ];
 
 @NgModule({

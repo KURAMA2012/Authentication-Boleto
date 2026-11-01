@@ -10,6 +10,7 @@ interface BoletoLog {
   valido: boolean;
   mensagem: string;
   dataConsulta: string;
+  cnpjInformado?: string | null;
   boleto?: any;
 }
 
@@ -97,6 +98,11 @@ export class LogsPage implements OnInit {
   buscar() {
     this.page = 1;
     this.aplicarFiltro();
+  }
+
+  formatarCnpj(v: string): string {
+    const d = (v || '').replace(/\D/g, '');
+    return d.length === 14 ? d.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5') : v;
   }
 
   formatarData(data: string): string {

@@ -1,74 +1,7 @@
 .login-container {
-  --background: linear-gradient(145deg, #052e2b 0%, #115e59 48%, #0f766e 100%);
+  --background: linear-gradient(145deg, #0b1f3a 0%, #172554 48%, #1e3a8a 100%);
   position: relative;
   overflow: hidden;
-}
-
-.login-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(40px);
-  opacity: 0.45;
-  pointer-events: none;
-}
-.login-orb-a {
-  width: 280px;
-  height: 280px;
-  background: #14b8a6;
-  top: -60px;
-  right: -40px;
-}
-.login-orb-b {
-  width: 320px;
-  height: 320px;
-  background: #34d399;
-  bottom: -80px;
-  left: -60px;
-}
-
-.login-wrapper {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: var(--ab-container-auth, 440px);
-  padding: 28px 18px 40px;
-  margin: 0 auto;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.logo-area {
-  text-align: center;
-  margin-bottom: 22px;
-  color: #fff;
-}
-.logo-badge {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 12px;
-  border-radius: 22px;
-  display: grid;
-  place-items: center;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-}
-.logo-badge ion-icon {
-  font-size: 36px;
-  color: #99f6e4;
-}
-.logo-area h1 {
-  margin: 0;
-  font-size: 1.55rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-}
-.logo-tag {
-  margin: 6px 0 0;
-  opacity: 0.8;
-  font-size: 0.9rem;
 }
 
 .login-card {
@@ -76,7 +9,7 @@
   backdrop-filter: blur(16px);
   padding: 26px 22px 22px;
   border-radius: 24px;
-  box-shadow: 0 24px 60px rgba(5, 46, 43, 0.4);
+  box-shadow: 0 24px 60px rgba(11, 31, 58, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.65);
   animation: fadeIn 0.55s ease;
 }
@@ -85,7 +18,7 @@
   font-size: 1.35rem;
   text-align: center;
   font-weight: 800;
-  color: #115e59;
+  color: #172554;
   letter-spacing: -0.02em;
 }
 .subtitle {
@@ -144,9 +77,9 @@
 
 .btn-login {
   margin-top: 8px;
-  --background: linear-gradient(135deg, #0f766e, #14b8a6);
+  --background: linear-gradient(135deg, #1e3a8a, #2563eb);
   --border-radius: 14px;
-  --box-shadow: 0 10px 24px rgba(15, 118, 110, 0.35);
+  --box-shadow: 0 10px 24px rgba(30, 58, 138, 0.35);
   font-weight: 700;
   height: 50px;
   font-size: 1rem;
@@ -164,7 +97,7 @@
   font-size: 0.92rem;
 }
 .signup-text a {
-  color: #0f766e;
+  color: #1e3a8a;
   font-weight: 700;
   cursor: pointer;
 }
@@ -173,14 +106,27 @@
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@media (min-width: 768px) {
-  .login-wrapper { padding-top: 48px; }
-  .login-card { padding: 32px 30px 26px; }
-  .logo-area h1 { font-size: 1.8rem; }
-  .login-orb-a { width: 420px; height: 420px; }
-  .login-orb-b { width: 480px; height: 480px; }
-}
-@media (max-width: 380px) {
-  .login-wrapper { padding: 20px 12px 32px; }
-  .login-card { padding: 22px 16px 18px; }
+
+
+
+/* ===== Login em duas colunas (desktop) / uma coluna (celular) ===== */
+.login-container { --background: linear-gradient(150deg, #0b1f3a 0%, #172554 55%, #1e3a8a 100%); }
+.login-split { min-height: 100%; display: grid; grid-template-columns: 1fr; }
+.login-marca { color: #fff; padding: 28px 22px 8px; }
+.marca-topo { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-weight: 800; font-size: 1.05rem; }
+.login-marca h1 { margin: 18px 0 8px; font-size: 1.45rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; }
+.login-marca p { margin: 0; color: #cbd5e1; font-size: 0.95rem; line-height: 1.5; }
+.marca-pontos { display: none; list-style: none; padding: 0; margin: 22px 0 0; }
+.marca-pontos li { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; color: #e2e8f0; font-weight: 600; }
+.marca-pontos ion-icon { font-size: 22px; color: #93c5fd; }
+.login-form-col { display: flex; align-items: center; justify-content: center; padding: 18px 16px 36px; }
+.login-form-col .login-card { width: 100%; max-width: var(--ab-container-auth, 440px); padding: 26px 22px 22px; }
+@media (min-width: 992px) {
+  .login-split { grid-template-columns: 1.1fr 1fr; }
+  .login-marca { padding: 64px 56px; display: flex; flex-direction: column; justify-content: center; }
+  .login-marca h1 { font-size: 2.3rem; max-width: 520px; }
+  .login-marca p { max-width: 520px; font-size: 1.05rem; }
+  .marca-pontos { display: block; }
+  .login-form-col { background: #f1f5f9; padding: 48px; }
+  .login-form-col .login-card { padding: 34px 32px 28px; box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12); background: #fff; }
 }

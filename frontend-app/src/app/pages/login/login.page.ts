@@ -60,7 +60,7 @@ export class LoginPage {
         this.carregando = false;
         if (resp?.success) {
           this.feedback.sucesso('Login realizado com sucesso!');
-          this.navCtrl.navigateRoot('/home');
+          this.navCtrl.navigateRoot('/painel');
         } else {
           this.erroApi = resp?.message || 'E-mail ou senha inválidos.';
         }

@@ -22,6 +22,10 @@ export class FeedbackService {
     if (err instanceof HttpErrorResponse) {
       if (err.status === 0) return 'Sem conexao com a API. Verifique se o backend esta rodando.';
       const body: any = err.error;
+      const code = body && typeof body === 'object' ? body.code : undefined;
+      if (err.status === 403 || code === 'ACESSO_NEGADO') {
+        return 'Voc\u00ea n\u00e3o tem permiss\u00e3o para acessar estes dados.';
+      }
       if (body && typeof body === 'object' && body.message) {
         return body.code ? `${body.message} (${body.code})` : body.message;
       }

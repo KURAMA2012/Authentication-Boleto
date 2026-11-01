@@ -13,6 +13,12 @@ import { FilePicker } from '@capawesome/capacitor-file-picker';
 })
 export class CadastroBoletoPage {
   modo: 'manual' | 'csv' = 'manual';
+  /** Hoje em yyyy-MM-dd pela data LOCAL (toISOString() usaria UTC e erraria a noite). */
+  get hoje(): string {
+    const d = new Date();
+    const p = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+  }
   form: FormGroup;
 
   arquivoNome: string | null = null;
@@ -29,7 +35,7 @@ export class CadastroBoletoPage {
     this.form = this.fb.group({
       codigoBarras: ['', [Validators.required, Validators.minLength(8)]],
       valor: ['', [Validators.required]],
-      vencimento: ['', [Validators.required]],
+      vencimento: ['', [Validators.required, (c: any) => (c.value && this.paraDataApi(c.value) < this.hoje ? { passado: true } : null)]],
       cpfCnpjPagador: [''],
       nomePagador: ['', [Validators.required]],
       cnpjBeneficiario: ['', [Validators.required, (c: any) => somenteDigitos(c.value).length === 14 ? null : { cnpj: true }]],

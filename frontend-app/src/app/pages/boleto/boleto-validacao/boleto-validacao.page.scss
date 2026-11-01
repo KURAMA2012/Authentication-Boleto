@@ -3,8 +3,8 @@
   padding: 14px;
   border-radius: 16px;
   background: #fff;
-  border: 1px solid rgba(45, 212, 191, 0.25);
-  box-shadow: 0 8px 24px rgba(15, 118, 110, 0.06);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 8px 24px rgba(30, 58, 138, 0.06);
 }
 .texto-etapa {
   font-size: 0.88rem;
@@ -15,13 +15,13 @@
 }
 .barra-externa {
   height: 8px;
-  background: #ccfbf1;
+  background: #dbeafe;
   border-radius: 999px;
   overflow: hidden;
 }
 .barra-interna {
   height: 100%;
-  background: linear-gradient(90deg, #0f766e, #14b8a6);
+  background: linear-gradient(90deg, #1e3a8a, #2563eb);
   border-radius: 999px;
   transition: width 0.45s ease;
 }
@@ -46,22 +46,22 @@
   font-size: 22px;
   padding: 10px;
   border-radius: 14px;
-  background: #ccfbf1;
+  background: #dbeafe;
 }
 .etapa.ativa {
   opacity: 1;
-  color: #115e59;
+  color: #172554;
   font-weight: 700;
 }
 .etapa.ativa ion-icon {
-  background: linear-gradient(135deg, #0f766e, #14b8a6);
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
   color: #fff;
-  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.3);
+  box-shadow: 0 8px 18px rgba(30, 58, 138, 0.3);
 }
 .linha {
   width: 28px;
   height: 2px;
-  background: #99f6e4;
+  background: #bfdbfe;
   margin-bottom: 18px;
 }
 
@@ -92,7 +92,7 @@
   padding: 28px 18px;
   border-radius: 22px;
   background: #fff;
-  box-shadow: 0 16px 40px rgba(15, 118, 110, 0.1);
+  box-shadow: 0 16px 40px rgba(30, 58, 138, 0.1);
 }
 .icone-sucesso {
   font-size: 72px;

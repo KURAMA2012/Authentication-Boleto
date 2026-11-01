@@ -11,7 +11,7 @@ ion-card-subtitle {
 
 ion-segment {
   margin-bottom: 8px;
-  background: #ccfbf1;
+  background: #dbeafe;
   border-radius: 14px;
   padding: 4px;
 }
@@ -68,9 +68,9 @@ ion-segment-button ion-icon { font-size: 18px; }
 .csv-drop {
   display: flex; align-items: center; gap: 14px;
   padding: 16px; margin-bottom: 14px;
-  border: 2px dashed #99f6e4; border-radius: 16px; background: #f0fdfa;
+  border: 2px dashed #bfdbfe; border-radius: 16px; background: #f1f5f9;
   color: #475569; font-size: 0.9rem;
-  ion-icon { font-size: 36px; color: #0f766e; flex-shrink: 0; }
+  ion-icon { font-size: 36px; color: #1e3a8a; flex-shrink: 0; }
   p { margin: 0; }
 }
 .arquivo-nome ion-chip { max-width: 100%; }

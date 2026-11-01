@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start"><ion-back-button defaultHref="/inicio"></ion-back-button></ion-buttons>
+    <ion-title>
+      <span class="titulo-marca"><img src="assets/logo.svg" alt="" width="26" height="26" /> Validar boleto</span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ab-page ion-padding">
+  <div class="validar-wrap">
+    <div class="ab-hero">
+      <h2>O boleto &eacute; aut&ecirc;ntico?</h2>
+      <p>Informe os dados do boleto que voc&ecirc; recebeu. N&atilde;o &eacute; preciso ter conta.</p>
+    </div>
+
+    <div *ngIf="resultado" class="resultado" [class.ok]="resultado.autentico" [class.bad]="!resultado.autentico" role="status">
+      <ion-icon [name]="resultado.autentico ? 'shield-checkmark' : 'warning'"></ion-icon>
+      <div class="resultado-titulo"><span *ngIf="resultado.veredito === 'AUTENTICO'">AUT&Ecirc;NTICO</span><span *ngIf="resultado.veredito !== 'AUTENTICO'">SUSPEITO</span></div>
+      <p class="resultado-motivo">{{ resultado.motivo }}</p>
+      <p class="resultado-dica" *ngIf="!resultado.autentico">N&atilde;o pague este boleto. Fale com a empresa emissora por um canal oficial.</p>
+      <ion-button *ngIf="!etapaToken" fill="outline" color="dark" (click)="novaConsulta()">Nova consulta</ion-button>
+    </div>
+
+    <ion-card *ngIf="etapaToken" class="token-card">
+      <ion-card-content>
+        <h3>Confirme com o c&oacute;digo do e-mail</h3>
+        <p class="token-texto">Enviamos um c&oacute;digo de 6 d&iacute;gitos para <strong>{{ form.value.emailPagador }}</strong>.</p>
+        <div class="painel-erro" *ngIf="erroToken" role="alert">{{ erroToken }}</div>
+        <form [formGroup]="tokenForm" (ngSubmit)="confirmar()" novalidate>
+          <ion-input class="token-input" fill="outline" labelPlacement="floating" label="C&oacute;digo de 6 d&iacute;gitos"
+            inputmode="numeric" maxlength="6" autocomplete="one-time-code" formControlName="token" (ionInput)="limparToken()"></ion-input>
+          <p class="campo-erro" *ngIf="campoInvalido('token', tokenForm)">Digite os 6 n&uacute;meros do c&oacute;digo.</p>
+          <div class="ab-form-actions token-acoes">
+            <ion-button fill="clear" type="button" (click)="reenviar()" [disabled]="esperaReenvio > 0 || reenviando">
+              <ion-icon name="mail-outline" slot="start"></ion-icon>
+              Reenviar c&oacute;digo<span *ngIf="esperaReenvio > 0">&nbsp;({{ esperaReenvio }}s)</span>
+            </ion-button>
+            <ion-button type="submit" [disabled]="confirmando">
+              <ion-spinner *ngIf="confirmando" name="crescent"></ion-spinner>
+              <ion-icon *ngIf="!confirmando" name="checkmark-outline" slot="start"></ion-icon>
+              Confirmar
+            </ion-button>
+          </div>
+        </form>
+        <p class="token-voltar"><a (click)="novaConsulta()">Fazer outra consulta</a></p>
+      </ion-card-content>
+    </ion-card>
+
+    <div *ngIf="confirmado" class="confirmado" role="status">
+      <ion-icon name="checkmark-done-circle"></ion-icon>
+      <h3>Confirma&ccedil;&atilde;o conclu&iacute;da</h3>
+      <p>O c&oacute;digo foi validado. Este boleto foi emitido pela empresa e pode ser pago com seguran&ccedil;a.</p>
+      <ion-button fill="outline" color="dark" (click)="novaConsulta()">Nova consulta</ion-button>
+    </div>
+
+    <div class="painel-erro" *ngIf="erroPainel" role="alert">{{ erroPainel }}</div>
+
+    <ion-card *ngIf="!resultado">
+      <ion-card-content>
+        <form [formGroup]="form" (ngSubmit)="validar()" novalidate>
+          <ion-grid class="ab-form-grid">
+            <ion-row>
+              <ion-col size="12">
+                <ion-input fill="outline" labelPlacement="floating" label="C&oacute;digo do boleto *" formControlName="codigoBoleto"></ion-input>
+                <p class="campo-erro" *ngIf="campoInvalido('codigoBoleto')">Informe o c&oacute;digo do boleto.</p>
+              </ion-col>
+              <ion-col size="12" size-md="6">
+                <ion-input fill="outline" labelPlacement="floating" label="Seu e-mail *" type="email" inputmode="email" formControlName="emailPagador"></ion-input>
+                <p class="campo-erro" *ngIf="campoInvalido('emailPagador')">Informe um e-mail v&aacute;lido.</p>
+              </ion-col>
+              <ion-col size="12" size-md="6">
+                <ion-input fill="outline" labelPlacement="floating" label="CNPJ do benefici&aacute;rio (opcional)" inputmode="numeric" maxlength="18" formControlName="cnpjBeneficiario"></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <div class="ab-form-actions">
+            <ion-button type="submit" [disabled]="carregando">
+              <ion-spinner *ngIf="carregando" name="crescent"></ion-spinner>
+              <ion-icon *ngIf="!carregando" name="shield-checkmark-outline" slot="start"></ion-icon>
+              {{ carregando ? 'Validando...' : 'Validar boleto' }}
+            </ion-button>
+          </div>
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+    <p class="validar-rodape">&Eacute; uma empresa? <a routerLink="/login">Entre na sua conta</a></p>
+  </div>
+</ion-content>

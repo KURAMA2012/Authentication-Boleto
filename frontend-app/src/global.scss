@@ -17,18 +17,18 @@
 }
 
 ion-content {
-  --background: var(--ab-surface, #f0fdfa);
+  --background: var(--ab-surface, #f1f5f9);
 }
 
 ion-toolbar.ion-color-primary {
-  --background: linear-gradient(135deg, #0f766e 0%, #115e59 55%, #052e2b 100%);
+  --background: linear-gradient(135deg, #1e3a8a 0%, #172554 55%, #0b1f3a 100%);
   --color: #fff;
 }
 
 ion-card {
   border-radius: var(--ab-radius, 18px);
-  box-shadow: var(--ab-shadow, 0 10px 30px rgba(15, 118, 110, 0.1));
-  border: 1px solid rgba(45, 212, 191, 0.22);
+  box-shadow: var(--ab-shadow, 0 10px 30px rgba(30, 58, 138, 0.1));
+  border: 1px solid rgba(148, 163, 184, 0.22);
   overflow: hidden;
 }
 
@@ -51,9 +51,9 @@ ion-item {
 }
 
 .ab-page {
-  --background: radial-gradient(1200px 600px at 10% -10%, rgba(15, 118, 110, 0.18), transparent 55%),
-    radial-gradient(900px 500px at 100% 0%, rgba(20, 184, 166, 0.14), transparent 50%),
-    #f0fdfa;
+  --background: radial-gradient(1200px 600px at 10% -10%, rgba(30, 58, 138, 0.18), transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, rgba(37, 99, 235, 0.14), transparent 50%),
+    #f1f5f9;
 }
 
 .ab-hero {
@@ -66,7 +66,7 @@ ion-item {
   font-size: 1.55rem;
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: #042f2e;
+  color: #0f172a;
 }
 
 .ab-hero p {
@@ -79,7 +79,7 @@ ion-item {
   background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.55);
-  box-shadow: var(--ab-shadow-lg, 0 20px 50px rgba(15, 118, 110, 0.18));
+  box-shadow: var(--ab-shadow-lg, 0 20px 50px rgba(30, 58, 138, 0.18));
   border-radius: 22px;
 }
 
@@ -90,7 +90,7 @@ ion-item {
 /* Toasts padronizados */
 ion-toast.ab-toast {
   --border-radius: 14px;
-  --box-shadow: 0 12px 30px rgba(4, 47, 46, 0.25);
+  --box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
   font-weight: 600;
 }
 
@@ -109,8 +109,8 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
   box-shadow: 0 0 0 1000px #fff inset !important;
-  -webkit-text-fill-color: #042f2e !important;
-  caret-color: #042f2e;
+  -webkit-text-fill-color: #0f172a !important;
+  caret-color: #0f172a;
   transition: background-color 9999s ease-out 0s;
 }
 input:focus, textarea:focus, select:focus { outline: none; box-shadow: none; }
@@ -143,7 +143,7 @@ input:focus, textarea:focus, select:focus { outline: none; box-shadow: none; }
 }
 .ab-actions > ion-button { flex: 1 1 200px; margin: 0; }
 
-ion-chip.ab-chip { --background: rgba(15, 118, 110, 0.12); --color: #0f766e; font-weight: 700; height: 28px; font-size: 0.78rem; margin: 0; }
+ion-chip.ab-chip { --background: rgba(30, 58, 138, 0.12); --color: #1e3a8a; font-weight: 700; height: 28px; font-size: 0.78rem; margin: 0; }
 ion-chip.ab-chip.ok { --background: #d1fae5; --color: #047857; }
 ion-chip.ab-chip.bad { --background: #fee2e2; --color: #b91c1c; }
 
@@ -168,13 +168,13 @@ ion-input[fill="outline"], ion-select[fill="outline"], ion-textarea[fill="outlin
   --highlight-color-invalid: #e11d48;
   --padding-start: 14px;
   --padding-end: 14px;
-  --color: #042f2e;
+  --color: #0f172a;
   --placeholder-color: #94a3b8;
   min-height: 56px;
   margin: 0 0 12px;
   box-shadow: none;
 }
-ion-input[fill="outline"] ion-button[slot="end"] { --color: #0f766e; font-weight: 700; margin: 0; }
+ion-input[fill="outline"] ion-button[slot="end"] { --color: #1e3a8a; font-weight: 700; margin: 0; }
 ion-input[fill="outline"] ion-button ion-spinner { width: 18px; height: 18px; }
 
 /* Campo de data (ion-datetime-button) com o mesmo visual dos inputs */
@@ -187,9 +187,9 @@ ion-input[fill="outline"] ion-button ion-spinner { width: 18px; height: 18px; }
 .ab-date-field.invalido { border-color: #e11d48; }
 .ab-date-label { color: #64748b; font-size: 0.95rem; }
 .ab-date-field ion-datetime-button::part(native) {
-  background: #f0fdfa; color: #0f766e; font-weight: 600; border-radius: 10px; padding: 6px 12px;
+  background: #f1f5f9; color: #1e3a8a; font-weight: 600; border-radius: 10px; padding: 6px 12px;
 }
-ion-datetime { --background: #fff; --background-rgb: 255, 255, 255; color: #042f2e; }
+ion-datetime { --background: #fff; --background-rgb: 255, 255, 255; color: #0f172a; }
 
 /* Mensagem de erro embaixo do campo */
 .campo-erro { color: #e11d48; font-size: 0.8rem; margin: -6px 0 12px 12px; }
@@ -206,9 +206,27 @@ ion-datetime { --background: #fff; --background-rgb: 255, 255, 255; color: #042f
 }
 /* Campo de data clicavel (abre ion-modal com ion-datetime) */
 .ab-date-field { cursor: pointer; }
-.ab-date-field .ab-date-valor { margin-left: auto; color: #042f2e; font-weight: 600; }
+.ab-date-field .ab-date-valor { margin-left: auto; color: #0f172a; font-weight: 600; }
 .ab-date-field .ab-date-valor.vazio { color: #94a3b8; font-weight: 400; }
-.ab-date-field .ab-date-icone { color: #0f766e; font-size: 1.2rem; }
+.ab-date-field .ab-date-icone { color: #1e3a8a; font-size: 1.2rem; }
 /* Evita ligadura 'ti' quebrada de algumas instalações da fonte Inter no Windows (ex.: 'automaticamente' renderizando errado). */
 html, body, ion-app { font-variant-ligatures: no-common-ligatures; font-feature-settings: 'liga' 0, 'calt' 0; }
 
+
+/* Modal de calendario (ion-modal + ion-datetime): centralizado e do tamanho do calendario */
+ion-modal.ab-datetime-modal {
+  --width: fit-content;
+  --min-width: 0;
+  --height: fit-content;
+  --min-height: 0;
+  --border-radius: 16px;
+  --box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+  --backdrop-opacity: 0.45;
+}
+/* O Ionic j\u00e1 centraliza o modal; nunca sobrescrever display, sen\u00e3o o modal fechado (.overlay-hidden) intercepta cliques. */
+ion-modal.ab-datetime-modal.overlay-hidden { display: none !important; }
+ion-modal.ab-datetime-modal ion-datetime { margin: 0 auto; border-radius: 16px; }
+@media (max-width: 576px) {
+  ion-modal.ab-datetime-modal { --width: calc(100% - 24px); }
+  ion-modal.ab-datetime-modal ion-datetime { width: 100%; max-width: none; }
+}

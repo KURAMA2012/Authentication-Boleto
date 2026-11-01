@@ -1,7 +1,7 @@
 <ion-header translucent="true">
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button><ion-menu-button></ion-menu-button>
+      <ion-back-button defaultHref="/painel"></ion-back-button><ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Logs de autenticação</ion-title>
   </ion-toolbar>
@@ -60,6 +60,7 @@
         <div class="log-info">
           <h3>{{ log.mensagem }}</h3>
           <p><code>{{ log.codigoAutenticacao }}</code></p>
+          <p *ngIf="log.cnpjInformado" class="meta">CNPJ informado: {{ formatarCnpj(log.cnpjInformado) }}</p>
           <p class="meta">{{ log.ipUsuario }} · {{ formatarData(log.dataConsulta) }}</p>
         </div>
         <ion-chip class="ab-chip status-chip" [class.ok]="log.valido" [class.bad]="!log.valido">

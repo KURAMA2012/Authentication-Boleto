@@ -15,6 +15,16 @@ export class EmpresaService {
     return this.http.post(`${this.apiUrl}/cadastrar`, empresa);
   }
 
+  /** Empresas do usuario logado (JWT). */
+  minhas(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/minhas`);
+  }
+
+  /** Metricas da empresa (so o dono). Datas em yyyy-MM-dd. */
+  metricas(id: number, de: string, ate: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}/metricas`, { params: { de, ate } });
+  }
+
   buscarCnpj(cnpj: string): Observable<any> {
     return this.http.get(`${this.consultaUrl}/cnpj/${cnpj}`);
   }

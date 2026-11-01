@@ -1,0 +1,32 @@
+.inicio-page {
+  --background: radial-gradient(900px 500px at 0% 0%, rgba(37, 99, 235, 0.25), transparent 60%),
+    linear-gradient(160deg, #0b1f3a 0%, #172554 60%, #1e3a8a 100%);
+}
+.inicio-wrap {
+  max-width: 980px; margin: 0 auto; min-height: 100%;
+  padding: 40px 18px 28px; display: flex; flex-direction: column; justify-content: center;
+}
+.inicio-marca { text-align: center; color: #fff; margin-bottom: 28px; }
+.inicio-marca h1 { margin: 12px 0 6px; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em; }
+.inicio-marca p { margin: 0 auto; max-width: 520px; color: #cbd5e1; font-size: 1rem; }
+.inicio-caminhos { display: grid; grid-template-columns: 1fr; gap: 16px; }
+ion-card.caminho {
+  margin: 0; padding: 24px 22px; border: 0; border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.35);
+  h2 { margin: 12px 0 6px; font-size: 1.25rem; font-weight: 800; color: #0f172a; }
+  p { margin: 0 0 18px; color: #64748b; }
+  ion-button { height: 48px; margin: 0; }
+}
+.caminho-icone {
+  width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center;
+  background: #dbeafe; color: #1e3a8a; font-size: 26px;
+}
+.caminho.destaque .caminho-icone { background: #dcfce7; color: #16a34a; }
+.caminho-link { margin: 14px 0 0 !important; text-align: center; font-size: 0.9rem; }
+.caminho-link a { color: #1e3a8a; font-weight: 700; }
+.inicio-rodape { margin-top: 28px; text-align: center; color: #94a3b8; font-size: 0.85rem; }
+@media (min-width: 768px) {
+  .inicio-caminhos { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .inicio-marca h1 { font-size: 2.3rem; }
+  ion-card.caminho { padding: 30px 28px; }
+}

@@ -1,5 +1,5 @@
 .login-container {
-  --background: linear-gradient(145deg, #052e2b 0%, #115e59 48%, #0f766e 100%);
+  --background: linear-gradient(145deg, #0b1f3a 0%, #172554 48%, #1e3a8a 100%);
 }
 .register-wrapper {
   min-height: 100%;
@@ -16,13 +16,13 @@
   backdrop-filter: blur(16px);
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 24px 60px rgba(5, 46, 43, 0.4);
+  box-shadow: 0 24px 60px rgba(11, 31, 58, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.65);
   margin: 24px auto;
 }
 
 .left-panel {
-  background: linear-gradient(135deg, #0f766e, #14b8a6);
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
   text-align: center;
   padding: 28px 20px;
 }
@@ -44,7 +44,7 @@
 .welcome-title {
   margin: 0;
   text-align: center;
-  color: #115e59;
+  color: #172554;
   font-weight: 800;
 }
 .welcome-subtitle {
@@ -74,9 +74,9 @@
 }
 
 ion-button {
-  --background: linear-gradient(135deg, #0f766e, #14b8a6);
+  --background: linear-gradient(135deg, #1e3a8a, #2563eb);
   --border-radius: 14px;
-  --box-shadow: 0 10px 24px rgba(15, 118, 110, 0.3);
+  --box-shadow: 0 10px 24px rgba(30, 58, 138, 0.3);
   font-weight: 700;
   height: 48px;
   margin-top: 6px;
@@ -97,8 +97,8 @@ ion-button {
 .button-row ion-button { margin: 0; flex: 1; }
 .button-row .btn-secondary {
   --background: #fff;
-  --color: #0f766e;
-  --border-color: #99f6e4;
+  --color: #1e3a8a;
+  --border-color: #bfdbfe;
   --box-shadow: none;
 }
 @media (min-width: 420px) {

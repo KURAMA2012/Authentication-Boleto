@@ -37,6 +37,12 @@ export class AuthService {
     return data ? JSON.parse(data) : null;
   }
 
+  /** Nome para o header/menu: nome da empresa/usuario, senao e-mail, senao 'Empresa'. */
+  nomeExibicao(): string {
+    const u = this.getUsuario() || {};
+    return u.nome || u.name || u.razaoSocial || u.fantasia || u.empresa?.nome || u.usuario?.nome || u.email || u.usuario?.email || 'Empresa';
+  }
+
   isLogged(): boolean {
     return localStorage.getItem(this.storageKey) !== null;
   }

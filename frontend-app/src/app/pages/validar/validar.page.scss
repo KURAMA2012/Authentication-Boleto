@@ -1,0 +1,40 @@
+.validar-wrap { max-width: 720px; margin: 0 auto; }
+.titulo-marca { display: inline-flex; align-items: center; gap: 8px; }
+.painel-erro {
+  background: #fef2f2; color: #991b1b; border: 1px solid #fecaca;
+  border-radius: 12px; padding: 10px 12px; margin: 0 0 14px; font-size: 0.9rem;
+}
+.resultado {
+  text-align: center; border-radius: 20px; padding: 28px 20px 22px; margin: 0 0 18px;
+  background: #fff; border: 2px solid; box-shadow: var(--ab-shadow);
+  ion-icon { font-size: 64px; }
+  ion-button { margin-top: 10px; }
+}
+.resultado.ok { border-color: #16a34a; background: #f0fdf4; ion-icon, .resultado-titulo { color: #16a34a; } }
+.resultado.bad { border-color: #dc2626; background: #fef2f2; ion-icon, .resultado-titulo { color: #dc2626; } }
+.resultado-titulo { font-size: 2.4rem; font-weight: 900; letter-spacing: 0.04em; line-height: 1.1; margin: 6px 0 8px; }
+.resultado-motivo { margin: 0 auto; max-width: 480px; color: #0f172a; font-size: 1.05rem; }
+.resultado-dica { margin: 10px auto 0; max-width: 480px; color: #991b1b; font-size: 0.9rem; font-weight: 600; }
+.validar-rodape { text-align: center; color: #64748b; margin-top: 18px; }
+.validar-rodape a { color: #1e3a8a; font-weight: 700; }
+ion-button ion-spinner { width: 18px; height: 18px; margin-right: 8px; }
+@media (min-width: 768px) { .resultado-titulo { font-size: 3rem; } }.token-card h3 { margin: 0 0 6px; font-weight: 800; color: #0f172a; }
+.token-texto { color: #475569; margin: 0 0 14px; }
+.token-input { max-width: 280px; }
+/* So o texto digitado: label e altura seguem o padrao outline. */
+.token-input ::ng-deep input.native-input,
+.token-input::part(native) {
+  text-align: center; letter-spacing: 0.25em; font-size: 1.15rem; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 400px) { .token-input { max-width: none; } }
+.token-acoes { flex-wrap: wrap; gap: 8px; }
+.token-voltar { text-align: center; margin: 12px 0 0; }
+.token-voltar a { color: #1e3a8a; font-weight: 700; cursor: pointer; }
+.confirmado {
+  text-align: center; border-radius: 20px; padding: 24px 20px; margin: 0 0 18px;
+  background: #f0fdf4; border: 2px solid #16a34a;
+  ion-icon { font-size: 56px; color: #16a34a; }
+  h3 { margin: 6px 0; font-weight: 800; color: #166534; }
+  p { margin: 0 auto 8px; max-width: 480px; color: #0f172a; }
+}

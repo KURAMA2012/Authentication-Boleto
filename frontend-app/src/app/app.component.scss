@@ -1,5 +1,5 @@
 .menu-content {
-  --background: linear-gradient(180deg, #052e2b 0%, #115e59 55%, #0f766e 100%);
+  --background: linear-gradient(180deg, #0b1f3a 0%, #172554 55%, #1e3a8a 100%);
   color: #fff;
 }
 
@@ -16,7 +16,7 @@ ion-menu ion-list {
 
 ion-menu ion-item {
   --background: rgba(255, 255, 255, 0.06);
-  --color: #ccfbf1;
+  --color: #dbeafe;
   --border-radius: 14px;
   --padding-start: 14px;
   margin: 6px 12px;
@@ -31,19 +31,19 @@ ion-menu ion-item.ion-activated {
 }
 
 ion-menu ion-icon {
-  color: #99f6e4;
+  color: #bfdbfe;
   font-size: 1.25rem;
 }
 
 .menu-footer {
-  background: rgba(5, 46, 43, 0.35);
+  background: rgba(11, 31, 58, 0.35);
   backdrop-filter: blur(12px);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .menu-footer ion-item {
   --background: transparent;
-  --color: #99f6e4;
+  --color: #bfdbfe;
   margin: 8px 12px 16px;
 }
 
@@ -61,10 +61,14 @@ ion-menu ion-icon {
 ion-menu ion-item.ativo {
   --background: rgba(255, 255, 255, 0.2);
   --color: #fff;
-  box-shadow: inset 3px 0 0 #5eead4;
+  box-shadow: inset 3px 0 0 #60a5fa;
 }
 ion-menu ion-item.ativo ion-icon { color: #fff; }
 
 ion-split-pane ion-menu {
   border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
+
+.menu-brand { display: flex; align-items: center; gap: 10px; padding: 10px 16px; color: #fff; font-weight: 800; letter-spacing: -0.02em; }
+.menu-brand img { flex-shrink: 0; }
+.menu-footer ion-button { --color: #bfdbfe; }

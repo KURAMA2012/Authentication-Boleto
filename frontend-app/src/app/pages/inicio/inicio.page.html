@@ -1,0 +1,34 @@
+<ion-content class="inicio-page">
+  <div class="inicio-wrap">
+    <header class="inicio-marca">
+      <img src="assets/logo.svg" alt="" width="64" height="64" />
+      <h1>Authentication Boleto</h1>
+      <p>Proteja seus clientes do boleto adulterado com autentica&ccedil;&atilde;o em dois fatores.</p>
+    </header>
+
+    <div class="inicio-caminhos">
+      <ion-card class="caminho">
+        <div class="caminho-icone"><ion-icon name="business-outline"></ion-icon></div>
+        <h2>Sou empresa</h2>
+        <p>Emita boletos autenticados, acompanhe valida&ccedil;&otilde;es e gerencie sua conta.</p>
+        <ion-button expand="block" routerLink="/login">
+          <ion-icon slot="start" name="log-in-outline"></ion-icon>
+          Entrar
+        </ion-button>
+        <p class="caminho-link">Ainda n&atilde;o tem conta? <a routerLink="/register">Criar conta</a></p>
+      </ion-card>
+
+      <ion-card class="caminho destaque">
+        <div class="caminho-icone"><ion-icon name="shield-checkmark-outline"></ion-icon></div>
+        <h2>Validar boleto</h2>
+        <p>Recebeu um boleto? Confira se ele &eacute; aut&ecirc;ntico antes de pagar. Sem cadastro.</p>
+        <ion-button expand="block" color="secondary" routerLink="/validar">
+          <ion-icon slot="start" name="search-outline"></ion-icon>
+          Validar agora
+        </ion-button>
+      </ion-card>
+    </div>
+
+    <footer class="inicio-rodape">Pagamentos com mais seguran&ccedil;a para empresas e pagadores.</footer>
+  </div>
+</ion-content>

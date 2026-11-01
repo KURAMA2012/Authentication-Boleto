@@ -4,7 +4,7 @@
   <ion-menu contentId="main-content" side="start" menuId="main-menu">
     <ion-header translucent="true">
       <ion-toolbar color="primary">
-        <ion-title>Authentication Boleto</ion-title>
+        <div class="menu-brand"><img src="assets/logo.svg" alt="" width="34" height="34" /><span>Authentication Boleto</span></div>
       </ion-toolbar>
     </ion-header>
 
@@ -12,10 +12,12 @@
       <ion-list lines="none">
         <ion-menu-toggle [autoHide]="false">
 
-          <ion-item routerLink="/home" routerLinkActive="ativo" detail="false">
-            <ion-icon name="home-outline" slot="start"></ion-icon>
-            <ion-label>Início</ion-label>
+          <ion-item routerLink="/painel" routerLinkActive="ativo" detail="false">
+            <ion-icon name="bar-chart-outline" slot="start"></ion-icon>
+            <ion-label>Painel</ion-label>
           </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle [autoHide]="false">
 
           <ion-item routerLink="/cadastro-boleto" routerLinkActive="ativo" detail="false">
             <ion-icon name="document-text-outline" slot="start"></ion-icon>
@@ -45,9 +47,12 @@
       <ion-item lines="none">
         <ion-icon name="person-circle-outline" slot="start"></ion-icon>
         <ion-label>
-          <h2>Davy Lucas</h2>
-          <p>Desenvolvedor</p>
+          <h2>{{ usuarioNome }}</h2>
+          <p>Empresa emissora</p>
         </ion-label>
+        <ion-button slot="end" fill="clear" size="small" (click)="sair()" aria-label="Sair">
+          <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+        </ion-button>
       </ion-item>
     </ion-footer>
   </ion-menu>
