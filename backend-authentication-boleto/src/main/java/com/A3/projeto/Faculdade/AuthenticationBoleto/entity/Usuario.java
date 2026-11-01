@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,6 +29,10 @@ public class Usuario {
 	private String telefone;
 
 	private String cpf;
+
+	@Enumerated(EnumType.STRING)
+	@Column(length = 20)
+	private Role role = Role.EMPRESA;
 
 	public Usuario() {
 	}
@@ -85,6 +91,19 @@ public class Usuario {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	/** Linhas antigas (antes da coluna existir) ficam null: tratadas como EMPRESA. */
+	public Role getRole() {
+		return role == null ? Role.EMPRESA : role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public boolean isAdmin() {
+		return getRole() == Role.ADMIN;
 	}
 
 	@Override

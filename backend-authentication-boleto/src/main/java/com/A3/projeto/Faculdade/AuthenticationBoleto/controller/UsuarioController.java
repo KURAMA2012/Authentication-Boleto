@@ -37,7 +37,7 @@ public class UsuarioController {
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestParam String email, @RequestParam String senha) {
         Usuario usuario = service.login(email, senha);
-        String token = jwtService.gerarToken(usuario.getEmail());
+        String token = jwtService.gerarToken(usuario.getEmail(), usuario.getRole().name());
         LoginResponse body = new LoginResponse(usuario.getId(), usuario.getNome(), usuario.getEmail(),
                 token, "Bearer", jwtService.getExpirationMs());
         return ResponseEntity.ok(new ApiResponse<>(true, "Login realizado com sucesso!", body));

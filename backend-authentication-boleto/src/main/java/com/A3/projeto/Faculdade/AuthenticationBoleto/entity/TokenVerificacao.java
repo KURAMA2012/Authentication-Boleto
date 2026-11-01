@@ -33,6 +33,9 @@ public class TokenVerificacao {
 
 	private boolean utilizado;
 
+	/** Tentativas erradas de /confirmar. Null em linhas antigas = 0. */
+	private Integer tentativas;
+
 
 	@Enumerated(EnumType.STRING)
 	private StatusToken status;
@@ -88,6 +91,14 @@ public class TokenVerificacao {
 
 	public void setUtilizado(boolean utilizado) {
 		this.utilizado = utilizado;
+	}
+
+	public int getTentativas() {
+		return tentativas == null ? 0 : tentativas;
+	}
+
+	public void setTentativas(int tentativas) {
+		this.tentativas = tentativas;
 	}
 
 	public StatusToken getStatus() {

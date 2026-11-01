@@ -4,11 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -21,7 +21,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.A3.projeto.Faculdade.AuthenticationBoleto.common.ErrorCode;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.BoletoRequest;
+import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.BoletoValidacaoResponse;
+import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.Empresa;
+import com.A3.projeto.Faculdade.AuthenticationBoleto.exception.ApiException;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.Boleto;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.StatusBoleto;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.StatusToken;
@@ -35,12 +39,15 @@ import com.A3.projeto.Faculdade.AuthenticationBoleto.repository.TokenVerificacao
 class BoletoServiceTest {
 
     private static final String COD = "AUTH-123";
+    private static final String EMAIL = "pagador@demo.local";
+    private static final String CNPJ = "61099834000190";
 
     @Mock private BoletoRepository boletoRepository;
     @Mock private BoletoMapper boletoMapper;
     @Mock private TokenVerificacaoRepository tokenRepository;
     @Mock private EmpresaService empresaService;
     @Mock private TokenEmailService tokenEmailService;
+    @Mock private BoletoLogService boletoLogService;
     @InjectMocks private BoletoService service;
 
     private Boleto boleto;
@@ -112,7 +119,7 @@ class BoletoServiceTest {
     void confirmarTokenBoletoInexistente() {
         when(boletoRepository.findByCodigoAutenticacao(COD)).thenReturn(null);
 
-        assertThrows(BoletoNaoEncontradoException.class, () -> service.confirmarToken(COD, "123456"));
+        assertThat(service.confirmarToken(COD, "123456")).isFalse();
     }
 
     // ---------- gerarOuRecuperarToken ----------
@@ -124,9 +131,9 @@ class BoletoServiceTest {
         when(tokenRepository.findByBoletoAndUtilizadoFalse(boleto))
                 .thenReturn(Optional.of(token("654321", LocalDateTime.now().plusMinutes(3))));
 
-        assertThat(service.gerarOuRecuperarToken(COD)).isEqualTo("654321");
+        assertThat(service.gerarOuRecuperarToken(COD, EMAIL)).isEqualTo("654321");
         verify(tokenRepository, never()).save(any());
-        verify(tokenEmailService, never()).enviarToken(any(), any(), any());
+        verify(tokenEmailService).enviarToken(EMAIL, COD, "654321"); // reenvia ao e-mail do pagador
     }
 
     @Test
@@ -135,14 +142,14 @@ class BoletoServiceTest {
         when(boletoRepository.findByCodigoAutenticacao(COD)).thenReturn(boleto);
         when(tokenRepository.findByBoletoAndUtilizadoFalse(boleto)).thenReturn(Optional.empty());
 
-        String gerado = service.gerarOuRecuperarToken(COD);
+        String gerado = service.gerarOuRecuperarToken(COD, EMAIL);
 
         assertThat(gerado).matches("\\d{6}");
         ArgumentCaptor<TokenVerificacao> captor = ArgumentCaptor.forClass(TokenVerificacao.class);
         verify(tokenRepository).save(captor.capture());
         TokenVerificacao salvo = captor.getValue();
         assertThat(salvo.getToken()).isEqualTo(gerado);
-        verify(tokenEmailService).enviarToken(nullable(String.class), eq(COD), eq(gerado));
+        verify(tokenEmailService).enviarToken(eq(EMAIL), eq(COD), eq(gerado));
         assertThat(salvo.getStatus()).isEqualTo(StatusToken.ATIVO);
         assertThat(salvo.getDataExpiracao())
                 .isAfter(LocalDateTime.now().plusMinutes(4))
@@ -156,7 +163,7 @@ class BoletoServiceTest {
         when(tokenRepository.findByBoletoAndUtilizadoFalse(boleto))
                 .thenReturn(Optional.of(token("111111", LocalDateTime.now().minusMinutes(1))));
 
-        service.gerarOuRecuperarToken(COD);
+        service.gerarOuRecuperarToken(COD, EMAIL);
 
         verify(tokenRepository).save(any(TokenVerificacao.class));
     }
@@ -166,7 +173,7 @@ class BoletoServiceTest {
     void gerarTokenBoletoInexistente() {
         when(boletoRepository.findByCodigoAutenticacao(COD)).thenReturn(null);
 
-        assertThrows(BoletoNaoEncontradoException.class, () -> service.gerarOuRecuperarToken(COD));
+        assertThrows(BoletoNaoEncontradoException.class, () -> service.gerarOuRecuperarToken(COD, EMAIL));
     }
 
     // ---------- busca / criação ----------
@@ -179,14 +186,52 @@ class BoletoServiceTest {
         assertThrows(BoletoNaoEncontradoException.class, () -> service.buscarPorCodigoAutenticacao(COD));
     }
 
+    private BoletoRequest reqVencendo(LocalDate venc) {
+        BoletoRequest req = new BoletoRequest();
+        req.setCodigoBarras("999");
+        req.setCnpjBeneficiario(CNPJ);
+        req.setVencimento(venc);
+        return req;
+    }
+
+    private void stubCriacaoOk() {
+        Empresa empresa = new Empresa();
+        when(empresaService.buscarPorCnpj(CNPJ)).thenReturn(empresa);
+        when(boletoMapper.toEntity(any())).thenReturn(new Boleto());
+        when(boletoRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+    }
+
     @Test
-    @DisplayName("Criar boleto com código de barras repetido é recusado")
+    @DisplayName("Criar boleto com vencimento no passado: 400 VALIDACAO_CAMPO")
+    void criarBoletoVencimentoPassadoRecusa() {
+        ApiException ex = assertThrows(ApiException.class,
+                () -> service.criarBoleto(reqVencendo(LocalDate.now().minusDays(1)), "dono@demo.local"));
+        assertThat(ex.getCode()).isEqualTo(ErrorCode.VALIDACAO_CAMPO);
+        verify(boletoRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Criar boleto vencendo hoje e aceito")
+    void criarBoletoVencimentoHojeAceita() {
+        stubCriacaoOk();
+        assertThat(service.criarBoleto(reqVencendo(LocalDate.now()), "dono@demo.local")).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Criar boleto com vencimento futuro e aceito")
+    void criarBoletoVencimentoFuturoAceita() {
+        stubCriacaoOk();
+        assertThat(service.criarBoleto(reqVencendo(LocalDate.now().plusDays(30)), "dono@demo.local")).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Criar boleto com c\u00f3digo de barras repetido \u00e9 recusado")
     void criarBoletoDuplicadoLancaExcecao() {
         BoletoRequest req = new BoletoRequest();
         req.setCodigoBarras("123");
         when(boletoRepository.buscarPorCodigoBarras("123")).thenReturn(boleto);
 
-        assertThrows(IllegalArgumentException.class, () -> service.criarBoleto(req));
+        assertThrows(IllegalArgumentException.class, () -> service.criarBoleto(req, "dono@demo.local"));
         verify(boletoRepository, never()).save(any());
     }
 
@@ -213,5 +258,75 @@ class BoletoServiceTest {
         service.criarBoletoAPartirDoBatch(boleto);
 
         verify(boletoRepository, never()).save(any());
+    }
+
+    // ---------- slice 1: tentativas, e-mail do pagador, validacao publica ----------
+
+    @Test
+    void confirmarTokenErradoNaQuintaVezBloqueiaCom429() {
+        TokenVerificacao t = token("123456", LocalDateTime.now().plusMinutes(5));
+        t.setTentativas(4);
+        when(boletoRepository.findByCodigoAutenticacao(COD)).thenReturn(boleto);
+        when(tokenRepository.findByBoletoAndUtilizadoFalse(boleto)).thenReturn(Optional.of(t));
+
+        ApiException ex = assertThrows(ApiException.class, () -> service.confirmarToken(COD, "000000"));
+
+        assertThat(ex.getCode()).isEqualTo(ErrorCode.LIMITE_TENTATIVAS);
+        assertThat(t.isUtilizado()).isTrue();
+        assertThat(t.getStatus()).isEqualTo(StatusToken.CANCELADO);
+        verify(tokenRepository).save(t);
+    }
+
+    @Test
+    void confirmarTokenErradoContaTentativa() {
+        TokenVerificacao t = token("123456", LocalDateTime.now().plusMinutes(5));
+        when(boletoRepository.findByCodigoAutenticacao(COD)).thenReturn(boleto);
+        when(tokenRepository.findByBoletoAndUtilizadoFalse(boleto)).thenReturn(Optional.of(t));
+
+        assertThat(service.confirmarToken(COD, "000000")).isFalse();
+        assertThat(t.getTentativas()).isEqualTo(1);
+        assertThat(t.isUtilizado()).isFalse();
+    }
+
+    @Test
+    void enviarTokenSemEmailValidoRetorna400() {
+        ApiException ex = assertThrows(ApiException.class, () -> service.gerarOuRecuperarToken(COD, "invalido"));
+        assertThat(ex.getCode()).isEqualTo(ErrorCode.VALIDACAO_CAMPO);
+    }
+
+    @Test
+    void validarPublicoCodigoInexistenteEhSuspeitoELogaCnpj() {
+        when(boletoRepository.buscarPorCodigoAutenticacao(COD)).thenReturn(null);
+
+        BoletoValidacaoResponse r = service.validarPublico(COD, "61.099.834/0001-90", "1.2.3.4");
+
+        assertThat(r.getVeredito()).isEqualTo(BoletoValidacaoResponse.SUSPEITO);
+        verify(boletoLogService).registrarLog(eq(COD), eq("1.2.3.4"), eq(false), any(), eq(null), eq(CNPJ));
+    }
+
+    @Test
+    void validarPublicoCnpjDiferenteEhSuspeito() {
+        Empresa e = new Empresa();
+        e.setCnpj(CNPJ);
+        boleto.setEmpresa(e);
+        when(boletoRepository.buscarPorCodigoAutenticacao(COD)).thenReturn(boleto);
+
+        BoletoValidacaoResponse r = service.validarPublico(COD, "11222333000181", "1.2.3.4");
+
+        assertThat(r.getVeredito()).isEqualTo(BoletoValidacaoResponse.SUSPEITO);
+        assertThat(boleto.isAutenticado()).isFalse();
+    }
+
+    @Test
+    void validarPublicoCnpjCorretoEhAutentico() {
+        Empresa e = new Empresa();
+        e.setCnpj(CNPJ);
+        boleto.setEmpresa(e);
+        when(boletoRepository.buscarPorCodigoAutenticacao(COD)).thenReturn(boleto);
+
+        BoletoValidacaoResponse r = service.validarPublico(COD, CNPJ, "1.2.3.4");
+
+        assertThat(r.getVeredito()).isEqualTo(BoletoValidacaoResponse.AUTENTICO);
+        verify(boletoLogService).registrarLog(eq(COD), eq("1.2.3.4"), eq(true), any(), eq(boleto), eq(CNPJ));
     }
 }

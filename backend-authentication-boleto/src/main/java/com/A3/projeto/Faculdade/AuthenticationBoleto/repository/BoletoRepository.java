@@ -10,6 +10,8 @@ import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.Boleto;
 @Repository
 public interface BoletoRepository extends JpaRepository<Boleto, Long> {
     Boleto findByCodigoAutenticacao(String codigo);
+
+    java.util.List<Boleto> findByEmpresaId(Long empresaId);
     
     @Query("SELECT b FROM Boleto b WHERE b.codigoBarras = :codigoBarras")
     Boleto buscarPorCodigoBarras(@Param("codigoBarras") String codigoBarras);

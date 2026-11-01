@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.common.ErrorCode;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.exception.ApiException;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -20,6 +21,8 @@ import io.jsonwebtoken.security.Keys;
 /** Emite e valida JWT HS256. Segredo e expiracao vem de JWT_SECRET e JWT_EXPIRATION_MS. */
 @Service
 public class JwtService {
+
+    public static final String CLAIM_ROLE = "role";
 
     private final SecretKey key;
     private final long expirationMs;
@@ -34,9 +37,15 @@ public class JwtService {
     }
 
     public String gerarToken(String email) {
+        return gerarToken(email, "EMPRESA");
+    }
+
+    /** Gera o JWT com o claim "role" (EMPRESA ou ADMIN). */
+    public String gerarToken(String email, String role) {
         Instant agora = Instant.now();
         return Jwts.builder()
                 .subject(email)
+                .claim(CLAIM_ROLE, role)
                 .issuedAt(Date.from(agora))
                 .expiration(Date.from(agora.plusMillis(expirationMs)))
                 .signWith(key)
@@ -47,8 +56,13 @@ public class JwtService {
 
     /** Retorna o email (subject) ou lanca ApiException com TOKEN_EXPIRADO / TOKEN_INVALIDO. */
     public String validar(String token) {
+        return validarClaims(token).getSubject();
+    }
+
+    /** Valida e devolve os claims (subject = email, role). Mesmos erros de validar(). */
+    public Claims validarClaims(String token) {
         try {
-            return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload().getSubject();
+            return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
         } catch (ExpiredJwtException e) {
             throw new ApiException(ErrorCode.TOKEN_EXPIRADO, "Sessão expirada. Faça login novamente.");
         } catch (JwtException | IllegalArgumentException e) {

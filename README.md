@@ -28,12 +28,69 @@ O golpe do boleto falso troca a linha digitável ou o beneficiário antes de o p
 | 🏢 Cadastro de empresa | Cadastro do emissor com preenchimento automático por CNPJ (ReceitaWS) e CEP (ViaCEP) |
 | 💰 Cadastro de boletos | Criação manual ou importação em lote por CSV |
 | 📦 Importação em lote | O serviço de lote lê o CSV e publica cada boleto numa fila do RabbitMQ |
-| 🔐 Validação | Confere o boleto pelo código de barras e gera o token de verificação |
+| 🔐 Validação | Confere o boleto pelo código ou código de barras (e CNPJ, se informado) e dá o veredito AUTENTICO/SUSPEITO |
 | 📧 Token por e-mail | Código de 6 dígitos, válido por 5 minutos, que nunca volta na resposta da API |
 | ✅ Confirmação | O boleto só fica autenticado com o token correto e ainda válido |
 | 📑 Logs | Histórico das validações com status válido ou inválido |
+| 📊 Painel | Métricas por empresa: boletos emitidos, validações autênticas e suspeitas por dia |
+| 🌐 Validação pública | Pagador valida sem login, com rate limit por IP |
 | 🛡️ Segurança | Login com JWT e respostas de erro padronizadas com `code`, sem expor detalhes internos |
 
+## 🎯 Visão de produto
+
+Duas personas, dois fluxos:
+
+| Persona | Quem é | O que usa |
+| --- | --- | --- |
+| 🏢 **Empresa emissora (B2B)** | Quem emite boletos (PME, escola, condomínio, fintech) | Cadastra-se, registra empresas pelo CNPJ, emite ou importa boletos e acompanha um **painel com métricas** de validações autênticas e suspeitas |
+| 🙋 **Pagador** | Quem recebeu um boleto e vai pagar | **Validação pública e gratuita**, sem login: informa o código ou o código de barras, recebe o veredito **AUTENTICO/SUSPEITO** e confirma com um token de 6 dígitos por e-mail (2FA) |
+
+### 💼 Modelo de negócio (planejado)
+
+- **Pagador:** validação sempre gratuita. Quanto mais gente valida, mais valor o selo tem para quem emite.
+- **Empresa emissora:** painel B2B no formato SaaS, com assinatura por empresa ou plano por volume de boletos. Inclui métricas, histórico de tentativas suspeitas e importação em lote.
+- Modelo ainda em estudo: não há preços definidos nem cobrança implementada.
+
+### Fluxo da empresa
+
+```mermaid
+flowchart LR
+    A[Cadastro do usuário] --> B[Login JWT]
+    B --> C["Cadastro da empresa<br/>(CNPJ autodeclarado)"]
+    C --> D["Emissão de boleto<br/>manual ou lote CSV"]
+    D --> E["Painel / métricas<br/>GET /api/empresas/{id}/metricas"]
+    E --> F[Logs de validação]
+```
+
+### Fluxo do pagador
+
+```mermaid
+sequenceDiagram
+    participant P as Pagador
+    participant A as auth-service (/api/public/boleto)
+    participant M as Mailpit (e-mail)
+    P->>A: POST /validar {codigoBoleto, cnpjBeneficiario?, emailPagador}
+    alt boleto encontrado e CNPJ confere
+        A-->>P: veredito AUTENTICO (tokenEnviado=true)
+        A->>M: token de 6 dígitos (5 min)
+        P->>A: POST /confirmar {codigoBoleto, token}
+        A-->>P: 200 confirmado / 401 TOKEN_INVALIDO / 429 após 5 erros
+    else não encontrado ou CNPJ diverge
+        A-->>P: veredito SUSPEITO (+ log da tentativa)
+    end
+```
+
+## 🛣️ Rotas públicas x protegidas
+
+| Tipo | Rotas | Acesso |
+| --- | --- | --- |
+| Pública | `POST /api/public/boleto/validar`, `/enviar-token`, `/confirmar` (alias legado `/api/boleto/*`) | Sem JWT, com **rate limit de 10 req/60 s por IP + rota** (429 `LIMITE_TENTATIVAS`) |
+| Pública | `POST /api/auth/cadastrar`, `POST /api/auth/login` | Sem JWT |
+| Protegida | `/api/empresas/**` (`/cadastrar`, `/minhas`, `/{id}/metricas`...), logs e emissão de boletos | `Authorization: Bearer <JWT>` |
+
+- O JWT leva o e-mail do usuário (principal) e a **role** (`EMPRESA` ou `ADMIN`).
+- Cada empresa tem um **dono**. Quem não é dono recebe **403 `ACESSO_NEGADO`**; empresa inexistente dá **404**. `ADMIN` enxerga tudo.
+- O token 2FA aceita **no máximo 5 tentativas erradas**. Depois disso é cancelado (429 `LIMITE_TENTATIVAS`) e é preciso pedir outro.
 ## 🚀 Como rodar (Docker)
 
 **Pré-requisito:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) com Docker Compose v2.
@@ -77,11 +134,11 @@ sequenceDiagram
     participant F as Front
     participant A as auth-service
     participant M as Mailpit
-    F->>A: POST /api/boleto/enviar-token (Bearer)
+    F->>A: POST /api/public/boleto/validar ou /enviar-token (público)
     A->>A: gera token de 6 dígitos (válido por 5 min)
     A->>M: e-mail com o token
     A-->>F: "Token enviado por e-mail" (sem o código)
-    F->>A: POST /api/boleto/confirmar
+    F->>A: POST /api/public/boleto/confirmar (máx. 5 tentativas)
     A-->>F: boleto autenticado ou recusado
 ```
 
@@ -89,32 +146,66 @@ sequenceDiagram
 
 - **Dois serviços (auth e batch):** a importação em massa de CSV tem outro ritmo de carga e de falha. Isolada, um arquivo grande não derruba o login nem a validação, e cada serviço escala separado.
 - **Fila com RabbitMQ:** o upload responde na hora, e cada boleto é processado de forma assíncrona. Se o auth cair, as mensagens esperam na fila e nada se perde. Um boleto com erro não trava o resto do lote.
-- **JWT stateless:** as rotas fora de `/api/auth/**` exigem `Authorization: Bearer`. O servidor não guarda sessão, o que permite escalar na horizontal, e o batch repassa o mesmo token quando chama o auth. O segredo vem do `JWT_SECRET` no `.env`, com no mínimo 32 bytes, e nunca entra no git.
+- **JWT stateless:** as rotas fora de `/api/auth/**` e `/api/public/**` exigem `Authorization: Bearer`. O servidor não guarda sessão, o que permite escalar na horizontal, e o batch repassa o mesmo token quando chama o auth. O segredo vem do `JWT_SECRET` no `.env`, com no mínimo 32 bytes, e nunca entra no git.
 - **2FA por e-mail:** o código do boleto sozinho não basta. A confirmação exige um token de uso único que expira em 5 minutos, e a API nunca devolve esse token na resposta. Na demo, o Mailpit captura o e-mail e nenhum dado real sai do ambiente.
 - **Contrato de erro único:** todo erro volta como `ApiResponse` com um `code` estável, além de `message`, `details` e `traceId`. O front decide pelo `code`, não pelo texto. Um erro 500 não expõe nada interno, só um `traceId` para achar no log.
 - **Dados fictícios:** a demo usa boletos e CPF/CNPJ inventados, mas em formato válido, por causa da LGPD e porque o repositório é público.
 
+### ⚠️ Limitações conhecidas
 
-## 📬 Demonstração passo a passo (dados fictícios)
+- **CNPJ autodeclarado:** o sistema valida os dígitos do CNPJ e impede duplicidade, mas não comprova que quem cadastrou é de fato o dono da empresa.
+- **Rate limit em memória:** a contagem fica por instância. Com várias réplicas, o ideal seria um armazenamento compartilhado (ex.: Redis) ou o limite no gateway.
+- **Métrica de fraude indicativa:** "suspeitas" contam tentativas com código inexistente ou CNPJ divergente. Isso mostra sinais, não fraude confirmada.
+- **Schema via `ddl-auto=update`:** prático para a demo, mas em produção o certo seria migração versionada (Flyway/Liquibase).
+## 🧪 Como testar a demo
 
-> Ambiente de demonstração: use só dados fictícios. Nenhum e-mail sai de verdade, porque o Mailpit captura tudo.
+Ao subir, o `DemoDataSeeder` cria uma única vez (dados 100% fictícios) o usuário demo, uma empresa demo, 5 boletos e cerca de 30 dias de histórico de validações para o painel.
 
-1. Crie uma conta em `POST /api/auth/cadastrar` (nome, email, senha, telefone, cpf) e faça login em `POST /api/auth/login?email=...&senha=...` para pegar o `data.token`.
-2. Envie um CSV para `POST http://localhost:8082/api/boleto/upload` com `Authorization: Bearer <token>`:
+| Item | Valor |
+| --- | --- |
+| Login do painel | `demo@authboleto.local` / `Demo@12345` |
+| Boleto autêntico | `DEMO-AUTENTICO-0001` |
+| Código de barras | `23790000100000000000000000000000000000000001` |
+| CNPJ do beneficiário | `11.222.333/0001-81` |
+| E-mail do pagador | `pagador@demo.local` |
+| Caixa de e-mail (token) | http://localhost:8025 |
+
+1. **AUTENTICO:** em http://localhost:8100 (ou `POST /api/public/boleto/validar`), valide com o código de barras, o CNPJ e o e-mail acima.
+   ```json
+   {"codigoBoleto":"23790000100000000000000000000000000000000001","cnpjBeneficiario":"11.222.333/0001-81","emailPagador":"pagador@demo.local"}
+   ```
+2. Abra o Mailpit em http://localhost:8025 e copie o token de 6 dígitos.
+3. Confirme em `POST /api/public/boleto/confirmar` com `{"codigoBoleto":"DEMO-AUTENTICO-0001","token":"<token>"}`.
+4. **SUSPEITO:** valide qualquer código inventado, por exemplo `{"codigoBoleto":"QUALQUER-COISA-123"}`. O veredito vem `SUSPEITO` e a tentativa aparece nos logs e nas métricas.
+5. Entre no painel com o login demo para ver as métricas e os logs.
+6. Lote CSV (opcional): envie para `POST http://localhost:8082/api/boleto/upload` com `Authorization: Bearer <token>`:
 
    ```csv
    codigoBarras,valor,dataVencimento,cnpjEmpresa,nomePagador,cpfCnpjPagador
    23793381286008301234567890123456789012345678,150.00,2026-12-31,11222333000181,Cliente Ficticio,52998224725
    ```
 
-3. Peça o token em `POST /api/boleto/enviar-token` com `{"codigoAutenticacao": "..."}`.
-4. Abra http://localhost:8025 e veja o e-mail com o código de 6 dígitos.
-5. Confirme em `POST /api/boleto/confirmar`.
+## 🖼️ Galeria
 
-## 🧪 Testes
+Capturas com dados fictícios em [`docs/prints/`](docs/prints/).
+
+| Tela | Legenda |
+| --- | --- |
+| ![](docs/prints/01-inicio-publico.png) | **01** Início público: o pagador valida sem login |
+| ![](docs/prints/02-validar-suspeito.png) | **02** Veredito SUSPEITO para código inexistente |
+| ![](docs/prints/03-validar-autentico-token.png) | **03** Veredito AUTENTICO e token enviado por e-mail |
+| ![](docs/prints/04-validar-confirmado.png) | **04** Boleto confirmado com o token |
+| ![](docs/prints/05-login.png) | **05** Login da empresa |
+| ![](docs/prints/06-painel-empresa.png) | **06** Painel da empresa com métricas de 30 dias |
+| ![](docs/prints/07-empresas.png) | **07** Minhas empresas |
+| ![](docs/prints/08-gerar-boleto.png) | **08** Emissão de boleto |
+| ![](docs/prints/09-logs.png) | **09** Logs de validação |
+| ![](docs/prints/10-mobile-validar.png) | **10** Validação no celular |
+| ![](docs/prints/11-mobile-painel.png) | **11** Painel no celular |
+## ✅ Testes
 
 ```bash
-cd backend-authentication-boleto && ./mvnw test   # 30 testes: JWT, erros, segurança, token e e-mail
+cd backend-authentication-boleto && ./mvnw test   # 65 testes: JWT, erros, segurança, rate limit, token, métricas, seed
 cd backend-boleto-batch-service && ./mvnw test    # 10 testes: lote e upload de CSV
 ```
 

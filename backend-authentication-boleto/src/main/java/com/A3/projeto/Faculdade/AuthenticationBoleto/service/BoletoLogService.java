@@ -14,7 +14,13 @@ public class BoletoLogService {
     private BoletoLogRepository boletoLogRepository;
 
     public void registrarLog(String codigoAutenticacao, String ipUsuario, boolean valido, String mensagem, Boleto boleto) {
+        registrarLog(codigoAutenticacao, ipUsuario, valido, mensagem, boleto, null);
+    }
+
+    public void registrarLog(String codigoAutenticacao, String ipUsuario, boolean valido, String mensagem, Boleto boleto,
+                             String cnpjInformado) {
         BoletoLog log = new BoletoLog(codigoAutenticacao, ipUsuario, valido, mensagem, boleto);
+        log.setCnpjInformado(cnpjInformado);
         boletoLogRepository.save(log);
     }
 }

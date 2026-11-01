@@ -1,19 +1,36 @@
 package com.A3.projeto.Faculdade.AuthenticationBoleto.dto;
 
+/** Resposta publica da validacao: so o veredito e o motivo, sem dados do boleto. */
 public class BoletoValidacaoResponse {
-	private boolean valido;
-	private String mensagem;
 
-	public BoletoValidacaoResponse(boolean valido, String mensagem) {
-		this.valido = valido;
-		this.mensagem = mensagem;
+	public static final String AUTENTICO = "AUTENTICO";
+	public static final String SUSPEITO = "SUSPEITO";
+
+	private final String veredito;
+	private final String motivo;
+
+	public BoletoValidacaoResponse(String veredito, String motivo) {
+		this.veredito = veredito;
+		this.motivo = motivo;
 	}
 
-	public boolean isValido() {
-		return valido;
+	public static BoletoValidacaoResponse autentico(String motivo) {
+		return new BoletoValidacaoResponse(AUTENTICO, motivo);
 	}
 
-	public String getMensagem() {
-		return mensagem;
+	public static BoletoValidacaoResponse suspeito(String motivo) {
+		return new BoletoValidacaoResponse(SUSPEITO, motivo);
+	}
+
+	public String getVeredito() {
+		return veredito;
+	}
+
+	public boolean isAutentico() {
+		return AUTENTICO.equals(veredito);
+	}
+
+	public String getMotivo() {
+		return motivo;
 	}
 }

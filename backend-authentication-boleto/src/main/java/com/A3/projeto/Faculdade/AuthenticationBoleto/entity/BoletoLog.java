@@ -3,6 +3,7 @@ package com.A3.projeto.Faculdade.AuthenticationBoleto.entity;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +26,10 @@ public class BoletoLog {
 	private boolean valido;
 	private String mensagem;
 	private LocalDateTime dataConsulta = LocalDateTime.now();
+
+	/** CNPJ (14 digitos) que o pagador informou na validacao publica; opcional. */
+	@Column(name = "cnpj_informado", length = 14)
+	private String cnpjInformado;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_boleto")
@@ -83,6 +88,14 @@ public class BoletoLog {
 
 	public void setDataConsulta(LocalDateTime dataConsulta) {
 		this.dataConsulta = dataConsulta;
+	}
+
+	public String getCnpjInformado() {
+		return cnpjInformado;
+	}
+
+	public void setCnpjInformado(String cnpjInformado) {
+		this.cnpjInformado = cnpjInformado;
 	}
 
 	public Boleto getBoleto() {

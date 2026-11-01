@@ -27,6 +27,12 @@ public class SecurityConfig {
             "/api/auth/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/error"
     };
 
+    /** Fluxo publico do pagador (sem login). Protegido por rate limit por IP (RateLimitFilter). */
+    static final String[] ROTAS_PUBLICAS_POST = {
+            "/api/public/boleto/validar", "/api/public/boleto/enviar-token", "/api/public/boleto/confirmar",
+            "/api/boleto/validar", "/api/boleto/enviar-token", "/api/boleto/confirmar"
+    };
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -54,6 +60,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(ROTAS_PUBLICAS).permitAll()
+                .requestMatchers(HttpMethod.POST, ROTAS_PUBLICAS_POST).permitAll()
                 .anyRequest().authenticated())
             .exceptionHandling(e -> e.authenticationEntryPoint(entryPoint).accessDeniedHandler(entryPoint))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

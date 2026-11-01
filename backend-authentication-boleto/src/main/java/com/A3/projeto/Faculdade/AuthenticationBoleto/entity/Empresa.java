@@ -10,6 +10,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -53,6 +55,11 @@ public class Empresa {
 
 	@Column(name = "nome_fantasia")
 	private String nomeFantasia;
+
+	@ManyToOne
+	@JoinColumn(name = "id_dono")
+	@com.fasterxml.jackson.annotation.JsonIgnore
+	private Usuario dono;
 
 	@OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
 	private List<Boleto> boletos;
@@ -152,6 +159,14 @@ public class Empresa {
 
 	public void setUf(String uf) {
 		this.uf = uf;
+	}
+
+	public Usuario getDono() {
+		return dono;
+	}
+
+	public void setDono(Usuario dono) {
+		this.dono = dono;
 	}
 
 	public String getNomeFantasia() {

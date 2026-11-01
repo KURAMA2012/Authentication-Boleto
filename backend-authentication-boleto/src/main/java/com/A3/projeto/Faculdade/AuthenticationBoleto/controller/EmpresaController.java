@@ -1,5 +1,6 @@
 package com.A3.projeto.Faculdade.AuthenticationBoleto.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -20,29 +21,46 @@ import com.A3.projeto.Faculdade.AuthenticationBoleto.service.EmpresaService;
 public class EmpresaController {
 
     private final EmpresaService service;
+    private final com.A3.projeto.Faculdade.AuthenticationBoleto.service.MetricasService metricasService;
 
-    public EmpresaController(EmpresaService service) {
+    public EmpresaController(EmpresaService service,
+            com.A3.projeto.Faculdade.AuthenticationBoleto.service.MetricasService metricasService) {
+        this.metricasService = metricasService;
         this.service = service;
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<ApiResponse<EmpresaResponse>> salvar(@RequestBody EmpresaRequest request) {
+    public ResponseEntity<ApiResponse<EmpresaResponse>> salvar(@RequestBody EmpresaRequest request, Principal principal) {
         return ResponseEntity.ok(
-                new ApiResponse<>(true, "Empresa cadastrada com sucesso", service.salvar(request))
+                new ApiResponse<>(true, "Empresa cadastrada com sucesso", service.salvar(request, principal.getName()))
         );
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<ApiResponse<List<EmpresaResponse>>> listarTodas() {
+    public ResponseEntity<ApiResponse<List<EmpresaResponse>>> listarTodas(Principal principal) {
         return ResponseEntity.ok(
-                new ApiResponse<>(true, "Lista de empresas", service.listarTodas())
+                new ApiResponse<>(true, "Lista de empresas", service.listarDoUsuario(principal.getName()))
         );
     }
 
+    /** JWT: empresas do usuario logado (para obter o id usado em /{id}/metricas). */
+    @GetMapping("/minhas")
+    public ResponseEntity<ApiResponse<List<EmpresaResponse>>> minhas(Principal principal) {
+        return ResponseEntity.ok(new ApiResponse<>(true, "Minhas empresas", service.listarMinhas(principal.getName())));
+    }
+
+    /** JWT, so o dono (403 ACESSO_NEGADO). Query opcional de/ate (AAAA-MM-DD, inclusivos). */
+    @GetMapping("/{id}/metricas")
+    public ResponseEntity<ApiResponse<com.A3.projeto.Faculdade.AuthenticationBoleto.dto.EmpresaMetricasResponse>> metricas(
+            @PathVariable Long id, @org.springframework.web.bind.annotation.RequestParam(required = false) String de,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String ate, Principal principal) {
+        return ResponseEntity.ok(new ApiResponse<>(true, "M\u00e9tricas da empresa", metricasService.metricas(id, de, ate, principal.getName())));
+    }
+
     @GetMapping("/{cnpj}")
-    public ResponseEntity<ApiResponse<EmpresaResponse>> buscarPorCnpj(@PathVariable String cnpj) {
+    public ResponseEntity<ApiResponse<EmpresaResponse>> buscarPorCnpj(@PathVariable String cnpj, Principal principal) {
         return ResponseEntity.ok(
-                new ApiResponse<>(true, "Empresa encontrada", service.buscarResponsePorCnpj(cnpj))
+                new ApiResponse<>(true, "Empresa encontrada", service.buscarResponsePorCnpj(cnpj, principal.getName()))
         );
     }
 }

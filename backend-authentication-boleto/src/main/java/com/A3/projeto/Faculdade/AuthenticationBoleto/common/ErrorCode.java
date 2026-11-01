@@ -17,6 +17,7 @@ public enum ErrorCode {
     TOKEN_INVALIDO(HttpStatus.UNAUTHORIZED),
     TOKEN_EXPIRADO(HttpStatus.UNAUTHORIZED),
     ACESSO_NEGADO(HttpStatus.FORBIDDEN),
+    LIMITE_TENTATIVAS(HttpStatus.TOO_MANY_REQUESTS),
     ERRO_INTERNO(HttpStatus.INTERNAL_SERVER_ERROR);
 
     private final HttpStatus status;

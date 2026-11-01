@@ -1,7 +1,8 @@
 package com.A3.projeto.Faculdade.AuthenticationBoleto.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,135 +12,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.A3.projeto.Faculdade.AuthenticationBoleto.common.ApiResponse;
-import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.BoletoConfirmacaoRequest;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.BoletoRequest;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.BoletoResponse;
-import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.BoletoValidacaoRequest;
-import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.BoletoValidacaoResponse;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.Boleto;
-import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.StatusBoleto;
-import com.A3.projeto.Faculdade.AuthenticationBoleto.exception.BoletoNaoEncontradoException;
-import com.A3.projeto.Faculdade.AuthenticationBoleto.service.BoletoLogService;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.service.BoletoService;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("api/boleto")
 public class BoletoController {
-	
-	@Autowired
-	private BoletoLogService boletoLogService;
 
 	@Autowired
-    private BoletoService boletoService;
-	
-//    public BoletoController(BoletoService boletoService) {
-//        this.boletoService = boletoService;
-//    }
-    
-    
-    @PostMapping("/criar")
-    public ResponseEntity<ApiResponse<BoletoResponse>> criar(@RequestBody BoletoRequest request) {
-      
-            Boleto boleto = boletoService.criarBoleto(request);
+	private BoletoService boletoService;
 
-            return ResponseEntity.ok(
-                new ApiResponse<>(true, "Boleto criado com sucesso", new BoletoResponse(boleto))
-            );
+	/** JWT: so cria boleto para empresa do usuario logado (403 ACESSO_NEGADO). */
+	@PostMapping("/criar")
+	public ResponseEntity<ApiResponse<BoletoResponse>> criar(@RequestBody BoletoRequest request, Principal principal) {
+		Boleto boleto = boletoService.criarBoleto(request, principal.getName());
+		return ResponseEntity.ok(new ApiResponse<>(true, "Boleto criado com sucesso", new BoletoResponse(boleto)));
+	}
 
-    }
-    
-    @GetMapping("/buscar/{codigoBarras}")
-    public ResponseEntity<ApiResponse<BoletoResponse>> buscarPorCodigoBarras(@PathVariable String codigoBarras) {
-        Boleto boleto = boletoService.buscarPorCodigoBarras(codigoBarras);
+	/** JWT: so o dono da empresa do boleto (403 ACESSO_NEGADO). */
+	@GetMapping("/buscar/{codigoBarras}")
+	public ResponseEntity<ApiResponse<BoletoResponse>> buscarPorCodigoBarras(@PathVariable String codigoBarras,
+			Principal principal) {
+		Boleto boleto = boletoService.buscarPorCodigoBarras(codigoBarras);
+		boletoService.verificarDono(boleto, principal.getName());
+		return ResponseEntity.ok(new ApiResponse<>(true, "Boleto encontrado", new BoletoResponse(boleto)));
+	}
 
-        if (boleto == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ApiResponse<>(false, "Boleto não encontrado", null));
-        }
-
-        return ResponseEntity.ok(
-            new ApiResponse<>(true, "Boleto encontrado", new BoletoResponse(boleto))
-        );
-    }
-
-    
-    
-    @PostMapping("/validar")
-    public ResponseEntity<ApiResponse<BoletoValidacaoResponse>> validarBoleto(
-            @RequestBody BoletoValidacaoRequest request,
-            HttpServletRequest servletRequest) {
-
-        String ip = extractClientIp(servletRequest);
-        Boleto boleto;
-        try {
-            boleto = boletoService.buscarPorCodigoAutenticacao(request.getCodigoAutenticacao());
-        } catch (BoletoNaoEncontradoException e) {
-            // Antifraude: tentativa rejeitada tambem fica auditada na tela de Logs.
-            boletoLogService.registrarLog(request.getCodigoAutenticacao(), ip, false,
-                    "Tentativa rejeitada: boleto n\u00e3o encontrado.", null);
-            throw e;
-        }
-
-        
-        boleto.setAutenticado(true);
-        boleto.setStatus(StatusBoleto.AUTENTICADO);
-        boletoService.atualizarBoleto(boleto);
-
-        
-        boletoLogService.registrarLog(
-                boleto.getCodigoAutenticacao(),
-                ip,
-                true,
-                "Boleto autenticado com sucesso.",
-                boleto
-        );
-
-        // 5. Retorna resposta
-        return ResponseEntity.ok(
-                new ApiResponse<>(
-                        true,
-                        "Boleto autenticado com sucesso.",
-                        new BoletoValidacaoResponse(true, boleto.getCodigoAutenticacao())
-                )
-        );
-    }
-
-    
-    
-    @PostMapping("/enviar-token")
-    public ResponseEntity<ApiResponse<String>> enviarToken(@RequestBody BoletoValidacaoRequest request) {
-        String token = boletoService.gerarOuRecuperarToken(request.getCodigoAutenticacao());
-        
-        return ResponseEntity.ok(
-            new ApiResponse<>(true, "Token de verifica\u00e7\u00e3o enviado por e-mail.")
-        );
-    }
-
-
-    
-    
-    @PostMapping("/confirmar")
-    public ResponseEntity<ApiResponse<String>> confirmarToken(@RequestBody BoletoConfirmacaoRequest request) {
-        boolean confirmado = boletoService.confirmarToken(request.getCodigoAutenticacao(), request.getTokenVerificacao());
-
-        if (!confirmado) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new ApiResponse<>(false, "Token inválido ou boleto não encontrado."));
-        }
-
-        return ResponseEntity.ok(
-            new ApiResponse<>(true, "Boleto confirmado com sucesso! Pagamento pode prosseguir.")
-        );
-    }
-    
-    private String extractClientIp(HttpServletRequest request) {
-        String xfHeader = request.getHeader("X-Forwarded-For");
-        if (xfHeader != null && !xfHeader.isBlank()) {
-            // X-Forwarded-For pode conter vários IPs: cliente, proxies...
-            return xfHeader.split(",")[0].trim();
-        }
-        return request.getRemoteAddr();
-    }
+	// Rotas publicas do pagador (validar, enviar-token, confirmar): ver PublicBoletoController,
+	// que atende /api/public/boleto/* e tambem os caminhos antigos /api/boleto/*.
 }

@@ -1,5 +1,6 @@
 package com.A3.projeto.Faculdade.AuthenticationBoleto.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -9,9 +10,14 @@ import com.A3.projeto.Faculdade.AuthenticationBoleto.mapper.BoletoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.A3.projeto.Faculdade.AuthenticationBoleto.common.Cnpj;
+import com.A3.projeto.Faculdade.AuthenticationBoleto.common.ErrorCode;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.BoletoRequest;
+import com.A3.projeto.Faculdade.AuthenticationBoleto.dto.BoletoValidacaoResponse;
+import com.A3.projeto.Faculdade.AuthenticationBoleto.exception.ApiException;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.Boleto;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.Empresa;
 import com.A3.projeto.Faculdade.AuthenticationBoleto.entity.StatusBoleto;
@@ -43,6 +49,13 @@ public class BoletoService {
     
     @Autowired
     private EmpresaService empresaService;
+
+    @Autowired
+    private BoletoLogService boletoLogService;
+
+    /** Tentativas erradas de /confirmar antes de invalidar o token (429 LIMITE_TENTATIVAS). */
+    @Value("${app.token.max-tentativas:5}")
+    private int maxTentativas = 5;
     
     
     public boolean validarCodigoAutenticacao(String codigo) {
@@ -69,7 +82,16 @@ public class BoletoService {
     }
 
 
-    public Boleto criarBoleto(BoletoRequest request) {
+    /** 403 ACESSO_NEGADO se o boleto for de empresa de outro dono. */
+    public void verificarDono(Boleto boleto, String emailLogado) {
+        empresaService.verificarDono(boleto.getEmpresa(), emailLogado);
+    }
+
+    public Boleto criarBoleto(BoletoRequest request, String emailLogado) {
+        // So no /criar (manual). O lote (criarBoletoAPartirDoBatch) segue sem esta regra.
+        if (request.getVencimento() != null && request.getVencimento().isBefore(LocalDate.now())) {
+            throw new ApiException(ErrorCode.VALIDACAO_CAMPO, "vencimento deve ser hoje ou futuro");
+        }
     	
     	Optional<Boleto> existente = Optional.ofNullable( boletoRepository.buscarPorCodigoBarras(request.getCodigoBarras()));
 
@@ -80,7 +102,8 @@ public class BoletoService {
     	            );
     	        }
     	
-    	Empresa empresa = empresaService.buscarPorCnpj(request.getCnpjBeneficiario());
+    	Empresa empresa = empresaService.buscarPorCnpj(Cnpj.normalizar(request.getCnpjBeneficiario()));
+    	empresaService.verificarDono(empresa, emailLogado);
     	
         Boleto boleto = boletoMapper.toEntity(request);
 
@@ -111,8 +134,49 @@ public class BoletoService {
         return boletoRepository.save(boleto);
     }
     
+    /**
+     * Validacao publica do pagador. Nunca lanca "nao encontrado": responde SUSPEITO (200)
+     * para nao revelar dados. Toda tentativa fica em BoletoLog (com o cnpjInformado, se houver).
+     */
+    /** codigoBoleto do Front pode ser o codigo de autenticacao ou o de barras. */
+    public String resolverCodigoAutenticacao(String codigo) {
+        if (codigo == null || codigo.isBlank()) return codigo;
+        Boleto porBarras = boletoRepository.buscarPorCodigoBarras(codigo.trim());
+        return porBarras != null ? porBarras.getCodigoAutenticacao() : codigo.trim();
+    }
+
+    public BoletoValidacaoResponse validarPublico(String codigoAutenticacao, String cnpjInformadoBruto, String ip) {
+        String cnpjInformado = (cnpjInformadoBruto == null || cnpjInformadoBruto.isBlank())
+                ? null : Cnpj.normalizar(cnpjInformadoBruto);
+        Boleto boleto = (codigoAutenticacao == null || codigoAutenticacao.isBlank())
+                ? null : boletoRepository.buscarPorCodigoAutenticacao(codigoAutenticacao);
+
+        if (boleto == null) {
+            String motivo = "C\u00f3digo de autentica\u00e7\u00e3o n\u00e3o encontrado.";
+            boletoLogService.registrarLog(codigoAutenticacao, ip, false, "Tentativa rejeitada: boleto n\u00e3o encontrado.", null, cnpjInformado);
+            return BoletoValidacaoResponse.suspeito(motivo);
+        }
+
+        String cnpjEmpresa = boleto.getEmpresa() != null ? boleto.getEmpresa().getCnpj() : boleto.getCnpjBeneficiario();
+        if (cnpjInformado != null && !cnpjInformado.equals(cnpjEmpresa)) {
+            String motivo = "O CNPJ informado n\u00e3o corresponde ao benefici\u00e1rio do boleto.";
+            boletoLogService.registrarLog(codigoAutenticacao, ip, false, "Tentativa suspeita: " + motivo, boleto, cnpjInformado);
+            return BoletoValidacaoResponse.suspeito(motivo);
+        }
+
+        boleto.setAutenticado(true);
+        boleto.setStatus(StatusBoleto.AUTENTICADO);
+        boletoRepository.save(boleto);
+        boletoLogService.registrarLog(codigoAutenticacao, ip, true, "Boleto autenticado com sucesso.", boleto, cnpjInformado);
+        return BoletoValidacaoResponse.autentico("Boleto emitido por empresa cadastrada.");
+    }
+
+    /** Envia o token para o e-mail informado pelo pagador (reenvia o ativo, se ainda valido). */
     @Transactional
-    public String gerarOuRecuperarToken(String codigoAutenticacao) {
+    public String gerarOuRecuperarToken(String codigoAutenticacao, String emailPagador) {
+        if (emailPagador == null || !emailPagador.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            throw new ApiException(ErrorCode.VALIDACAO_CAMPO, "Informe um e-mail v\u00e1lido para receber o token.");
+        }
         Boleto boleto = boletoRepository.findByCodigoAutenticacao(codigoAutenticacao);
                 
     		if(boleto == null) {
@@ -123,6 +187,7 @@ public class BoletoService {
         if (tokenExistente.isPresent()) {
             TokenVerificacao existente = tokenExistente.get();
             if (existente.getDataExpiracao().isAfter(LocalDateTime.now())) {
+                tokenEmailService.enviarToken(emailPagador, boleto.getCodigoAutenticacao(), existente.getToken());
                 return existente.getToken(); // reutiliza se ainda estiver válido
             }
         }
@@ -143,19 +208,17 @@ public class BoletoService {
         boleto.setTokenVerificacao(tokenGerado);
         boletoRepository.save(boleto);
 
-        String emailDestino = boleto.getEmpresa() != null ? boleto.getEmpresa().getEmailContato() : null;
-
-        tokenEmailService.enviarToken(emailDestino, boleto.getCodigoAutenticacao(), tokenGerado);
+        tokenEmailService.enviarToken(emailPagador, boleto.getCodigoAutenticacao(), tokenGerado);
 
         return tokenGerado;
     }
 
-    @Transactional
+    @Transactional(dontRollbackOn = ApiException.class) // o bloqueio do token precisa ser gravado
     public boolean confirmarToken(String codigoAutenticacao, String tokenVerificacao) {
         Boleto boleto = boletoRepository.findByCodigoAutenticacao(codigoAutenticacao);
         
 		if(boleto == null) {
-    		throw new BoletoNaoEncontradoException("Boleto não encontrado.");
+    		return false; // boleto inexistente: mesmo tratamento de token invalido (401), sem revelar existencia
     	}
 
         Optional<TokenVerificacao> token = tokenVerificacaoRepository.findByBoletoAndUtilizadoFalse(boleto);
@@ -167,8 +230,20 @@ public class BoletoService {
         if (existente.getDataExpiracao().isBefore(LocalDateTime.now()))
             return false;
 
-        if (!existente.getToken().equals(tokenVerificacao))
+        if (!existente.getToken().equals(tokenVerificacao)) {
+            int tentativas = existente.getTentativas() + 1;
+            existente.setTentativas(tentativas);
+            if (tentativas >= maxTentativas) {
+                // Bloqueia o token: o pagador precisa pedir um novo em /enviar-token.
+                existente.setUtilizado(true);
+                existente.setStatus(StatusToken.CANCELADO);
+                tokenVerificacaoRepository.save(existente);
+                throw new ApiException(ErrorCode.LIMITE_TENTATIVAS,
+                        "Limite de tentativas atingido. Solicite um novo token.");
+            }
+            tokenVerificacaoRepository.save(existente);
             return false;
+        }
 
         // Marca como utilizado e altera status
         existente.setUtilizado(true);

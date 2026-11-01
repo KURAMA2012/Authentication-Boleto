@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.A3.projeto.Faculdade.AuthenticationBoleto.exception.ApiException;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,9 +34,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (header != null && header.startsWith("Bearer ")) {
             try {
-                String email = jwtService.validar(header.substring(7));
-                SecurityContextHolder.getContext().setAuthentication(
-                        new UsernamePasswordAuthenticationToken(email, null, List.of()));
+                Claims claims = jwtService.validarClaims(header.substring(7));
+                String role = claims.get(JwtService.CLAIM_ROLE, String.class);
+                if (role == null || role.isBlank()) role = "EMPRESA";
+                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+                        claims.getSubject(), null, List.of(new SimpleGrantedAuthority("ROLE_" + role))));
             } catch (ApiException e) {
                 // Guardado para o entry point responder com o code certo (TOKEN_EXPIRADO x TOKEN_INVALIDO).
                 request.setAttribute(ATTR_ERRO, e.getCode());
