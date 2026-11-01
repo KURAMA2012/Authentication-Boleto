@@ -250,10 +250,6 @@ Mais sobre secrets: [docs/security.md](docs/security.md).
 
 ## 🎥 Apresentação
 
-- [Parte 1](https://youtu.be/3DozZnX-OZg)
-- [Parte 2](https://youtu.be/zjEa-hGpCfQ)
-- [Parte 3](https://youtu.be/3XuRNAA6-4s)
-
 ---
 
 Projeto acadêmico (A3), evoluído para portfólio por **Davy Lucas**.
