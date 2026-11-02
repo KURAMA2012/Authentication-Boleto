@@ -24,3 +24,5 @@ Thumbs.db
 
 # Maven leftovers at repo root
 /target/
+**/android/.gradle/
+**/android/local.properties
